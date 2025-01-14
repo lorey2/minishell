@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/13 22:01:30 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/14 22:47:45 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/types.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <signal.h>
 
 typedef struct s_data
 {
@@ -29,13 +30,6 @@ typedef struct s_data
 	char	*path_with_com;
 	char	**path_with_com_split;
 	char	**cmd_split;
-	int		nbr_malloc;
-	int		input_file;
-	int		output_file;
-	int		process;
-	char	*line;
-	int		fd[2];
-	pid_t	here_pid;
 }				t_path_data;
 
 char		**ft_split(const char *s, char c);
@@ -44,5 +38,6 @@ char		*ft_strjoin(char const *s1, char const *s2);
 void		error(char *message, t_path_data *data);
 void		free_double_point(char **point);
 void		execute(char *command, t_path_data *data);
+void		setup_signal(void);
 
 #endif

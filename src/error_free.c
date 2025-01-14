@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/13 21:51:42 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/14 22:48:12 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ void	free_double_point(char **point)
 
 void	error(char *message, t_path_data *data)
 {
-	if (data->nbr_malloc >= 2)
-		free_double_point(data->path_split);
+	free_double_point(data->path_split);
 	if (message == NULL)
 		exit(EXIT_SUCCESS);
 	perror(message);

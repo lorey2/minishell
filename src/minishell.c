@@ -6,11 +6,13 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/13 23:16:35 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/14 22:48:18 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+#include <stdio.h>
 #include <sys/wait.h>
 
 void	process(t_path_data *data, char *input)
@@ -37,16 +39,29 @@ void	process(t_path_data *data, char *input)
 	}
 }
 
-int	main(void)
+/* ************************************************************************** */
+/* setup the path split in the double pointer data->path_split                */
+/* does an error if the malloc (ft_split) fails                               */
+/* list of malloc at this point : nothing                                     */
+/* added malloc : path_data->path_split                                       */
+/* ************************************************************************** */
+
+void	setup_path(t_path_data *path_data)
 {
-	char		*input;
-	char		shell_prompt[1024];
-	int			i;
-	char		*path;
-	t_path_data	path_data;
+	char	*path;
 
 	path = getenv("PATH");
-	path_data.path_split = ft_split(path, ':');
+	path_data->path_split = ft_split(path, ':');
+	if (!path_data)
+		error("Malloc error", path_data);
+}
+
+void	big_loop(t_path_data *path_data)
+{
+	char	*input;
+	char	shell_prompt[1024];
+	int		i;
+
 	while (1)
 	{
 		if (getcwd(shell_prompt, sizeof(shell_prompt)) == NULL)
@@ -64,8 +79,17 @@ int	main(void)
 		if (!input)
 			break ;
 		add_history(input);
-		process(&path_data, input);
+		process(path_data, input);
 		free(input);
 	}
+}
+
+int	main(void)
+{
+	t_path_data	path_data;
+
+	setup_path(&path_data);
+	setup_signal();
+	big_loop(&path_data);
 	return (0);
 }

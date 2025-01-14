@@ -32,7 +32,7 @@ WHITE = \033[0;97m
 # Source and Object Files
 # --------------------------------------------
 
-SRC_FILES        = error_free execute ft_split ft_strlen_strjoin minishell
+SRC_FILES        = error_free execute ft_split ft_strlen_strjoin minishell handle_signal
 SRC_BONUS_FILES  =
 
 SRC              = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))

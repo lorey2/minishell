@@ -6,11 +6,18 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 22:00:38 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/13 22:01:02 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/14 22:58:11 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* ************************************************************************** */
+/* ex: ls -la execve(/bin/ls, {ls, -la}). We check all path here          */
+/* no error possible                                                          */
+/* list of malloc at this point : path_data->path->split and a lot more later */
+/* added malloc : nothing                                                     */
+/* ************************************************************************** */
 
 void	execute(char *command, t_path_data *data)
 {
