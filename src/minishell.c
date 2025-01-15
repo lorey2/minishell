@@ -6,14 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/14 22:48:18 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/15 14:35:31 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#include <stdio.h>
-#include <sys/wait.h>
 
 void	process(t_path_data *data, char *input)
 {
@@ -56,40 +53,57 @@ void	setup_path(t_path_data *path_data)
 		error("Malloc error", path_data);
 }
 
-void	big_loop(t_path_data *path_data)
+char	*setup_prompt(t_data *data)
+{
+	int		i;
+	char	*shell_prompt;
+
+	shell_prompt = malloc(1024 * sizeof(char));
+	if (!shell_prompt)
+		error("malloc error", data->path);
+	if (getcwd(shell_prompt, 1024) == NULL)
+		error("getcwd", data->path);
+	i = -1;
+	while (shell_prompt[++i])
+		;
+	shell_prompt[i] = '$';
+	shell_prompt[i + 1] = ' ';
+	shell_prompt[i + 2] = '\0';
+	return (shell_prompt);
+}
+
+void	big_loop(t_data *data)
 {
 	char	*input;
-	char	shell_prompt[1024];
-	int		i;
+	char	*shell_prompt;
 
 	while (1)
 	{
-		if (getcwd(shell_prompt, sizeof(shell_prompt)) == NULL)
-		{
-			perror("getcwd");
-			break ;
-		}
-		i = -1;
-		while (shell_prompt[++i])
-			;
-		shell_prompt[i] = '$';
-		shell_prompt[i + 1] = ' ';
-		shell_prompt[i + 2] = '\0';
+		shell_prompt = setup_prompt(data);
 		input = readline(shell_prompt);
 		if (!input)
 			break ;
 		add_history(input);
-		process(path_data, input);
+//		parsing(input, data);
+		process(data->path, input);
 		free(input);
+		free(shell_prompt);
 	}
 }
 
 int	main(void)
 {
-	t_path_data	path_data;
+	t_data	data;
 
-	setup_path(&path_data);
+	data.path = malloc(sizeof(t_path_data));
+	if (!data.path)
+		error("malloc error", NULL);
+	setup_path(data.path);
 	setup_signal();
-	big_loop(&path_data);
+	big_loop(&data);
 	return (0);
 }
+
+//en gros 	setup prompt ajoute malloc shell_promp
+//			main ajoute malloc data.path
+//			setup_path ajoute malloc path_data->path_split

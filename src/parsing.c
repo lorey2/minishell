@@ -1,32 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_free.c                                       :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 13:33:29 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
+/*   Updated: 2025/01/15 14:49:34 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_double_point(char **point)
+/*
+void	parsing(char *input, t_data *data)
 {
-	int	j;
+	int	i;
+	int	backup;
 
-	j = -1;
-	while (point[++j])
-		free(point[j]);
-	free(point);
-}
+	i = -1;
+	backup = 0;
+	while (input[i])
+	{
+		if (input[++i] != '|')
+		{
 
-void	error(char *message, t_path_data *data)
-{
-	free_double_point(data->path_split);
-	if (message == NULL)
-		exit(EXIT_SUCCESS);
-	perror(message);
-	exit(EXIT_FAILURE);
+		}	
+		else if (input[i] != ' ')
+		{
+
+		}
+		else if (input[i] == '<')
+		{
+
+		}
+		else if (input[i] != '>')
+		{
+
+		}
+		i++;
+	}
 }
+*/

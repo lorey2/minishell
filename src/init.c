@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_free.c                                       :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 13:33:29 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
+/*   Updated: 2025/01/15 14:35:18 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_double_point(char **point)
+void	init_new_token(t_parsing_data token)
 {
-	int	j;
-
-	j = -1;
-	while (point[++j])
-		free(point[j]);
-	free(point);
-}
-
-void	error(char *message, t_path_data *data)
-{
-	free_double_point(data->path_split);
-	if (message == NULL)
-		exit(EXIT_SUCCESS);
-	perror(message);
-	exit(EXIT_FAILURE);
+	token.value = NULL;
+	token.nbr = -1;
+	token.is_open_file = false;
+	token.is_close_file = false;
+	token.is_command = false;
+	token.is_arg = false;
+	token.is_after_pipe = false;
 }

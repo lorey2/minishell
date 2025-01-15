@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/14 22:47:45 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/15 14:41:21 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <stdbool.h>
 
-typedef struct s_data
+extern int		g_signal;
+
+typedef struct s_path_data
 {
 	char	*path;
 	char	**path_split;
@@ -31,6 +34,25 @@ typedef struct s_data
 	char	**path_with_com_split;
 	char	**cmd_split;
 }				t_path_data;
+
+typedef struct s_parsing_data
+{
+	char					*value;
+	int						nbr;
+	bool					is_open_file;
+	bool					is_close_file;
+	bool					is_command;
+	bool					is_arg;
+	bool					is_after_pipe;
+	struct s_parsing_data	*next;
+	struct s_parsing_data	*previous;
+}							t_parsing_data;
+
+typedef struct s_data
+{
+	t_parsing_data	*token;
+	t_path_data		*path;
+}					t_data;
 
 char		**ft_split(const char *s, char c);
 size_t		ft_strlen(const char *s);
