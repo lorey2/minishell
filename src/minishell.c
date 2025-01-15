@@ -83,7 +83,8 @@ void	big_loop(t_data *data)
 		input = readline(shell_prompt);
 		if (!input)
 			break ;
-		add_history(input);
+		if (!(*input == '\n')) 
+			add_history(input);
 //		parsing(input, data);
 		process(data->path, input);
 		free(input);
