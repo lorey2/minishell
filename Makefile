@@ -10,7 +10,7 @@ SRC_DIR_BONUS = src_bonus/
 OBJ_DIR       = obj/
 OBJ_DIR_BONUS = obj_bonus/
 CC            = gcc
-CFLAGS        = -Wall -Werror -Wextra -I$(INCLUDE)
+CFLAGS        = -g -Wall -Werror -Wextra -I$(INCLUDE)
 RM            = rm -f
 AR            = ar rcs
 
@@ -32,7 +32,7 @@ WHITE = \033[0;97m
 # Source and Object Files
 # --------------------------------------------
 
-SRC_FILES        = error_free execute ft_split ft_strlen_strjoin minishell handle_signal
+SRC_FILES        = error_free execute ft_split ft_strlen_strjoin minishell handle_signal parsing init
 SRC_BONUS_FILES  =
 
 SRC              = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
@@ -41,15 +41,23 @@ OBJ              = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 OBJ_BONUS        = $(addprefix $(OBJ_DIR_BONUS), $(addsuffix .o, $(SRC_BONUS_FILES)))
 
 # --------------------------------------------
+# Libc
+# --------------------------------------------
+LIBC_DIR = ./libft
+LIBC = $(LIBC_DIR)/libft.a
+
+# --------------------------------------------
 # Targets
 # --------------------------------------------
 
 # Default target
 all: $(NAME)
 
+$(LIBC):
+	make -C $(LIBC_DIR) all
 # Minishell Compilation
-$(NAME): $(OBJ)
-	@$(CC) $(OBJ) -o $(NAME) -lreadline -lhistory
+$(NAME): $(LIBC) $(OBJ)
+	@$(CC) $(OBJ) -o $(NAME) -Llibft -lft -lreadline -lhistory
 	@echo "$(GREEN)minishell compiled!$(DEF_COLOR)"
 
 # Minishell Bonus Compilation
@@ -77,12 +85,14 @@ $(OBJ_DIR_BONUS)%.o: $(SRC_DIR_BONUS)%.c
 clean:
 	@rm -rf $(OBJ_DIR)
 	@rm -rf $(OBJ_DIR_BONUS)
+	make -C $(LIBC_DIR) clean
 	@echo "$(BLUE)minishell object files cleaned!$(DEF_COLOR)"
 
 # Full clean (objects and executables)
 fclean: clean
 	@rm -f $(NAME)
 	@rm -f $(NAME_BONUS)
+	make -C $(LIBC_DIR) fclean
 	@echo "$(CYAN)minishell executables cleaned!$(DEF_COLOR)"
 
 # Rebuild everything
