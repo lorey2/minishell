@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 14:35:31 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/15 16:57:57 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	process(t_path_data *data, char *input)
 	int		fd[2];
 
 	if (pipe(fd) == -1)
-		error("pipe_error", data);
+		error("pipe_error", NULL);
 	child_pid = fork();
 	if (child_pid == -1)
-		error("fork_error", data);
+		error("fork_error", NULL);
 	if (child_pid == 0)
 	{
 		close(fd[0]);
@@ -50,7 +50,7 @@ void	setup_path(t_path_data *path_data)
 	path = getenv("PATH");
 	path_data->path_split = ft_split(path, ':');
 	if (!path_data)
-		error("Malloc error", path_data);
+		error("Malloc error", NULL);
 }
 
 char	*setup_prompt(t_data *data)
@@ -60,9 +60,9 @@ char	*setup_prompt(t_data *data)
 
 	shell_prompt = malloc(1024 * sizeof(char));
 	if (!shell_prompt)
-		error("malloc error", data->path);
+		error("malloc error", NULL);
 	if (getcwd(shell_prompt, 1024) == NULL)
-		error("getcwd", data->path);
+		error("getcwd", NULL);
 	i = -1;
 	while (shell_prompt[++i])
 		;

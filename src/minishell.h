@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 14:41:21 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/15 16:56:02 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ typedef struct s_path_data
 typedef struct s_parsing_data
 {
 	char					*value;
-	int						nbr;
-	bool					is_open_file;
-	bool					is_close_file;
-	bool					is_command;
+	int						pos;
+	bool					in_file;
+	bool					out_file;
+	bool					is_cmd;
 	bool					is_arg;
 	bool					is_after_pipe;
 	struct s_parsing_data	*next;
@@ -57,9 +57,10 @@ typedef struct s_data
 char		**ft_split(const char *s, char c);
 size_t		ft_strlen(const char *s);
 char		*ft_strjoin(char const *s1, char const *s2);
-void		error(char *message, t_path_data *data);
+void		error(char *message, t_data *data);
 void		free_double_point(char **point);
 void		execute(char *command, t_path_data *data);
 void		setup_signal(void);
+void		parsing(char *input, t_data *data);
 
 #endif
