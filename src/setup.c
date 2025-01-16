@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:21:16 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 17:30:39 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/16 18:36:53 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ char	*setup_prompt(t_data *data)
 
 	shell_prompt = malloc(1024 * sizeof(char));
 	if (!shell_prompt)
-		error("malloc error", NULL);
+		error("malloc error", data);
 	if (getcwd(shell_prompt, 1024) == NULL)
-		error("getcwd", NULL);
+		error("getcwd", data);
 	i = -1;
 	while (shell_prompt[++i])
 		;
@@ -43,5 +43,5 @@ char	*setup_prompt(t_data *data)
 
 void	setup_env(t_data *data)
 {
-
+	(void)data;
 }

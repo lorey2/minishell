@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 18:20:48 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/16 18:35:03 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	handle_cmd(char **input, t_parsing_data *pars)
 void	parsing(char *input, t_data *data)
 {
 	t_parsing_data	*pars;
-	t_parsing_data	*head;
 	t_parsing_data	*prev;
 	int				pos;
 

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 18:23:34 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/16 18:42:45 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	big_loop(t_data *data)
 		if (!(*input == '\0'))
 			add_history(input);
 		parsing(input, data);
-//		parsing(input, data);
 		process(data->path, input);
 		free(input);
 		free(shell_prompt);
@@ -68,6 +67,8 @@ int	main(int argc, char **argv, char **env)
 {
 	t_data	data;
 
+	(void)argc;
+	(void)argv;
 	init_struct(&data);
 	data.env->env = &env;
 	setup_env(&data);
