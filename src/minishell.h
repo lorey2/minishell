@@ -6,13 +6,14 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 16:56:02 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/16 17:17:26 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#include "../libft/libft.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -38,12 +39,13 @@ typedef struct s_path_data
 typedef struct s_parsing_data
 {
 	char					*value;
+	char					**arg;
 	int						pos;
 	bool					in_file;
 	bool					out_file;
 	bool					is_cmd;
-	bool					is_arg;
 	bool					is_after_pipe;
+	bool					pipe;
 	struct s_parsing_data	*next;
 	struct s_parsing_data	*previous;
 }							t_parsing_data;
@@ -62,5 +64,6 @@ void		free_double_point(char **point);
 void		execute(char *command, t_path_data *data);
 void		setup_signal(void);
 void		parsing(char *input, t_data *data);
+void		init_new_token(t_parsing_data *token);
 
 #endif

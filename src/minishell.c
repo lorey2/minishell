@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 16:57:57 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/15 17:51:00 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	*setup_prompt(t_data *data)
 	int		i;
 	char	*shell_prompt;
 
+	(void)data;
 	shell_prompt = malloc(1024 * sizeof(char));
 	if (!shell_prompt)
 		error("malloc error", NULL);
@@ -85,6 +86,7 @@ void	big_loop(t_data *data)
 			break ;
 		if (!(*input == '\0')) 
 			add_history(input);
+		parsing(input, data);
 //		parsing(input, data);
 		process(data->path, input);
 		free(input);
