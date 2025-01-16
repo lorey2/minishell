@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 18:22:52 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/16 18:20:48 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,52 +24,114 @@ void	skip_space(char **input)
 int	check_meta_char(char c)
 {
 	if (c == '|' || c == '&' || c == ';' || c == '(' || c == ')'
-		|| c == '<' || c == '>' || c == ' ' || c == 't')
+		|| c == '<' || c == '>' || c == ' ')
 		return (1);
 	return (0);
 }
 
-void	handle_in_file(char *input, t_parsing_data *pars)
+int	check_meta_char_arg(char c)
+{
+	if (c == '|' || c == '&' || c == ';' || c == '(' || c == ')'
+		|| c == '<' || c == '>')
+		return (1);
+	return (0);
+}
+
+void	get_value(char **input, t_parsing_data *pars)
 {
 	int	len;
 
 	len = 0;
-	init_new_token(pars);
-	pars->in_file = true;
-	while (ft_isalpha(input[len]) && !check_meta_char(input[len]))
+	while (ft_isalpha((*input)[len]) && !check_meta_char((*input)[len]))
 		len++;
 	pars->value = malloc(sizeof(char) * (len + 1));
 	if (!pars->value)
 		error("malloc error", NULL);
-	ft_strlcpy(pars->value, input, len + 1);
-	printf("value = %s\n", pars->value);
-	// input += len;
+	ft_strlcpy(pars->value, *input, len + 1);
+	*input += len;
+}
+
+void	get_arg(char **input, t_parsing_data *pars)
+{
+	int		len;
+	char	*arg;
+
+	len = 0;
+	while (ft_isprint((*input)[len]) && !check_meta_char_arg((*input)[len]))
+		len++;
+	if (!len)
+		return ;
+	arg = malloc(sizeof(char) * (len + 1));
+	if (!arg)
+		error("malloc error", NULL);
+	ft_strlcpy(arg, *input, len + 1);
+	pars->arg = ft_split(arg, ' ');
+	if (!pars->arg)
+		error("malloc error", NULL);
+	*input += len;
+}
+
+void	handle_in_file(char **input, t_parsing_data *pars)
+{
+	init_new_token(pars);
+	pars->in_file = true;
+	input++;
+	skip_space(input);
+	get_value(input, pars);
+}
+
+void	handle_out_file(char **input, t_parsing_data *pars)
+{
+	init_new_token(pars);
+	pars->out_file = true;
+	input++;
+	skip_space(input);
+	get_value(input, pars);
+}
+
+void	handle_cmd(char **input, t_parsing_data *pars)
+{
+	init_new_token(pars);
+	pars->is_cmd = true;
+	skip_space(input);
+	get_value(input, pars);
+	skip_space(input);
+	get_arg(input, pars);
+	if (**input == '|')
+	{
+		pars->pipe = true;
+		(*input)++;
+	}
 }
 
 void	parsing(char *input, t_data *data)
 {
 	t_parsing_data	*pars;
+	t_parsing_data	*head;
+	t_parsing_data	*prev;
+	int				pos;
 
-	pars = malloc(sizeof(t_parsing_data));
-	if (!pars)
-		error("malloc error", data);
-	data->token = pars;
+	prev = 0;
+	pos = 0;
 	while (*input)
 	{
+		pars = malloc(sizeof(t_parsing_data));
+		if (!pars)
+			error("malloc error", data);
+		if (!prev)
+			data->token = pars;
+		if (prev)
+			prev->next = pars;
+		prev = pars;
 		skip_space(&input);
 		if (*input == '<')
-		{
-			input++;
-			skip_space(&input);
-			handle_in_file(input, pars);
-		}
-		input++;
+			handle_in_file(&input, pars);
+		else if (*input == '>')
+			handle_out_file(&input, pars);
+		else
+			handle_cmd(&input, pars);
+		pars->pos = pos;
+		pos++;
 	}
+	pars->next = NULL;
 }
-
-
-
-
-
-
-//     ls    -la    >    output.txt |   cat   -e 

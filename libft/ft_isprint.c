@@ -6,13 +6,13 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 15:08:28 by maambuhl          #+#    #+#             */
-/*   Updated: 2024/11/22 15:24:26 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/16 17:10:14 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_isprint(int c)
 {
-	if (c >= 33 && c <= 126)
+	if (c >= 32 && c <= 126)
 		return (1);
 	return (0);
 }
