@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 16:57:57 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/16 18:23:34 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,35 +43,6 @@ void	process(t_path_data *data, char *input)
 /* added malloc : path_data->path_split                                       */
 /* ************************************************************************** */
 
-void	setup_path(t_path_data *path_data)
-{
-	char	*path;
-
-	path = getenv("PATH");
-	path_data->path_split = ft_split(path, ':');
-	if (!path_data)
-		error("Malloc error", NULL);
-}
-
-char	*setup_prompt(t_data *data)
-{
-	int		i;
-	char	*shell_prompt;
-
-	shell_prompt = malloc(1024 * sizeof(char));
-	if (!shell_prompt)
-		error("malloc error", NULL);
-	if (getcwd(shell_prompt, 1024) == NULL)
-		error("getcwd", NULL);
-	i = -1;
-	while (shell_prompt[++i])
-		;
-	shell_prompt[i] = '$';
-	shell_prompt[i + 1] = ' ';
-	shell_prompt[i + 2] = '\0';
-	return (shell_prompt);
-}
-
 void	big_loop(t_data *data)
 {
 	char	*input;
@@ -83,7 +54,7 @@ void	big_loop(t_data *data)
 		input = readline(shell_prompt);
 		if (!input)
 			break ;
-		if (!(*input == '\0')) 
+		if (!(*input == '\0'))
 			add_history(input);
 //		parsing(input, data);
 		process(data->path, input);
@@ -92,13 +63,13 @@ void	big_loop(t_data *data)
 	}
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
 	t_data	data;
 
-	data.path = malloc(sizeof(t_path_data));
-	if (!data.path)
-		error("malloc error", NULL);
+	init_struct(&data);
+	data.env->env = &env;
+	setup_env(&data);
 	setup_path(data.path);
 	setup_signal();
 	big_loop(&data);
