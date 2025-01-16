@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 16:54:49 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/16 18:18:40 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,14 @@ void	init_new_token(t_parsing_data *token)
 	token->arg = NULL;
 	token->is_after_pipe = false;
 	token->pipe = false;
+}
+
+void	init_struct(t_data *data)
+{
+	data->path = malloc(sizeof(t_path_data));
+	if (!data->path)
+		error("malloc error", NULL);
+	data->env = malloc(sizeof(t_env_data));
+	if (!data->env)
+		error("malloc error", NULL);
 }

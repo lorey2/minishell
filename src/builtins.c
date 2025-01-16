@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_free.c                                       :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 18:27:29 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
+/*   Updated: 2025/01/15 18:27:13 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_double_point(char **point)
+void	cd(t_data *data)
 {
-	int	j;
-
-	j = -1;
-	while (point[++j])
-		free(point[j]);
-	free(point);
+	if (chdir(data->token->value) == -1)
+		error("chdir failed", data);
 }
 
-void	error(char *message, t_data *data)
+void	pwd(t_data *data)
 {
-	(void)data;
-	perror(message);
-	exit(EXIT_FAILURE);
+	char	shell_prompt[1024];
+
+	if (getcwd(shell_prompt, 1024) == NULL)
+		error("getcwd", data);
+	write(1, shell_prompt, ft_strlen(shell_prompt));
+}
+
+void	export(t_data *data)
+{
+	
 }
