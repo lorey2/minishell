@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_free.c                                       :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
+/*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 18:27:29 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2024/10/04 14:45:36 by maambuhl          #+#    #+#             */
+/*   Updated: 2024/10/04 14:49:57 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	free_double_point(char **point)
+t_list	*ft_lstnew(void *content)
 {
-	int	j;
+	t_list	*new;
 
-	j = -1;
-	while (point[++j])
-		free(point[j]);
-	free(point);
-}
-
-void	error(char *message, t_data *data)
-{
-	(void)data;
-	perror(message);
-	exit(EXIT_FAILURE);
+	new = malloc(sizeof(t_list));
+	if (!new)
+		return (0);
+	new->content = content;
+	new->next = 0;
+	return (new);
 }

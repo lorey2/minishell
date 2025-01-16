@@ -56,6 +56,7 @@ void	big_loop(t_data *data)
 			break ;
 		if (!(*input == '\0'))
 			add_history(input);
+		parsing(input, data);
 //		parsing(input, data);
 		process(data->path, input);
 		free(input);

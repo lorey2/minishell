@@ -13,6 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#include "../libft/libft.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -38,12 +39,13 @@ typedef struct s_path_data
 typedef struct s_parsing_data
 {
 	char					*value;
+	char					**arg;
 	int						pos;
 	bool					in_file;
 	bool					out_file;
 	bool					is_cmd;
-	bool					is_arg;
 	bool					is_after_pipe;
+	bool					pipe;
 	struct s_parsing_data	*next;
 	struct s_parsing_data	*previous;
 }							t_parsing_data;
@@ -75,5 +77,6 @@ void		setup_path(t_path_data *path_data);
 char		*setup_prompt(t_data *data);
 void		setup_env(t_data *data);
 void		init_struct(t_data *data);
+void		init_new_token(t_parsing_data *token);
 
 #endif

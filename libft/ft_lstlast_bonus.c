@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_free.c                                       :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
+/*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 18:27:29 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2024/10/04 16:54:15 by maambuhl          #+#    #+#             */
+/*   Updated: 2024/10/04 17:11:24 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	free_double_point(char **point)
+t_list	*ft_lstlast(t_list *lst)
 {
-	int	j;
+	t_list	*head;
 
-	j = -1;
-	while (point[++j])
-		free(point[j]);
-	free(point);
-}
-
-void	error(char *message, t_data *data)
-{
-	(void)data;
-	perror(message);
-	exit(EXIT_FAILURE);
+	head = lst;
+	while (head)
+	{
+		if (!head->next)
+			return (head);
+		head = head->next;
+	}
+	return (head);
 }

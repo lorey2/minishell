@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_free.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
+/*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 18:27:29 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2024/10/04 14:21:23 by maambuhl          #+#    #+#             */
+/*   Updated: 2024/10/04 16:42:25 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	free_double_point(char **point)
+void	ft_putnbr_fd(int nb, int fd)
 {
-	int	j;
+	char	c;
+	long	n;
 
-	j = -1;
-	while (point[++j])
-		free(point[j]);
-	free(point);
-}
-
-void	error(char *message, t_data *data)
-{
-	(void)data;
-	perror(message);
-	exit(EXIT_FAILURE);
+	n = (long)nb;
+	if (n < 0)
+	{
+		ft_putchar_fd('-', fd);
+		n = n * -1;
+	}
+	if (n >= 10)
+		ft_putnbr_fd(n / 10, fd);
+	c = (n % 10) + '0';
+	ft_putchar_fd(c, fd);
 }

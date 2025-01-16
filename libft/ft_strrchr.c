@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_free.c                                       :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
+/*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/15 18:27:29 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2024/10/03 12:15:52 by maambuhl          #+#    #+#             */
+/*   Updated: 2024/10/03 12:42:36 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	free_double_point(char **point)
+char	*ft_strrchr(const char *s, int c)
 {
-	int	j;
+	int		i;
+	char	*occ;
 
-	j = -1;
-	while (point[++j])
-		free(point[j]);
-	free(point);
-}
-
-void	error(char *message, t_data *data)
-{
-	(void)data;
-	perror(message);
-	exit(EXIT_FAILURE);
+	i = 0;
+	occ = 0;
+	while (s[i])
+	{
+		if (s[i] == (char)c)
+			occ = (char *)s + i;
+		i++;
+	}
+	if (s[i] == (char)c)
+		occ = (char *)s + i;
+	return (occ);
 }
