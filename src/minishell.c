@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/17 14:45:42 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/17 17:14:10 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc __attribute__((unused)),
 	t_data	data;
 
 	init_struct(&data);
-	setup_env(&data, &env);
+	setup_env(&data, env);
 	setup_path(data.path);
 	setup_signal();
 	big_loop(&data);

@@ -32,7 +32,12 @@ WHITE = \033[0;97m
 # Source and Object Files
 # --------------------------------------------
 
-SRC_FILES        = error_free execute minishell handle_signal parsing init setup free
+SRC_FILES        = minishell handle_signal \
+				   init setup \
+				   execute \
+				   parsing \
+				   builtins \
+				   free error_free 
 SRC_BONUS_FILES  =
 
 SRC              = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/17 14:32:49 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/17 17:20:52 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_parsing_data
 
 typedef struct s_env_data
 {
-	char	***env;
+	char	**env;
 	char	**path;
 	char	**home;
 	char	**cwd;
@@ -66,7 +66,7 @@ typedef struct s_data
 }					t_data;
 
 //setup
-void		setup_env(t_data *data, char ***env);
+void		setup_env(t_data *data, char **env);
 void		setup_path(t_path_data *path_data);
 char		*setup_prompt(t_data *data);
 void		init_struct(t_data *data);
@@ -77,6 +77,10 @@ void		init_new_token(t_parsing_data *token);
 void		setup_signal(void);
 //execution
 void		execute(char *command, t_path_data *data);
+//buitins
+void		cd(t_data *data, t_parsing_data *p_data);
+void		pwd(t_data *data);
+void		unset(t_data *data, t_parsing_data *p_data);
 //error and free
 void		error(char *message, t_data *data);
 void		free_double_point(char **point);
