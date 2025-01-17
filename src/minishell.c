@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/17 17:14:10 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/17 23:14:39 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,11 @@ void	big_loop(t_data *data)
 		if (!input)
 			break ;
 		if (!(*input == '\0'))
+		{
 			add_history(input);
-		parsing(input, data);
-		process(data->path, input);
+			parsing(input, data);
+			process(data->path, input);
+		}
 		free(input);
 		free(shell_prompt);
 	}

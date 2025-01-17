@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/17 23:04:09 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/17 23:37:55 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,29 @@ void	cd_error(char *message)
 	write(1, message, ft_strlen(message));
 }
 
+int	only_dash(t_parsing_data *p_data)
+{
+	char	*old_pwd;
+
+	old_pwd = getenv("OLDPWD");
+	if (ft_isequal(p_data->arg[1], "-"))
+	{
+		if (!old_pwd)
+			return (cd_error("cd : OLDPWD not set"), 1);
+		if (p_data->arg[2])
+			return (cd_error("cd : too many arguments"), 1);
+		if (chdir(old_pwd) == -1)
+			return (cd_error("cd : No such file or directory"), 1);
+	}
+	return (0);
+}
+
 int	check_dash(t_parsing_data *p_data)
 {
 	if (p_data->arg[1][0] == '-')
 	{
-		if (ft_isequal(p_data->arg[1], "-"))
-		{
-			if (p_data->arg[2])
-				return (cd_error("cd : too many arguments"), 1);
-			if (chdir(getenv(getenv("OLDPWD"))) == -1)
-				return (cd_error("cd : No such file or directory"), 1);
-		}
+		if (only_dash(p_data))
+			return (1);
 		else if (ft_isequal(p_data->arg[1], "-P")
 			|| ft_isequal(p_data->arg[1], "-L"))
 			return (cd_error("not implemented yet :'("), 1);
@@ -62,14 +74,22 @@ int	check_dash(t_parsing_data *p_data)
 
 void	cd(t_data *data, t_parsing_data *p_data)
 {
-	if (check_dash)
+	char	*home;
+
+	home = getenv("HOME");
+	if (check_dash(p_data))
 		return ;
 	else if (ft_isequal(p_data->arg[1], "~"))
-		chdir(getenv("HOME"));
+	{
+		if (!home)
+			cd_error("cd : WTF YOU HAVE NO HOME");
+		else if (chdir(home) == -1)
+			cd_error("cd : No such file or directory");
+	}
 	else
 	{
 		if (chdir(data->token->value) == -1)
-			error("chdir failed", data);
+			cd_error("cd : No such file or directory");
 	}
 }
 
