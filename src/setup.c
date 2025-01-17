@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:21:16 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 18:36:53 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/17 14:33:25 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*setup_prompt(t_data *data)
 	return (shell_prompt);
 }
 
-void	setup_env(t_data *data)
+void	setup_env(t_data *data, char ***env)
 {
-	(void)data;
+	data->env->env = env;
 }

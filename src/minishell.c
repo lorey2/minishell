@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 18:42:45 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/17 14:45:42 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,21 @@ void	big_loop(t_data *data)
 		free(input);
 		free(shell_prompt);
 	}
+	free(input);
+	free(shell_prompt);
 }
 
-int	main(int argc, char **argv, char **env)
+int	main(int argc __attribute__((unused)),
+		char **argv __attribute__((unused)), char **env)
 {
 	t_data	data;
 
-	(void)argc;
-	(void)argv;
 	init_struct(&data);
-	data.env->env = &env;
-	setup_env(&data);
+	setup_env(&data, &env);
 	setup_path(data.path);
 	setup_signal();
 	big_loop(&data);
+	free_everything(&data);
 	return (0);
 }
 
