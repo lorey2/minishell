@@ -6,35 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 18:42:45 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/17 17:18:07 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	process(t_path_data *data, char *input)
-{
-	pid_t	child_pid;
-	int		fd[2];
-
-	if (pipe(fd) == -1)
-		error("pipe_error", NULL);
-	child_pid = fork();
-	if (child_pid == -1)
-		error("fork_error", NULL);
-	if (child_pid == 0)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		execute(input, data);
-	}
-	else
-	{
-		wait(NULL);
-		close(fd[1]);
-		close(fd[0]);
-	}
-}
 
 /* ************************************************************************** */
 /* setup the path split in the double pointer data->path_split                */
@@ -57,7 +33,7 @@ void	big_loop(t_data *data)
 		if (!(*input == '\0'))
 			add_history(input);
 		parsing(input, data);
-		process(data->path, input);
+		process(data);
 		free(input);
 		free(shell_prompt);
 	}

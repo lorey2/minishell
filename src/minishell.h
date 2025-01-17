@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 18:38:34 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/17 16:48:14 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ size_t		ft_strlen(const char *s);
 char		*ft_strjoin(char const *s1, char const *s2);
 void		error(char *message, t_data *data);
 void		free_double_point(char **point);
-void		execute(char *command, t_path_data *data);
+void		execute(t_data *data);
 void		setup_signal(void);
 void		parsing(char *input, t_data *data);
 void		setup_path(t_path_data *path_data);
@@ -78,5 +78,6 @@ char		*setup_prompt(t_data *data);
 void		setup_env(t_data *data);
 void		init_struct(t_data *data);
 void		init_new_token(t_parsing_data *token);
+void		process(t_data *data);
 
 #endif
