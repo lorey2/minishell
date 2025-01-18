@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/18 02:15:58 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/18 20:05:03 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ void		execute(char *command, t_path_data *data);
 //buitins
 void		cd(t_data *data, t_parsing_data *p_data);
 void		pwd(t_parsing_data *p_data);
+void		echo(t_parsing_data *p_data);
 void		unset(t_data *data, t_parsing_data *p_data);
+void		env(t_env_data *e_data);
 //error and free
 void		error(char *message, t_data *data);
 void		free_double_point(char **point);

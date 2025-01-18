@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/17 23:14:39 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/18 20:15:22 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	big_loop(t_data *data)
 			parsing(input, data);
 			process(data->path, input);
 		}
+		env(data->env);
 		free(input);
 		free(shell_prompt);
 	}
