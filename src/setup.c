@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:21:16 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/17 16:17:19 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/19 16:43:16 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,29 @@
 void	setup_path(t_path_data *path_data)
 {
 	char	*path;
+	int		i;
 
 	path = getenv("PATH");
+	if (!path)
+		error("PATH environment variable not found", NULL);
 	path_data->path_split = ft_split(path, ':');
-	if (!path_data)
-		error("Malloc error", NULL);
+	if (!path_data->path_split)
+		error("Malloc error for path_split", NULL);
+	i = 0;
+	while (path_data->path_split[i])
+		i++;
+	path_data->path_split_slash = malloc((i + 1) * sizeof(char *));
+	if (!path_data->path_split_slash)
+		error("Malloc error for path_split_slash", NULL);
+	i = -1;
+	while (path_data->path_split[++i])
+	{
+		path_data->path_split_slash[i]
+			= ft_strjoin(path_data->path_split[i], "/");
+		if (!path_data->path_split_slash[i])
+			error("Malloc error for path with slash", NULL);
+	}
+	path_data->path_split_slash[i] = NULL;
 }
 
 char	*setup_prompt(t_data *data)

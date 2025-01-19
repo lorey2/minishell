@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/18 20:05:03 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/19 16:42:26 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ typedef struct s_path_data
 {
 	char	*path;
 	char	**path_split;
+	char	**path_split_slash;
 	char	*path_with_com;
-	char	**path_with_com_split;
-	char	**cmd_split;
 }				t_path_data;
 
 typedef struct s_parsing_data
