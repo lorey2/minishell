@@ -2,11 +2,12 @@
 
 ## GENERAL TODO LIST
 
+----MAKE A FKING GIT IGNORE
 ----Simple/Double quote <br /><br />
 ----pipex <br /><br />
 ----give the right token from parsing <br /><br />
 ----free everything<br /><br /><br />
-----environement variable $.. $?
+----environement variable dollar{..} dollar?
 
 ## BUILTINS
 
