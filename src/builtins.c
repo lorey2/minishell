@@ -6,27 +6,34 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 18:37:51 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/18 02:24:32 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd(t_data *data)
-{
-	if (chdir(data->token->value) == -1)
-		error("chdir failed", data);
-}
+//unset has two flags possible
+//-v to remove a variable from env
+//-f to remove a function from shell environement
+//no flag and -v is the same
+//unset VAR1 VAR2 is possible
+//unset with no flags and no args will do nothing
+//IDK IF WE WILL HANDLE -f
 
-void	pwd(t_data *data)
+void	unset(t_data *data, t_parsing_data *p_data)
 {
-	char	shell_prompt[1024];
+	int	i;
 
-	if (getcwd(shell_prompt, 1024) == NULL)
-		error("getcwd", data);
-	write(1, shell_prompt, ft_strlen(shell_prompt));
-}
+	(void)p_data;
+//	int	arg_it;
 
-void	export(t_data *data)
-{
+	i = -1;
+//	arg_it = -1;
+//	if (ft_isequal(p_data.arg[0], "-v"))
+//		arg_it++;
+//	while(p_data.arg[++arg_it])
+//	{
+	while (data->env->env[++i])
+		write(1, data->env->env[i], ft_strlen(data->env->env[i]));
+	write(1, "\n", 1);
 }
