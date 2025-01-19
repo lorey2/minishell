@@ -73,10 +73,11 @@ void		init_struct(t_data *data);
 //parsing
 void		parsing(char *input, t_data *data);
 void		init_new_token(t_parsing_data *token);
+void		process(t_data *data);
 //signal
 void		setup_signal(void);
 //execution
-void		execute(char *command, t_path_data *data);
+void		execute(t_data *data);
 //buitins
 void		cd(t_data *data, t_parsing_data *p_data);
 void		pwd(t_parsing_data *p_data);

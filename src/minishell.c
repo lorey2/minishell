@@ -12,30 +12,6 @@
 
 #include "minishell.h"
 
-void	process(t_path_data *data, char *input)
-{
-	pid_t	child_pid;
-	int		fd[2];
-
-	if (pipe(fd) == -1)
-		error("pipe_error", NULL);
-	child_pid = fork();
-	if (child_pid == -1)
-		error("fork_error", NULL);
-	if (child_pid == 0)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		execute(input, data);
-	}
-	else
-	{
-		wait(NULL);
-		close(fd[1]);
-		close(fd[0]);
-	}
-}
-
 /* ************************************************************************** */
 /* setup the path split in the double pointer data->path_split                */
 /* does an error if the malloc (ft_split) fails                               */

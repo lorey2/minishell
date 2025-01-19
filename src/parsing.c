@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 18:35:03 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/17 17:11:08 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_meta_char_arg(char c)
 	return (0);
 }
 
-void	get_value(char **input, t_parsing_data *pars)
+void	get_value(char **input, t_parsing_data *pars, int make_offset)
 {
 	int	len;
 
@@ -48,7 +48,8 @@ void	get_value(char **input, t_parsing_data *pars)
 	if (!pars->value)
 		error("malloc error", NULL);
 	ft_strlcpy(pars->value, *input, len + 1);
-	*input += len;
+	if (make_offset)
+		*input += len;
 }
 
 void	get_arg(char **input, t_parsing_data *pars)
@@ -77,7 +78,7 @@ void	handle_in_file(char **input, t_parsing_data *pars)
 	pars->in_file = true;
 	input++;
 	skip_space(input);
-	get_value(input, pars);
+	get_value(input, pars, 1);
 }
 
 void	handle_out_file(char **input, t_parsing_data *pars)
@@ -86,7 +87,7 @@ void	handle_out_file(char **input, t_parsing_data *pars)
 	pars->out_file = true;
 	input++;
 	skip_space(input);
-	get_value(input, pars);
+	get_value(input, pars, 1);
 }
 
 void	handle_cmd(char **input, t_parsing_data *pars)
@@ -94,7 +95,7 @@ void	handle_cmd(char **input, t_parsing_data *pars)
 	init_new_token(pars);
 	pars->is_cmd = true;
 	skip_space(input);
-	get_value(input, pars);
+	get_value(input, pars, 0);
 	skip_space(input);
 	get_arg(input, pars);
 	if (**input == '|')
