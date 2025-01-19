@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/17 16:48:14 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/18 20:05:03 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_parsing_data
 
 typedef struct s_env_data
 {
-	char	***env;
+	char	**env;
 	char	**path;
 	char	**home;
 	char	**cwd;
@@ -65,19 +65,28 @@ typedef struct s_data
 	t_env_data		*env;
 }					t_data;
 
-char		**ft_split(const char *s, char c);
-size_t		ft_strlen(const char *s);
-char		*ft_strjoin(char const *s1, char const *s2);
-void		error(char *message, t_data *data);
-void		free_double_point(char **point);
-void		execute(t_data *data);
-void		setup_signal(void);
-void		parsing(char *input, t_data *data);
+//setup
+void		setup_env(t_data *data, char **env);
 void		setup_path(t_path_data *path_data);
 char		*setup_prompt(t_data *data);
-void		setup_env(t_data *data);
 void		init_struct(t_data *data);
+//parsing
+void		parsing(char *input, t_data *data);
 void		init_new_token(t_parsing_data *token);
 void		process(t_data *data);
+//signal
+void		setup_signal(void);
+//execution
+void		execute(t_data *data);
+//buitins
+void		cd(t_data *data, t_parsing_data *p_data);
+void		pwd(t_parsing_data *p_data);
+void		echo(t_parsing_data *p_data);
+void		unset(t_data *data, t_parsing_data *p_data);
+void		env(t_env_data *e_data);
+//error and free
+void		error(char *message, t_data *data);
+void		free_double_point(char **point);
+void		free_everything(t_data *data);
 
 #endif
