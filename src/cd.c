@@ -6,7 +6,7 @@
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 01:20:21 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/18 02:02:36 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/19 21:01:24 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 //		This is often the default behavior
 //	cd -- -dir
 //		with this flag we can now take dir starting with -
+//
+//		IT WORKS BUT OLDPWD is not set, arg system -LLPPP -L -L -P neither
 
 static void	cd_error(char *message)
 {
@@ -37,17 +39,17 @@ static void	cd_error(char *message)
 
 static int	only_dash(t_parsing_data *p_data)
 {
-	char	*old_pwd;
+	//char	*old_pwd;
 
-	old_pwd = getenv("OLDPWD");
+	//old_pwd = getenv("OLDPWD");
 	if (ft_isequal(p_data->arg[1], "-"))
 	{
-		if (!old_pwd)
-			return (cd_error("cd : OLDPWD not set"), 1);
-		else if (p_data->arg[2])
-			return (cd_error("cd : too many arguments"), 1);
-		else if (chdir(old_pwd) == -1)
-			return (cd_error("cd : No such file or directory"), 1);
+//		if (!old_pwd)
+//			return (cd_error("cd : OLDPWD not set\n"), 1);
+//		else if (p_data->arg[2])
+//			return (cd_error("cd : too many arguments\n"), 1);
+		if (chdir("-") == -1)
+			return (cd_error("cd : No such file or directory\n"), 1);
 	}
 	return (0);
 }
@@ -62,44 +64,57 @@ static int	check_dash(t_parsing_data *p_data, char *home)
 			return (1);
 		else if (ft_isequal(p_data->arg[1], "-P")
 			|| ft_isequal(p_data->arg[1], "-L"))
-			return (cd_error(" -L and -P are not implemented yet :'("), 1);
+			return (cd_error(" -L and -P are not implemented yet :'(\n"), 1);
 		else if (ft_isequal(p_data->arg[1], "--"))
 		{
 			if (!p_data->arg[2])
 			{
 				if (!home)
-					cd_error("cd : WTF YOU HAVE NO HOME");
+					cd_error("cd : WTF YOU HAVE NO HOME\n");
 				else if (chdir(home) == -1)
-					cd_error("cd : No such file or directory");
+					cd_error("cd : No such file or directory\n");
 			}
 			else if (p_data->arg[3])
-				return (cd_error("cd : too many argumets"), 1);
+				return (cd_error("cd : too many argumets\n"), 1);
 			else if (chdir(p_data->arg[2]) == -1)
-				return (cd_error("cd : No such file or directory"), 1);
+				return (cd_error("cd : No such file or directory\n"), 1);
 		}
 		else
-			return (cd_error("cd : Illegal option (-L, -P, --, -)"), 1);
+			return (cd_error("cd : Illegal option (-L, -P, --, -)\n"), 1);
 	}
 	return (0);
 }
 
-void	cd(t_data *data, t_parsing_data *p_data)
+void	cd(t_parsing_data *p_data)
 {
 	char	*home;
 
 	home = getenv("HOME");
-	if (check_dash(p_data, home))
-		return ;
-	else if (ft_isequal(p_data->arg[1], "~"))
+	if (p_data->arg[1])
 	{
-		if (!home)
-			cd_error("cd : WTF YOU HAVE NO HOME");
-		else if (chdir(home) == -1)
-			cd_error("cd : No such file or directory");
+		if (check_dash(p_data, home))
+			return ;
+		if (p_data->arg[2])
+		{
+			cd_error("cd : too many arguments\n");
+			return ;
+		}
+		else if (ft_isequal(p_data->arg[1], "~"))
+		{
+			if (!home)
+				cd_error("cd : WTF YOU HAVE NO HOME\n");
+			else if (chdir(home) == -1)
+				cd_error("cd : No such file or directory\n");
+		}
+		else
+			if (chdir(p_data->arg[1]) == -1)
+				cd_error("cd : No such file or directory\n");
 	}
 	else
 	{
-		if (chdir(data->token->value) == -1)
-			cd_error("cd : No such file or directory");
+		if (!home)
+			cd_error("cd : WTF YOU HAVE NO HOME\n");
+		else if (chdir(home) == -1)
+			cd_error("cd : No such file or directory\n");
 	}
 }

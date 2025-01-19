@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/19 16:42:26 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/19 18:11:43 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ void		setup_signal(void);
 //execution
 void		execute(t_data *data);
 //buitins
-void		cd(t_data *data, t_parsing_data *p_data);
+bool		check_builtin(t_data *data, t_parsing_data *p_data);
+void		cd(t_parsing_data *p_data);
 void		pwd(t_parsing_data *p_data);
 void		echo(t_parsing_data *p_data);
 void		unset(t_data *data, t_parsing_data *p_data);
