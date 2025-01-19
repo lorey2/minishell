@@ -32,7 +32,12 @@ WHITE = \033[0;97m
 # Source and Object Files
 # --------------------------------------------
 
-SRC_FILES        = error_free execute ft_split ft_strlen_strjoin minishell handle_signal parsing init setup
+SRC_FILES        = minishell handle_signal \
+				   init setup \
+				   execute \
+				   parsing \
+				   builtins cd pwd echo env\
+				   free error_free 
 SRC_BONUS_FILES  =
 
 SRC              = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
@@ -43,6 +48,7 @@ OBJ_BONUS        = $(addprefix $(OBJ_DIR_BONUS), $(addsuffix .o, $(SRC_BONUS_FIL
 # --------------------------------------------
 # Libc
 # --------------------------------------------
+
 LIBC_DIR = ./libft
 LIBC = $(LIBC_DIR)/libft.a
 

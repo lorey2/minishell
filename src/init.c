@@ -6,11 +6,13 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 18:18:40 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/16 21:14:24 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_signal;
 
 void	init_new_token(t_parsing_data *token)
 {
@@ -26,6 +28,7 @@ void	init_new_token(t_parsing_data *token)
 
 void	init_struct(t_data *data)
 {
+	g_signal = 0;
 	data->path = malloc(sizeof(t_path_data));
 	if (!data->path)
 		error("malloc error", NULL);
