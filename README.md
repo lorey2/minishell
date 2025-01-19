@@ -6,7 +6,7 @@
 ----Simple/Double quote <br /><br />
 ----pipex <br /><br />
 ----give the right token from parsing <br /><br />
-----free everything<br /><br /><br />
+----free everything<br /><br />
 ----environement variable dollar{..} dollar?
 
 ## BUILTINS
