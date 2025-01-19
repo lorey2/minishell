@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/17 17:18:31 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/19 15:05:30 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	process(t_data *data)
 {
 	pid_t	child_pid;
 	int		fd[2];
-	(void)data;
 
+	(void)data;
 	if (pipe(fd) == -1)
 		error("pipe_error", NULL);
 	child_pid = fork();

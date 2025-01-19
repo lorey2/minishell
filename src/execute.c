@@ -6,11 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 22:00:38 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/17 16:42:16 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/19 15:05:11 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
 
 /* ************************************************************************** */
 /* ex: ls -la execve(/bin/ls, {ls, -la}). We check all path here          */
