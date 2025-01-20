@@ -11,19 +11,21 @@
 
 ## BUILTINS
 
-### cd
+### cd  DONE
   works with <br />
   ----"cd" "cd ~" "cd {absolute and relative path}" <br />
+  ----"cd -" this only do the last arg from previous cd. It wont work a lot with relative path <br />
+  ----But it is not mantory so.... its fine <br />
   does not work with <br />
-  ----"cd -" "cd -L" "cd -P" but the parsing in done for all of that <br />
+  ---- "cd -L" "cd -P" but the parsing in done for all of that <br />
   
-### pwd
+### pwd DONE
   works with <br />
   ----no args "pwd" <br />
   does not work with <br />
   ----"pwd -L" "pwd -P" but the parsing is done for all or that <br />
 
-### env
+### env DONE
   works with <br />
   ----no args "env" <br />
   does not work with <br />
