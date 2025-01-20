@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/19 18:12:01 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/20 15:34:18 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool	check_builtin(t_data *data, t_parsing_data *p_data)
 	if (ft_isequal(p_data->value, "echo"))
 		return (echo(p_data), true);
 	else if (ft_isequal(p_data->value, "cd"))
-		return (cd(p_data), true);
+		return (cd(p_data, data->path), true);
 	else if (ft_isequal(p_data->value, "pwd"))
 		return (pwd(p_data), true);
 	else if (ft_isequal(p_data->value, "export"))

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
+/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/18 01:20:21 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/19 21:01:24 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
+/*   Updated: 2025/01/20 20:01:35 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 
 //cd accept only one arg and a list of flags
 //if you give more than one arg the rest is ignored
@@ -27,40 +28,59 @@
 //	cd -- -dir
 //		with this flag we can now take dir starting with -
 //
-//		IT WORKS BUT OLDPWD is not set, arg system -LLPPP -L -L -P neither
+//		IT WORKS BUT not arg system -LLPPP -L -L -P
 
 static void	cd_error(char *message)
 {
 	write(1, message, ft_strlen(message));
 }
 
+int	do_cd_update_env(char *arg, t_path_data *path_data)
+{
+	char	cwd[1024];
+
+	if (chdir(arg) == -1)
+		return (cd_error("cd : No such file or directory\n"), 1);
+	if (path_data->oldpwd != NULL)
+		free(path_data->oldpwd);
+	path_data->oldpwd = strdup(path_data->pwd);
+	if (path_data->oldpwd == NULL)
+		return (cd_error("cd : Memory allocation failed for oldpwd\n"), 1);
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+		return (cd_error("cd : getcwd failed\n"), 1);
+	path_data->pwd = strdup(cwd);
+	if (path_data->pwd == NULL)
+		return (cd_error("cd : Memory allocation failed for pwd\n")
+			, free(path_data->oldpwd), 1);
+	return (0);
+}
+
 // here we only handle cd -
 // it does cd to the last directory in which we had cd
 
-static int	only_dash(t_parsing_data *p_data)
+static int	only_dash(t_parsing_data *p_data, t_path_data *path_data)
 {
-	//char	*old_pwd;
-
-	//old_pwd = getenv("OLDPWD");
 	if (ft_isequal(p_data->arg[1], "-"))
 	{
-//		if (!old_pwd)
-//			return (cd_error("cd : OLDPWD not set\n"), 1);
-//		else if (p_data->arg[2])
-//			return (cd_error("cd : too many arguments\n"), 1);
-		if (chdir("-") == -1)
-			return (cd_error("cd : No such file or directory\n"), 1);
+		if (path_data->oldpwd == NULL)
+			return (cd_error("cd : OLDPWD not set\n"), 1);
+		else if (p_data->arg[2])
+			return (cd_error("cd : too many arguments\n"), 1);
+		write(1, path_data->oldpwd, ft_strlen(path_data->oldpwd));
+		write(1, "\n", 1);
+		return (do_cd_update_env(path_data->oldpwd, path_data), 1);
 	}
 	return (0);
 }
 
 // here we handle -L -P and --
 
-static int	check_dash(t_parsing_data *p_data, char *home)
+static int	check_dash(t_parsing_data *p_data, t_path_data *path_data
+		, char *home)
 {
 	if (p_data->arg[1][0] == '-')
 	{
-		if (only_dash(p_data))
+		if (only_dash(p_data, path_data) == 1)
 			return (1);
 		else if (ft_isequal(p_data->arg[1], "-P")
 			|| ft_isequal(p_data->arg[1], "-L"))
@@ -70,14 +90,14 @@ static int	check_dash(t_parsing_data *p_data, char *home)
 			if (!p_data->arg[2])
 			{
 				if (!home)
-					cd_error("cd : WTF YOU HAVE NO HOME\n");
-				else if (chdir(home) == -1)
-					cd_error("cd : No such file or directory\n");
+					return (cd_error("cd : WTF YOU HAVE NO HOME\n"), 1);
+				else
+					do_cd_update_env(home, path_data);
 			}
 			else if (p_data->arg[3])
 				return (cd_error("cd : too many argumets\n"), 1);
-			else if (chdir(p_data->arg[2]) == -1)
-				return (cd_error("cd : No such file or directory\n"), 1);
+			else
+				do_cd_update_env(p_data->arg[2], path_data);
 		}
 		else
 			return (cd_error("cd : Illegal option (-L, -P, --, -)\n"), 1);
@@ -85,36 +105,29 @@ static int	check_dash(t_parsing_data *p_data, char *home)
 	return (0);
 }
 
-void	cd(t_parsing_data *p_data)
+int	cd(t_parsing_data *p_data, t_path_data *path_data)
 {
 	char	*home;
 
 	home = getenv("HOME");
 	if (p_data->arg[1])
 	{
-		if (check_dash(p_data, home))
-			return ;
-		if (p_data->arg[2])
-		{
-			cd_error("cd : too many arguments\n");
-			return ;
-		}
+		if (check_dash(p_data, path_data, home))
+			return (1);
+		else if (p_data->arg[2])
+			return (cd_error("cd : too many arguments\n"), 1);
 		else if (ft_isequal(p_data->arg[1], "~"))
 		{
 			if (!home)
-				cd_error("cd : WTF YOU HAVE NO HOME\n");
-			else if (chdir(home) == -1)
-				cd_error("cd : No such file or directory\n");
+				return (cd_error("cd : HOME environment variable not set\n"), 1);
+			return (do_cd_update_env(home, path_data), 0);
 		}
-		else
-			if (chdir(p_data->arg[1]) == -1)
-				cd_error("cd : No such file or directory\n");
+		return (do_cd_update_env(p_data->arg[1], path_data), 0);
 	}
 	else
 	{
 		if (!home)
-			cd_error("cd : WTF YOU HAVE NO HOME\n");
-		else if (chdir(home) == -1)
-			cd_error("cd : No such file or directory\n");
+			return (cd_error("cd : HOME environment variable not set\n"), 1);
+		return (do_cd_update_env(home, path_data), 0);
 	}
 }
