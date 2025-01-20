@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/19 16:42:26 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/20 20:02:16 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_path_data
 	char	**path_split;
 	char	**path_split_slash;
 	char	*path_with_com;
+	char	*oldpwd;
+	char	*pwd;
 }				t_path_data;
 
 typedef struct s_parsing_data
@@ -78,7 +80,8 @@ void		setup_signal(void);
 //execution
 void		execute(t_data *data);
 //buitins
-void		cd(t_data *data, t_parsing_data *p_data);
+bool		check_builtin(t_data *data, t_parsing_data *p_data);
+int			cd(t_parsing_data *p_data, t_path_data *path_data);
 void		pwd(t_parsing_data *p_data);
 void		echo(t_parsing_data *p_data);
 void		unset(t_data *data, t_parsing_data *p_data);

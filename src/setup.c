@@ -6,17 +6,20 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:21:16 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/19 16:43:16 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/20 17:48:01 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 
 void	setup_path(t_path_data *path_data)
 {
 	char	*path;
 	int		i;
 
+	path_data->pwd = getenv("PWD");
+	path_data->oldpwd = NULL;
 	path = getenv("PATH");
 	if (!path)
 		error("PATH environment variable not found", NULL);

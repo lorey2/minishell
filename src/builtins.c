@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/18 02:24:32 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/20 15:34:18 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,23 @@ void	unset(t_data *data, t_parsing_data *p_data)
 	while (data->env->env[++i])
 		write(1, data->env->env[i], ft_strlen(data->env->env[i]));
 	write(1, "\n", 1);
+}
+
+bool	check_builtin(t_data *data, t_parsing_data *p_data)
+{
+	if (ft_isequal(p_data->value, "echo"))
+		return (echo(p_data), true);
+	else if (ft_isequal(p_data->value, "cd"))
+		return (cd(p_data, data->path), true);
+	else if (ft_isequal(p_data->value, "pwd"))
+		return (pwd(p_data), true);
+	else if (ft_isequal(p_data->value, "export"))
+		return (write(1, "not yet implemented", 19), true);
+	else if (ft_isequal(p_data->value, "unset"))
+		return (unset(data, p_data), true);
+	else if (ft_isequal(p_data->value, "env"))
+		return (env(data->env), true);
+	else if (ft_isequal(p_data->value, "exit"))
+		return (write(1, "not yet implemented", 19), true);
+	return (false);
 }
