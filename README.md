@@ -14,10 +14,10 @@
 ### cd  DONE
   works with <br />
   ----"cd" "cd ~" "cd {absolute and relative path}" <br />
-  ----"cd -" this only do the last arg from previous cd. It wont work a lot with relative path <br />
-  ----But it is not mantory so.... its fine <br />
+  ----"cd -" works perfectly<br />
   does not work with <br />
   ---- "cd -L" "cd -P" but the parsing in done for all of that <br />
+  ---- there is a big chance we wont do that but it's here
   
 ### pwd DONE
   works with <br />
