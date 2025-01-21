@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/20 15:17:21 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/21 23:05:48 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	big_loop(t_data *data)
 	{
 		shell_prompt = setup_prompt(data);
 		input = readline(shell_prompt);
-		if (!input)
+		if (!input || data->exit_nbr != -1)
 			break ;
 		if (!(*input == '\0'))
 		{
@@ -38,6 +38,8 @@ void	big_loop(t_data *data)
 			if (check_builtin(data, data->token) == false)
 				process(data);
 		}
+		if (data->exit_nbr != -1)
+			break ;
 		free(input);
 		free(shell_prompt);
 	}
@@ -56,7 +58,10 @@ int	main(int argc __attribute__((unused)),
 	setup_signal();
 	big_loop(&data);
 	free_everything(&data);
-	return (0);
+	if (data.exit_nbr == -1)
+		return (0);
+	else
+		return (data.exit_nbr);
 }
 
 //en gros 	setup prompt ajoute malloc shell_promp

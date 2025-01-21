@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/21 04:15:03 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/21 18:08:26 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_data
 	t_parsing_data	*token;
 	t_path_data		*path;
 	t_env_data		*env;
+	int				exit_nbr;
 }					t_data;
 
 //setup
@@ -97,6 +98,7 @@ void		unset(t_data *data, t_parsing_data *p_data);
 void		env(t_env_data *e_data);
 void		init_flags(t_path_data *path_data);
 void		write_err(char *message);
+int			mini_exit(t_data *data, t_parsing_data *p_data);
 //error and free
 void		error(char *message, t_data *data);
 void		free_double_point(char **point);
