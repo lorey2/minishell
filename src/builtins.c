@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/20 15:34:18 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/21 02:55:58 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,60 @@ void	unset(t_data *data, t_parsing_data *p_data)
 	while (data->env->env[++i])
 		write(1, data->env->env[i], ft_strlen(data->env->env[i]));
 	write(1, "\n", 1);
+}
+
+bool	does_contain_only(char *data, char *list_args)
+{
+	int		i;
+	int		j;
+	bool	check;
+
+	i = 0;
+	while (data[++i])
+	{
+		j = -1;
+		check = false;
+		while (list_args[++j])
+		{
+			if (data[i] == list_args[j])
+				check = true;
+		}
+		if (check == false)
+			return (false);
+	}
+	return (true);
+}
+
+void	fill(char *data, t_path_data *path_data)
+{
+	int	i;
+
+	i = 0;
+	while (data[++i])
+	{
+		if (data[i] == 'L')
+			path_data->is_big_l = true;
+		else if (data[i] == 'P')
+			path_data->is_big_p = true;
+		else if (data[i] == 'e')
+			path_data->is_e = true;
+		else if (data[i] == '@')
+			path_data->is_at = true;
+	}
+}
+
+void	init_flags(t_path_data *path_data)
+{
+	path_data->is_big_l = false;
+	path_data->is_big_p = false;
+	path_data->is_at = false;
+	path_data->is_e = false;
+	path_data->home = getenv("HOME");
+}
+
+void	write_err(char *message)
+{
+	write(1, message, ft_strlen(message));
 }
 
 bool	check_builtin(t_data *data, t_parsing_data *p_data)
