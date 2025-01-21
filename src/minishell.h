@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/21 02:56:24 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/21 04:15:03 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ typedef struct s_path_data
 	char	*home;
 	bool	is_big_l;
 	bool	is_big_p;
+	bool	is_big_e;
 	bool	is_at;
 	bool	is_e;
+	bool	is_n;
 }				t_path_data;
 
 typedef struct s_parsing_data
@@ -89,8 +91,8 @@ void		fill(char *data, t_path_data *path_data);
 bool		does_contain_only(char *data, char *list_args);
 bool		check_builtin(t_data *data, t_parsing_data *p_data);
 int			cd(t_parsing_data *p_data, t_path_data *path_data);
-void		pwd(t_parsing_data *p_data);
-void		echo(t_parsing_data *p_data);
+void		pwd(t_parsing_data *p_data, t_path_data *path_data);
+void		echo(t_parsing_data *p_data, t_path_data *path_data);
 void		unset(t_data *data, t_parsing_data *p_data);
 void		env(t_env_data *e_data);
 void		init_flags(t_path_data *path_data);

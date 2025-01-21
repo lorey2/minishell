@@ -6,12 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/21 03:08:05 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/21 03:45:29 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 
 //cd accept only one arg and a list of flags
 //if you give more than one arg the rest is ignored
@@ -33,7 +32,7 @@
 
 // here we chdir and we update the vars cwd and oldpwd that are normally in env
 
-int	do_cd_update_env(char *arg, t_path_data *path_data)
+static int	do_cd_update_env(char *arg, t_path_data *path_data)
 {
 	char	cwd[1024];
 
@@ -106,7 +105,7 @@ static int	check_dash(t_parsing_data *p_data, t_path_data *path_data
 // flags can be -P -PPPPPPPP {-PP -PPPPLLLLPLPLP}...
 // LPe@
 
-int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
+static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 {
 	int	i;
 

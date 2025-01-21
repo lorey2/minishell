@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/21 02:55:58 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/21 04:15:31 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,14 @@ void	fill(char *data, t_path_data *path_data)
 			path_data->is_big_l = true;
 		else if (data[i] == 'P')
 			path_data->is_big_p = true;
+		else if (data[i] == 'E')
+			path_data->is_big_e = true;
 		else if (data[i] == 'e')
 			path_data->is_e = true;
 		else if (data[i] == '@')
 			path_data->is_at = true;
+		else if (data[i] == 'n')
+			path_data->is_n = true;
 	}
 }
 
@@ -82,8 +86,10 @@ void	init_flags(t_path_data *path_data)
 {
 	path_data->is_big_l = false;
 	path_data->is_big_p = false;
+	path_data->is_big_e = false;
 	path_data->is_at = false;
 	path_data->is_e = false;
+	path_data->is_n = false;
 	path_data->home = getenv("HOME");
 }
 
@@ -95,11 +101,11 @@ void	write_err(char *message)
 bool	check_builtin(t_data *data, t_parsing_data *p_data)
 {
 	if (ft_isequal(p_data->value, "echo"))
-		return (echo(p_data), true);
+		return (echo(p_data, data->path), true);
 	else if (ft_isequal(p_data->value, "cd"))
 		return (cd(p_data, data->path), true);
 	else if (ft_isequal(p_data->value, "pwd"))
-		return (pwd(p_data), true);
+		return (pwd(p_data, data->path), true);
 	else if (ft_isequal(p_data->value, "export"))
 		return (write(1, "not yet implemented", 19), true);
 	else if (ft_isequal(p_data->value, "unset"))
