@@ -6,12 +6,13 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/22 03:31:23 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/22 17:59:41 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
 
 /* ************************************************************************** */
 /* setup the path split in the double pointer data->path_split                */
@@ -38,6 +39,7 @@ void	big_loop(t_data *data)
 			if (check_builtin(data, data->token) == false)
 				process(data);
 		}
+		wait(NULL);
 		if (data->exit_nbr != -1)
 			break ;
 		free(input);
