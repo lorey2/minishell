@@ -35,13 +35,12 @@ typedef struct s_path_data
 	char	**path_split;
 	char	**path_split_slash;
 	char	*path_with_com;
-	char	*oldpwd;
-	char	*pwd;
-	char	*home;
 	bool	is_big_l;
 	bool	is_big_p;
+	bool	is_big_e;
 	bool	is_at;
 	bool	is_e;
+	bool	is_n;
 }				t_path_data;
 
 typedef struct s_parsing_data
@@ -64,9 +63,6 @@ typedef struct s_parsing_data
 typedef struct s_env_data
 {
 	char	**env;
-	char	**path;
-	char	**home;
-	char	**cwd;
 }			t_env_data;
 
 typedef struct s_data
@@ -74,6 +70,7 @@ typedef struct s_data
 	t_parsing_data	*token;
 	t_path_data		*path;
 	t_env_data		*env;
+	int				exit_nbr;
 }					t_data;
 
 //setup
@@ -93,13 +90,18 @@ void		execute(t_data *data, t_parsing_data *token);
 void		fill(char *data, t_path_data *path_data);
 bool		does_contain_only(char *data, char *list_args);
 bool		check_builtin(t_data *data, t_parsing_data *p_data);
-int			cd(t_parsing_data *p_data, t_path_data *path_data);
-void		pwd(t_parsing_data *p_data);
-void		echo(t_parsing_data *p_data);
+int			cd(t_parsing_data *p_data, t_path_data *path_data,
+				t_env_data *e_data);
+void		pwd(t_parsing_data *p_data, t_path_data *path_data);
+void		echo(t_parsing_data *p_data, t_path_data *path_data);
 void		unset(t_data *data, t_parsing_data *p_data);
 void		env(t_env_data *e_data);
 void		init_flags(t_path_data *path_data);
 void		write_err(char *message);
+int			mini_exit(t_data *data, t_parsing_data *p_data);
+void		set_env(t_env_data *e_data, char *var_name, char *value);
+void		set_env2(t_data *data, char *var_name, char *value);
+char		*get_env(t_env_data *e_data, char *var_name);
 //error and free
 void		error(char *message, t_data *data);
 void		free_double_point(char **point);

@@ -36,7 +36,7 @@ SRC_FILES        = minishell handle_signal \
 				   init setup \
 				   exec \
 				   parsing \
-				   builtins cd pwd echo env\
+				   builtins cd pwd echo env exit unset update_env\
 				   free error_free 
 SRC_BONUS_FILES  =
 

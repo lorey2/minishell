@@ -30,7 +30,7 @@ void	big_loop(t_data *data)
 	{
 		shell_prompt = setup_prompt(data);
 		input = readline(shell_prompt);
-		if (!input)
+		if (!input || data->exit_nbr != -1)
 			break ;
 		if (!(*input == '\0'))
 		{
@@ -40,6 +40,8 @@ void	big_loop(t_data *data)
 				process(data);
 		}
 		wait(NULL);
+		if (data->exit_nbr != -1)
+			break ;
 		free(input);
 		free(shell_prompt);
 	}
@@ -58,7 +60,10 @@ int	main(int argc __attribute__((unused)),
 	setup_signal();
 	big_loop(&data);
 	free_everything(&data);
-	return (0);
+	if (data.exit_nbr == -1)
+		return (0);
+	else
+		return (data.exit_nbr);
 }
 
 //en gros 	setup prompt ajoute malloc shell_promp
