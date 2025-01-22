@@ -6,11 +6,13 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/21 17:33:27 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/22 17:59:41 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
+#include <unistd.h>
 
 /* ************************************************************************** */
 /* setup the path split in the double pointer data->path_split                */

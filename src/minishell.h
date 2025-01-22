@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/21 15:23:10 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/22 16:11:19 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_path_data
 
 typedef struct s_parsing_data
 {
+	pid_t					pid;
 	int						fd_in;
 	int						fd_out;
 	char					*value;

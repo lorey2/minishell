@@ -6,11 +6,12 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/21 17:34:04 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/22 18:19:38 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/wait.h>
 #include <unistd.h>
 
 int	count_pipe(t_data *data)
@@ -67,6 +68,7 @@ void	pipex(t_data *data, t_parsing_data *token)
 	}
 	else
 	{
+		token->pid = pid;
 		close(pipefd[1]);
 		dup2(pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
@@ -79,6 +81,7 @@ void	process(t_data *data)
 	int				nb_pipe;
 	t_parsing_data	*token;
 	int				saved_stdin;
+	int				status;
 
 	saved_stdin = dup(STDIN_FILENO);
 	nb_pipe = count_pipe(data);
@@ -97,5 +100,12 @@ void	process(t_data *data)
 	else
 	{
 		dup2(saved_stdin, STDIN_FILENO);
+		token->pid = child_pid;
+		token = data->token;
+		while (token)
+		{
+			waitpid(token->pid, &status, 0);
+			token = token->next;
+		}
 	}
 }
