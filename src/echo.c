@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:55:52 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/19 23:23:18 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/21 04:18:01 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,69 +31,47 @@
 //is_e is useless because it works only with  '' and/or ""
 //the only function to modify is echo_write if we handle the '' and "" elsewhere
 
-void	echo_write(t_parsing_data *p_data, int i, bool is_e, bool is_n)
+void	echo_write(t_parsing_data *p_data, int i)
 {
 	int	j;
 
-	(void)is_e;
-	i--;
+	j = -1;
+	while (p_data->arg[i][++j])
+	{
+		if (p_data->arg[i][j] == '\\')
+			j++;
+		write(1, &p_data->arg[i][j], 1);
+	}
+}
+
+static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
+{
+	int	i;
+
+	i = 0;
+	init_flags(path_data);
+	while (p_data->arg[++i] && p_data->arg[i][1] && p_data->arg[i][0] == '-' && \
+		does_contain_only(p_data->arg[i], "eEn"))
+		fill(p_data->arg[i], path_data);
+	if (path_data->is_e || path_data->is_big_e)
+		return (write_err("e and E are not implemented yet :'(\n"), -1);
+	return (i);
+}
+
+void	echo(t_parsing_data *p_data, t_path_data *path_data)
+{
+	int	i;
+
+	i = setup_flags(p_data, path_data);
+	if (i == -1)
+		return ;
+	if (p_data->arg[i])
+		echo_write(p_data, i);
 	while (p_data->arg[++i])
 	{
-		j = -1;
-		while (p_data->arg[i][++j])
-		{
-			if (p_data->arg[i][j] == '\\')
-				j++;
-			write(1, &p_data->arg[i][j], 1);
-		}
+		write(1, " ", 1);
+		echo_write(p_data, i);
 	}
-	if (is_n == false)
+	if (path_data->is_n == false)
 		write(1, "\n", 1);
-}
-
-bool	contains(char *to_verif, char letter)
-{
-	int	i;
-
-	i = 0;
-	while (to_verif[++i])
-		if (to_verif[i] == letter)
-			return (true);
-	return (false);
-}
-
-bool	contains_only_enbig_e(char *to_verif)
-{
-	int	i;
-
-	i = 0;
-	while (to_verif[++i])
-		if (to_verif[i] != 'e' && to_verif[i] != 'E' && to_verif[i] != 'n')
-			return (false);
-	return (true);
-}
-
-void	echo(t_parsing_data *p_data)
-{
-	int		i;
-	bool	is_e;
-	bool	is_n;
-
-	i = 0;
-	is_e = false;
-	is_e = false;
-	is_n = false;
-	while (p_data->arg[++i][0] == '-')
-	{
-		if (contains_only_enbig_e(p_data->arg[i]) == false)
-		{
-			echo_write(p_data, i, is_e, is_n);
-			return ;
-		}
-		if (contains(p_data->arg[i], 'e'))
-			is_e = true;
-		if (contains(p_data->arg[i], 'n'))
-			is_n = true;
-	}
-	echo_write(p_data, i, is_e, is_n);
 }

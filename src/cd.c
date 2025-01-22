@@ -6,12 +6,13 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/21 03:08:05 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/22 15:07:30 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 //cd accept only one arg and a list of flags
 //if you give more than one arg the rest is ignored
@@ -33,52 +34,51 @@
 
 // here we chdir and we update the vars cwd and oldpwd that are normally in env
 
-int	do_cd_update_env(char *arg, t_path_data *path_data)
+static int	do_cd_update_env(char *arg, t_env_data *e_data)
 {
 	char	cwd[1024];
 
 	if (chdir(arg) == -1)
 		return (write_err("cd : No such file or directory\n"), 1);
-	if (path_data->oldpwd != NULL)
-		free(path_data->oldpwd);
-	path_data->oldpwd = strdup(path_data->pwd);
-	if (path_data->oldpwd == NULL)
-		return (write_err("cd : Memory allocation failed for oldpwd\n"), 1);
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
-		return (write_err("cd : getcwd failed\n"), 1);
-	path_data->pwd = strdup(cwd);
-	if (path_data->pwd == NULL)
-		return (write_err("cd : Memory allocation failed for pwd\n")
-			, free(path_data->oldpwd), 1);
+	set_env(e_data, "OLDPWD", get_env(e_data, "PWD"));
+	if (get_env(e_data, "OLDPWD") == NULL)
+		return (write_err("cd : Memory allocation failed for OLDPWD\n"), 1);
+	getcwd(cwd, 1024);
+	set_env(e_data, "PWD", cwd);
+	if (get_env(e_data, "PWD") == NULL)
+		return (write_err("cd : Memory allocation failed for PWD\n"), 1);
 	return (0);
 }
 
 // here we only handle cd -
 // it does cd to the last directory in which we had cd
 
-static int	only_dash(t_parsing_data *p_data, t_path_data *path_data, int i)
+static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
 {
+	char	*oldpwd;
+
+	oldpwd = get_env(e_data, "OLDPWD");
 	if (ft_isequal(p_data->arg[i], "-"))
 	{
-		if (path_data->oldpwd == NULL)
+		if (oldpwd == NULL)
 			return (write_err("cd : OLDPWD not set\n"), 1);
 		else if (p_data->arg[i + 1])
 			return (write_err("cd : too many arguments\n"), 1);
-		write(1, path_data->oldpwd, ft_strlen(path_data->oldpwd));
+		write(1, oldpwd, ft_strlen(oldpwd));
 		write(1, "\n", 1);
-		return (do_cd_update_env(path_data->oldpwd, path_data), 1);
+		return (do_cd_update_env(oldpwd, e_data), 1);
 	}
 	return (0);
 }
 
 // here we handle -- and false arguments
 
-static int	check_dash(t_parsing_data *p_data, t_path_data *path_data
+static int	check_dash(t_parsing_data *p_data, t_env_data *e_data
 		, char *home, int i)
 {
 	if (p_data->arg[i][0] == '-')
 	{
-		if (only_dash(p_data, path_data, i) == 1)
+		if (only_dash(p_data, e_data, i) == 1)
 			return (1);
 		else if (ft_isequal(p_data->arg[i], "--"))
 		{
@@ -88,12 +88,12 @@ static int	check_dash(t_parsing_data *p_data, t_path_data *path_data
 					return (write_err(
 							"cd : HOME environment variable not set\n"), 1);
 				else
-					do_cd_update_env(home, path_data);
+					do_cd_update_env(home, e_data);
 			}
 			else if (p_data->arg[i + 2])
 				return (write_err("cd : too many argumets\n"), 1);
 			else
-				do_cd_update_env(p_data->arg[2], path_data);
+				do_cd_update_env(p_data->arg[2], e_data);
 		}
 		else
 			return (write_err("cd : Illegal option (--, -,[working])\n \
@@ -106,7 +106,7 @@ static int	check_dash(t_parsing_data *p_data, t_path_data *path_data
 // flags can be -P -PPPPPPPP {-PP -PPPPLLLLPLPLP}...
 // LPe@
 
-int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
+static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 {
 	int	i;
 
@@ -124,7 +124,7 @@ int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 
 //here is the main cd file that handle ~ and no args
 
-int	cd(t_parsing_data *p_data, t_path_data *path_data)
+int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
 {
 	int	i;
 
@@ -133,20 +133,20 @@ int	cd(t_parsing_data *p_data, t_path_data *path_data)
 		return (1);
 	if (p_data->arg[i])
 	{
-		if (check_dash(p_data, path_data, path_data->home, i))
+		if (check_dash(p_data, e_data, get_env(e_data, "HOME"), i))
 			return (1);
 		else if (p_data->arg[i + 1])
 			return (write_err("cd : too many arguments\n"), 1);
 		else if (ft_isequal(p_data->arg[i], "~"))
 		{
-			if (!path_data->home)
+			if (!get_env(e_data, "HOME"))
 				return (write_err("cd : HOME environment variable not set\n"), \
 				1);
-			return (do_cd_update_env(path_data->home, path_data), 0);
+			return (do_cd_update_env(get_env(e_data, "HOME"), e_data), 0);
 		}
-		return (do_cd_update_env(p_data->arg[i], path_data), 0);
+		return (do_cd_update_env(p_data->arg[i], e_data), 0);
 	}
-	if (!path_data->home)
+	if (!get_env(e_data, "HOME"))
 		return (write_err("cd : HOME environment variable not set\n"), 1);
-	return (do_cd_update_env(path_data->home, path_data), 0);
+	return (do_cd_update_env(get_env(e_data, "HOME"), e_data), 0);
 }
