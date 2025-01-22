@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/22 03:31:52 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/22 14:52:57 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ void		execute(t_data *data);
 void		fill(char *data, t_path_data *path_data);
 bool		does_contain_only(char *data, char *list_args);
 bool		check_builtin(t_data *data, t_parsing_data *p_data);
-int			cd(t_parsing_data *p_data, t_path_data *path_data);
+int			cd(t_parsing_data *p_data, t_path_data *path_data,
+				t_env_data *e_data);
 void		pwd(t_parsing_data *p_data, t_path_data *path_data);
 void		echo(t_parsing_data *p_data, t_path_data *path_data);
 void		unset(t_data *data, t_parsing_data *p_data);

@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: lorey <lorey@student.42lausanne.ch>		+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2025/01/18 02:04:26 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/01/21 03:45:53 by lorey            ###   LAUSANNE.ch       */
-/*																			*/
+/*                                                    +:+ +:+         +:+     */
+/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/22 15:08:54 by lorey             #+#    #+#             */
+/*   Updated: 2025/01/22 15:10:00 by lorey            ###   LAUSANNE.ch       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -38,7 +38,7 @@ void	pwd(t_parsing_data *p_data, t_path_data *path_data)
 	if (setup_flags(p_data, path_data) == -1)
 		return ;
 	if (getcwd(shell_prompt, sizeof(shell_prompt)) == NULL)
-		write(1, "HOW CAN YOU HAVE NO CWD IN ENV\n", 31);
+		write(1, "getcwd retruned null, idk why\n", 30);
 	else
 	{
 		write(1, shell_prompt, ft_strlen(shell_prompt));
