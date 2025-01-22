@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/22 14:54:00 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/22 19:00:57 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	init_flags(t_path_data *path_data)
 	path_data->is_at = false;
 	path_data->is_e = false;
 	path_data->is_n = false;
-	path_data->home = getenv("HOME");
 }
 
 void	write_err(char *message)

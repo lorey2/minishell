@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/22 14:52:57 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/22 15:45:24 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ typedef struct s_path_data
 	char	**path_split;
 	char	**path_split_slash;
 	char	*path_with_com;
-	char	*oldpwd;
-	char	*pwd;
-	char	*home;
 	bool	is_big_l;
 	bool	is_big_p;
 	bool	is_big_e;
@@ -61,9 +58,6 @@ typedef struct s_parsing_data
 typedef struct s_env_data
 {
 	char	**env;
-	char	**path;
-	char	**home;
-	char	**cwd;
 }			t_env_data;
 
 typedef struct s_data
