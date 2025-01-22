@@ -6,13 +6,29 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/19 16:43:51 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/21 17:34:04 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
 
-void	execute(t_data *data)
+int	count_pipe(t_data *data)
+{
+	t_parsing_data	*token;
+	int	i;
+
+	i = 0;
+	token = data->token;
+	while (token->pipe)
+	{
+		i++;
+		token = token->next;
+	}
+	return (i);
+}
+
+void	execute(t_data *data, t_parsing_data *token)
 {
 	int	i;
 
@@ -20,37 +36,66 @@ void	execute(t_data *data)
 	while (data->path->path_split[++i])
 	{
 		data->path->path_with_com
-			= ft_strjoin(data->path->path_split_slash[i], data->token->value);
+			= ft_strjoin(data->path->path_split_slash[i], token->value);
 		if (!data->path->path_with_com)
 			error("malloc error", NULL);
 		if (!(execve(data->path->path_with_com, \
-			data->token->arg, data->env->env) == -1))
+			token->arg, data->env->env) == -1))
 			break ;
 		free(data->path->path_with_com);
 	}
 	error("command not found", NULL);
 }
 
+void	pipex(t_data *data, t_parsing_data *token)
+{
+	pid_t	pid;
+	int		pipefd[2];
+
+	
+	if (pipe(pipefd) == -1)
+		error("Pipe err", data);
+	pid = fork();
+	if (pid == -1)
+		error("Cannot fork process", data);
+	if (pid == 0)
+	{
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+		execute(data, token);
+	}
+	else
+	{
+		close(pipefd[1]);
+		dup2(pipefd[0], STDIN_FILENO);
+		close(pipefd[0]);
+	}
+}
+
 void	process(t_data *data)
 {
-	pid_t	child_pid;
-	int		fd[2];
+	pid_t			child_pid;
+	int				nb_pipe;
+	t_parsing_data	*token;
+	int				saved_stdin;
 
-	if (pipe(fd) == -1)
-		error("pipe_error", NULL);
+	saved_stdin = dup(STDIN_FILENO);
+	nb_pipe = count_pipe(data);
+	token = data->token;
+	while (nb_pipe >= 1)
+	{
+		pipex(data, token);
+		token = token->next;
+		nb_pipe--;
+	}
 	child_pid = fork();
 	if (child_pid == -1)
 		error("fork_error", NULL);
 	if (child_pid == 0)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		execute(data);
-	}
+		execute(data, token);
 	else
 	{
-		wait(NULL);
-		close(fd[1]);
-		close(fd[0]);
+		dup2(saved_stdin, STDIN_FILENO);
 	}
 }

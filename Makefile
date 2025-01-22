@@ -34,7 +34,7 @@ WHITE = \033[0;97m
 
 SRC_FILES        = minishell handle_signal \
 				   init setup \
-				   execute exec \
+				   exec \
 				   parsing \
 				   builtins cd pwd echo env\
 				   free error_free 

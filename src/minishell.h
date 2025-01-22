@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/21 02:56:24 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/21 15:23:10 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <sys/types.h>
+# include <unistd.h>
 
 extern int		g_signal;
 
@@ -44,6 +46,8 @@ typedef struct s_path_data
 
 typedef struct s_parsing_data
 {
+	int						fd_in;
+	int						fd_out;
 	char					*value;
 	char					**arg;
 	int						pos;
@@ -83,7 +87,7 @@ void		process(t_data *data);
 //signal
 void		setup_signal(void);
 //execution
-void		execute(t_data *data);
+void		execute(t_data *data, t_parsing_data *token);
 //buitins
 void		fill(char *data, t_path_data *path_data);
 bool		does_contain_only(char *data, char *list_args);
