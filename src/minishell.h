@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/22 16:11:19 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/23 03:12:25 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct s_path_data
 	bool	is_at;
 	bool	is_e;
 	bool	is_n;
+	bool	is_v;
+	bool	is_f;
 }				t_path_data;
 
 typedef struct s_parsing_data
@@ -94,13 +96,13 @@ int			cd(t_parsing_data *p_data, t_path_data *path_data,
 				t_env_data *e_data);
 void		pwd(t_parsing_data *p_data, t_path_data *path_data);
 void		echo(t_parsing_data *p_data, t_path_data *path_data);
-void		unset(t_data *data, t_parsing_data *p_data);
+int			unset(t_env_data *e_data,
+				t_path_data *path_data, t_parsing_data *p_data);
 void		env(t_env_data *e_data);
 void		init_flags(t_path_data *path_data);
 void		write_err(char *message);
 int			mini_exit(t_data *data, t_parsing_data *p_data);
 void		set_env(t_env_data *e_data, char *var_name, char *value);
-void		set_env2(t_data *data, char *var_name, char *value);
 char		*get_env(t_env_data *e_data, char *var_name);
 //error and free
 void		error(char *message, t_data *data);
