@@ -3,7 +3,7 @@
 ## GENERAL TODO LIST
 
 ----MAKE A FKING GIT IGNORE <br /><br />
-----full path binary "/bin/ls"
+----full path binary "/bin/ls" <br /><br />
 ----variable "salut=54" "salut=54 ls" gives only the var to ls <br /><br />
 ----Simple/Double quote <br /><br />
 ----pipex <br /><br />
