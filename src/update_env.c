@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/23 03:19:28 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/24 13:21:48 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	write_env_error(char *var_name, char *message)
 	write(1, "\n", 1);
 }
 
-static bool	is_valid_var_name(char	*arg)
+bool	is_valid_var_name(char	*arg)
 {
 	int	i;
 
