@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/17 17:11:08 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/24 16:23:17 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	get_value(char **input, t_parsing_data *pars, int make_offset)
 	int	len;
 
 	len = 0;
-	while (ft_isalpha((*input)[len]) && !check_meta_char((*input)[len]))
+	while (ft_isprint((*input)[len]) && !check_meta_char((*input)[len]) && (*input)[len] != ' ')
 		len++;
 	pars->value = malloc(sizeof(char) * (len + 1));
 	if (!pars->value)
@@ -76,7 +76,7 @@ void	handle_in_file(char **input, t_parsing_data *pars)
 {
 	init_new_token(pars);
 	pars->in_file = true;
-	input++;
+	++(*input);
 	skip_space(input);
 	get_value(input, pars, 1);
 }
@@ -85,9 +85,15 @@ void	handle_out_file(char **input, t_parsing_data *pars)
 {
 	init_new_token(pars);
 	pars->out_file = true;
-	input++;
+	++(*input);
 	skip_space(input);
 	get_value(input, pars, 1);
+	skip_space(input);
+	if (**input == '|')
+	{
+		pars->pipe = true;
+		++(*input);
+	}
 }
 
 void	handle_cmd(char **input, t_parsing_data *pars)

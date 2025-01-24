@@ -6,12 +6,12 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/22 18:19:38 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/24 16:39:00 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/21 17:34:04 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/wait.h>
 #include <unistd.h>
 
 int	count_pipe(t_data *data)
@@ -21,9 +21,10 @@ int	count_pipe(t_data *data)
 
 	i = 0;
 	token = data->token;
-	while (token->pipe)
+	while (token)
 	{
-		i++;
+		if (token->pipe)
+			i++;
 		token = token->next;
 	}
 	return (i);
@@ -62,41 +63,58 @@ void	pipex(t_data *data, t_parsing_data *token)
 	if (pid == 0)
 	{
 		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
+		dup2(pipefd[1], token->fd_out);
 		close(pipefd[1]);
 		execute(data, token);
 	}
 	else
 	{
-		token->pid = pid;
 		close(pipefd[1]);
-		dup2(pipefd[0], STDIN_FILENO);
+		dup2(pipefd[0], token->fd_in);
 		close(pipefd[0]);
 	}
 }
 
-void	process(t_data *data)
+int	open_file(t_parsing_data *token)
 {
-	pid_t			child_pid;
-	int				nb_pipe;
-	t_parsing_data	*token;
-	int				saved_stdin;
-	int				status;
+	int	fd;
 
-	saved_stdin = dup(STDIN_FILENO);
-	nb_pipe = count_pipe(data);
-	token = data->token;
-	while (nb_pipe >= 1)
+	if (token->append_file)
+		fd = open(token->value, O_WRONLY | O_APPEND | O_CREAT, 0666);
+	else
+		fd = open(token->value, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	if (fd == -1)
+		error("Cannot open file", NULL);
+	return (fd);
+}
+
+int	check_out_file(t_parsing_data *token)
+{
+	if (token->next)
 	{
-		pipex(data, token);
-		token = token->next;
-		nb_pipe--;
+		if (token->next->out_file)
+		{
+			token->fd_out = open_file(token->next);
+			return (1);
+		}
 	}
+	return (0);
+}
+
+void	last_exec(t_data *data, t_parsing_data *token, int saved_stdin)
+{
+	int	child_pid;
+	int	status;
+
 	child_pid = fork();
 	if (child_pid == -1)
 		error("fork_error", NULL);
 	if (child_pid == 0)
+	{
+		dup2(token->fd_out, STDOUT_FILENO);
 		execute(data, token);
+		close(token->fd_out);
+	}
 	else
 	{
 		dup2(saved_stdin, STDIN_FILENO);
@@ -108,4 +126,28 @@ void	process(t_data *data)
 			token = token->next;
 		}
 	}
+}
+
+void	process(t_data *data)
+{
+	int				nb_pipe;
+	t_parsing_data	*token;
+	int				saved_stdin;
+
+	saved_stdin = dup(STDIN_FILENO);
+	nb_pipe = count_pipe(data);
+	token = data->token;
+	while (nb_pipe >= 1)
+	{
+		if (check_out_file(token))
+			last_exec(data, token, saved_stdin);
+		else
+			pipex(data, token);
+		token = token->next;
+		if (!token->is_cmd)
+			token = token->next;
+		nb_pipe--;
+	}
+	check_out_file(token);
+	last_exec(data, token, saved_stdin);
 }
