@@ -3,7 +3,7 @@
 # --------------------------------------------
 
 NAME          = minishell
-INCLUDE       = include
+INCLUDE       = include/
 SRC_DIR       = src/
 BUILTINS_DIR  = src/builtins/
 OBJ_DIR       = obj/

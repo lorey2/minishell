@@ -6,18 +6,16 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/26 04:01:55 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/27 02:26:10 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/wait.h>
-#include <unistd.h>
 
 int	count_pipe(t_data *data)
 {
 	t_parsing_data	*token;
-	int	i;
+	int				i;
 
 	i = 0;
 	token = data->token;
@@ -28,6 +26,8 @@ int	count_pipe(t_data *data)
 	}
 	return (i);
 }
+
+//we do execve with no path if value has already one
 
 void	execute(t_data *data, t_parsing_data *token)
 {

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:31:48 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/24 17:10:11 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/27 12:46:50 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,10 @@ int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
 			t_var *v_data, t_env_data *e_data)
 {
 	int		i;
+	int		j;
+	int		bkp;
+	char	*var_name;
+	char	*var_value;
 
 	(void)v_data;
 	i = setup_flags(p_data, path_data);
@@ -120,9 +124,44 @@ int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
 		i--;
 		while (p_data->arg[++i])
 		{
+			if (ft_strchr(p_data->arg[i], '='))
+			{
+				if (!isalpha(p_data->arg[i][0]) || !(p_data->arg[i][0] == '_'))
+					write(1, "invalud var name \n", 18);
+				else
+				{
+					j = -1;
+					while (p_data->arg[i][j] && p_data->arg[i][++j] != '=')
+						;
+					var_name = malloc((j + 1) * sizeof(char));
+					j = -1;
+					while (p_data->arg[i][j] && p_data->arg[i][++j] != '=')
+						var_name[j] = p_data->arg[i][j];
+					var_name[j] = '\0';
+					bkp = j;
+					while (p_data->arg[i][bkp])
+						bkp++;
+					var_value = malloc((bkp + 1 - j) * sizeof(char));
+					j--;
+					bkp = -1;
+					while (p_data->arg[i][++j])
+						var_value[++bkp] = p_data->arg[i][j];
+					var_value[bkp] = '\0';
+					set_env(e_data, var_name, var_value);
+				}
+			}
+			else
+				if (!isalpha(p_data->arg[i][0]) || !(p_data->arg[i][0] == '_'))
+					write(1, "invalud var name \n", 18);
+//				else
+//				{
+//					if (v_data->var_value equal
+//					while()
+//				}
 		}
 	}
 	else
 		copy_and_sort_array(e_data->env);
 	return (0);
 }
+
