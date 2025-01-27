@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
+/*																			*/
+/*														:::	  ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/24 16:31:48 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/27 12:46:50 by lorey            ###   LAUSANNE.ch       */
-/*                                                                            */
+/*													+:+ +:+		 +:+	 */
+/*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/01/27 17:38:56 by lorey			 #+#	#+#			 */
+/*   Updated: 2025/01/27 18:02:54 by lorey            ###   LAUSANNE.ch       */
+/*																			*/
 /* ************************************************************************** */
 
 // Options:
@@ -31,93 +31,66 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 	return (i);
 }
 
-void	calculate_rows_and_cols(char **src, int *rows, int *cols)
+static void	put_var_without_equal_in_env(
+	t_var *v_data, char *var, t_env_data *e_data)
+{
+	while (v_data)
+	{
+		if (ft_isequal(v_data->var_name, var))
+		{
+			set_env(e_data, v_data->var_name, v_data->var_value);
+			break ;
+		}
+		v_data = v_data->next;
+	}
+}
+
+static int	extract_var_name_value(
+	char *input, char **var_name, char **var_value)
 {
 	int	i;
-	int	current_len;
 
 	i = 0;
-	*cols = 0;
-	while (src[i] != NULL)
-	{
-		(*rows)++;
-		current_len = strlen(src[i]);
-		if (current_len > *cols)
-			*cols = current_len;
+	while (input[i] && input[i] != '=')
 		i++;
+	if (input[i] != '=')
+		return (0);
+	*var_name = malloc(i + 1);
+	if (*var_name == NULL)
+		return (0);
+	ft_strlcpy(*var_name, input, i + 1);
+	*var_value = ft_strdup(input + i + 1);
+	if (*var_value == NULL)
+	{
+		free(*var_name);
+		return (0);
 	}
+	return (1);
 }
 
-void	bubble_sort(char **arr, int rows, int max_len)
+static void	put_var_with_equal_in_env(char *arg, t_env_data *e_data)
 {
-	int		i;
-	int		j;
-	int		swapped;
-	char	*temp;
+	char	*var_name;
+	char	*var_value;
 
-	i = -1;
-	while (++i < rows - 1)
+	if (!extract_var_name_value(arg, &var_name, &var_value))
 	{
-		j = -1;
-		swapped = 0;
-		while (++j < rows - 1 - i)
-		{
-			if (strncmp(arr[j], arr[j + 1], max_len) > 0)
-			{
-				temp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = temp;
-				swapped = 1;
-			}
-		}
-		if (!swapped)
-			break ;
+		write(1, "error extracting var name/value\n", 32);
+		return ;
 	}
-}
-
-//DEST IS NOT FREED FOR NOW
-
-void	copy_and_sort_array(char **src)
-{
-	int		rows;
-	int		cols;
-	int		i;
-	char	**dest;
-
-	rows = 0;
-	cols = 0;
-	calculate_rows_and_cols(src, &rows, &cols);
-	dest = malloc(rows * sizeof(char *));
-	if (dest == NULL)
-		perror("Unable to allocate memory for destination array");
-	i = -1;
-	while (++i < rows)
-	{
-		dest[i] = malloc((cols + 1) * sizeof(char));
-		if (dest[i] == NULL)
-			perror("Unable to allocate memory for destination row");
-		ft_strlcpy(dest[i], src[i], cols + 1);
-	}
-	bubble_sort(dest, rows, cols);
-	i = -1;
-	while (dest[++i])
-	{
-		write(1, "declare -x ", ft_strlen("declare -x "));
-		write(1, dest[i], ft_strlen(dest[i]));
-		write(1, "\n", 1);
-	}
+	if (isalpha(arg[0]) || (arg[0] == '_'))
+		set_env(e_data, var_name, var_value);
+	else
+		write(1, "invalid var name\n", 18);
+	free(var_name);
+	free(var_value);
 }
 
 int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
 			t_var *v_data, t_env_data *e_data)
 {
 	int		i;
-	int		j;
-	int		bkp;
-	char	*var_name;
-	char	*var_value;
 
-	(void)v_data;
 	i = setup_flags(p_data, path_data);
 	if (p_data->arg[i])
 	{
@@ -127,41 +100,17 @@ int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
 			if (ft_strchr(p_data->arg[i], '='))
 			{
 				if (!isalpha(p_data->arg[i][0]) || !(p_data->arg[i][0] == '_'))
-					write(1, "invalud var name \n", 18);
+					write(1, "invalid var name \n", 18);
 				else
-				{
-					j = -1;
-					while (p_data->arg[i][j] && p_data->arg[i][++j] != '=')
-						;
-					var_name = malloc((j + 1) * sizeof(char));
-					j = -1;
-					while (p_data->arg[i][j] && p_data->arg[i][++j] != '=')
-						var_name[j] = p_data->arg[i][j];
-					var_name[j] = '\0';
-					bkp = j;
-					while (p_data->arg[i][bkp])
-						bkp++;
-					var_value = malloc((bkp + 1 - j) * sizeof(char));
-					j--;
-					bkp = -1;
-					while (p_data->arg[i][++j])
-						var_value[++bkp] = p_data->arg[i][j];
-					var_value[bkp] = '\0';
-					set_env(e_data, var_name, var_value);
-				}
+					put_var_with_equal_in_env(p_data->arg[i], e_data);
 			}
+			else if (!isalpha(p_data->arg[i][0]) || !(p_data->arg[i][0] == '_'))
+				write(1, "invalid var name \n", 18);
 			else
-				if (!isalpha(p_data->arg[i][0]) || !(p_data->arg[i][0] == '_'))
-					write(1, "invalud var name \n", 18);
-//				else
-//				{
-//					if (v_data->var_value equal
-//					while()
-//				}
+				put_var_without_equal_in_env(v_data, p_data->arg[i], e_data);
 		}
 	}
 	else
 		copy_and_sort_array(e_data->env);
 	return (0);
 }
-

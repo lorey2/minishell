@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/24 16:51:57 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/27 18:01:38 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void		write_err(char *message);
 int			mini_exit(t_data *data, t_parsing_data *p_data);
 int			mini_export(t_parsing_data *p_data, t_path_data *path_data,
 				t_var *v_data, t_env_data *e_data);
+void		copy_and_sort_array(char **src);
 //update env
 void		set_env(t_env_data *e_data, char *var_name, char *value);
 char		*get_env(t_env_data *e_data, char *var_name);

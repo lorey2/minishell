@@ -31,7 +31,7 @@ SRC_FILES        = minishell handle_signal \
                    exec parsing \
                    update_env free error_free
 
-BUILTINS_LIST    = builtins export cd pwd echo env exit unset
+BUILTINS_LIST    = builtins export export_2 cd pwd echo env exit unset
 
 # Object files for main sources
 OBJ_MAIN         = $(addprefix $(OBJ_DIR)/main/, $(addsuffix .o, $(SRC_FILES)))
