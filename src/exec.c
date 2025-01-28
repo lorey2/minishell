@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/24 16:39:00 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/28 17:10:42 by maambuhl         ###   LAUSANNE.ch       */
 /*   Updated: 2025/01/21 17:34:04 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -63,7 +63,10 @@ void	pipex(t_data *data, t_parsing_data *token)
 	if (pid == 0)
 	{
 		close(pipefd[0]);
-		dup2(pipefd[1], token->fd_out);
+		if (token->fd_out != STDOUT_FILENO)
+			dup2(token->fd_out, STDOUT_FILENO);
+		else
+			dup2(pipefd[1], token->fd_out);
 		close(pipefd[1]);
 		execute(data, token);
 	}
@@ -139,10 +142,7 @@ void	process(t_data *data)
 	token = data->token;
 	while (nb_pipe >= 1)
 	{
-		if (check_out_file(token))
-			last_exec(data, token, saved_stdin);
-		else
-			pipex(data, token);
+		pipex(data, token);
 		token = token->next;
 		if (!token->is_cmd)
 			token = token->next;
