@@ -6,13 +6,13 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/22 03:31:17 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/24 13:21:48 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	write_env_error(char *var_name, char *message)
+static void	write_env_error(char *var_name, char *message)
 {
 	write_err(message);
 	write(1, "[", 1);
@@ -37,7 +37,7 @@ bool	is_valid_var_name(char	*arg)
 	return (true);
 }
 
-int	find_index(t_env_data *e_data, char *var_name, bool is_set)
+static int	find_index(t_env_data *e_data, char *var_name, bool is_set)
 {
 	int		i;
 	size_t	var_name_len;
@@ -71,30 +71,6 @@ char	*get_env(t_env_data *e_data, char *var_name)
 		return (ft_strdup(value_start + 1));
 	return (NULL);
 }
-
-/*
-void	set_env2(t_env_data *e_data, char *var_name, char *value)
-{
-	int	i;
-	int	j;
-	int	k;
-
-	i = find_index(e_data, var_name);
-	if (i < 0)
-		return ;
-	free(e_data->env[i]);
-	e_data->env[i] = malloc(sizeof(char)
-			* (ft_strlen(var_name) + ft_strlen(value) + 2));
-	j = -1;
-	while (var_name[++j])
-		e_data->env[i][j] = var_name[j];
-	var_name[j] = '=';
-	k = -1;
-	while (value[++k])
-		e_data->env[i][++j] = value[k];
-	e_data->env[i][j] = '\0';
-}
-*/
 
 void	set_env(t_env_data *e_data, char *var_name, char *value)
 {

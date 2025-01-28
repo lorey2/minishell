@@ -1,0 +1,12 @@
+-Wall
+-Wextra
+-Werror
+-I
+include/
+libft/
+-Llibft
+-lft
+-lreadline
+-lhistory
+-I
+libft/include
