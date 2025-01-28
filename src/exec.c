@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/28 17:20:42 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/28 19:04:33 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void	process(t_data *data)
 	token = data->token;
 	while (nb_pipe >= 1)
 	{
+		check_out_file(token);
 		pipex(data, token);
 		token = token->next;
 		if (!token->is_cmd)
