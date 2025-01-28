@@ -2,7 +2,7 @@
 
 ## GENERAL TODO LIST
 
-----MAKE A FKING GIT IGNORE <br /><br />
+----execute normal binary "./minishell"
 ----full path binary "/bin/ls" <br /><br />
 ----variable "salut=54" "salut=54 ls" gives only the var to ls <br /><br />
 ----Simple/Double quote <br /><br />
