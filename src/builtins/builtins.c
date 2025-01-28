@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/22 19:00:57 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/24 16:52:10 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	init_flags(t_path_data *path_data)
 	path_data->is_at = false;
 	path_data->is_e = false;
 	path_data->is_n = false;
+	path_data->is_v = false;
+	path_data->is_f = false;
 }
 
 void	write_err(char *message)
@@ -80,9 +82,9 @@ bool	check_builtin(t_data *data, t_parsing_data *p_data)
 	else if (ft_isequal(p_data->value, "pwd"))
 		return (pwd(p_data, data->path), true);
 	else if (ft_isequal(p_data->value, "export"))
-		return (write(1, "not yet implemented", 19), true);
+		return (mini_export(p_data, data->path, data->var, data->env), true);
 	else if (ft_isequal(p_data->value, "unset"))
-		return (unset(data, p_data), true);
+		return (unset(data->env, data->path, p_data), true);
 	else if (ft_isequal(p_data->value, "env"))
 		return (env(data->env), true);
 	else if (ft_isequal(p_data->value, "exit"))
