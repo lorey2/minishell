@@ -6,14 +6,14 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/27 18:01:38 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/28 16:17:30 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
+# include "../libft/include/libft.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
