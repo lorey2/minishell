@@ -8,4 +8,5 @@ libft/
 -lft
 -lreadline
 -lhistory
-
+-I
+libft/include
