@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/28 16:17:30 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/28 17:21:24 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_parsing_data
 	int						pos;
 	bool					in_file;
 	bool					out_file;
+	bool					append_file;
 	bool					is_cmd;
 	bool					is_after_pipe;
 	bool					pipe;
