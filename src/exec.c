@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/28 17:20:42 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/29 15:12:15 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,16 @@ int	count_pipe(t_data *data)
 }
 
 //we do execve with no path if value has already one
+//but we shouldnt be able to execute file in pwd except if ./ before NOT DONE
 
 void	execute(t_data *data, t_parsing_data *token)
 {
 	int	i;
 
 	i = -1;
-	if (!(execve(token->value, token->arg, data->env->env) == -1))
-		return ;
+	if (token->value[0] == '.' || token->value[0] == '/')
+		if (!(execve(token->value, token->arg, data->env->env) == -1))
+			return ;
 	while (data->path->path_split[++i])
 	{
 		data->path->path_with_com
