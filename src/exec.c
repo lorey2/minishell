@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/28 19:04:33 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/29 15:56:49 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	pipex(t_data *data, t_parsing_data *token)
 	}
 	else
 	{
+		token->pid = pid;
 		close(pipefd[1]);
 		dup2(pipefd[0], token->fd_in);
 		close(pipefd[0]);
@@ -105,10 +106,22 @@ int	check_out_file(t_parsing_data *token)
 	return (0);
 }
 
+void	wait_for_all(t_data *data)
+{
+	int				status;
+	t_parsing_data	*token;
+
+	token = data->token;
+	while (token)
+	{
+		waitpid(token->pid, &status, 0);
+		token = token->next;
+	}
+}
+
 void	last_exec(t_data *data, t_parsing_data *token, int saved_stdin)
 {
 	int	child_pid;
-	int	status;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -123,12 +136,6 @@ void	last_exec(t_data *data, t_parsing_data *token, int saved_stdin)
 	{
 		dup2(saved_stdin, STDIN_FILENO);
 		token->pid = child_pid;
-		token = data->token;
-		while (token)
-		{
-			waitpid(token->pid, &status, 0);
-			token = token->next;
-		}
 	}
 }
 
@@ -152,4 +159,5 @@ void	process(t_data *data)
 	}
 	check_out_file(token);
 	last_exec(data, token, saved_stdin);
+	// wait_for_all(data);
 }

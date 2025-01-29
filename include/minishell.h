@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/28 17:21:24 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/29 16:51:38 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_parsing_data
 	int						fd_in;
 	int						fd_out;
 	char					*value;
+	char					*delimiter;
 	char					**arg;
 	int						pos;
 	bool					in_file;
@@ -99,6 +100,7 @@ void		process(t_data *data);
 void		setup_signal(void);
 //execution
 void		execute(t_data *data, t_parsing_data *token);
+void		wait_for_all(t_data *data);
 //buitins
 void		fill(char *data, t_path_data *path_data);
 bool		does_contain_only(char *data, char *list_args);

@@ -6,10 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/24 16:23:17 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/29 17:40:25 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
 #include <stdio.h>
 
@@ -72,13 +73,29 @@ void	get_arg(char **input, t_parsing_data *pars)
 	*input += len;
 }
 
+void	here_doc(char **input)
+{
+	
+}
+
 void	handle_in_file(char **input, t_parsing_data *pars)
 {
 	init_new_token(pars);
 	pars->in_file = true;
 	++(*input);
+	if (**input == '<')
+	{
+		++(*input);
+		here_doc(input);
+	}
 	skip_space(input);
 	get_value(input, pars, 1);
+	skip_space(input);
+	if (**input == '|')
+	{
+		pars->pipe = true;
+		++(*input);
+	}
 }
 
 void	handle_out_file(char **input, t_parsing_data *pars)
@@ -86,6 +103,11 @@ void	handle_out_file(char **input, t_parsing_data *pars)
 	init_new_token(pars);
 	pars->out_file = true;
 	++(*input);
+	if (**input == '>')
+	{
+		pars->append_file = true;
+		++(*input);
+	}
 	skip_space(input);
 	get_value(input, pars, 1);
 	skip_space(input);
@@ -134,6 +156,8 @@ void	parsing(char *input, t_data *data)
 			handle_in_file(&input, pars);
 		else if (*input == '>')
 			handle_out_file(&input, pars);
+		else if (*input == '<')
+			handle_in_file(&input, pars);
 		else
 			handle_cmd(&input, pars);
 		pars->pos = pos;

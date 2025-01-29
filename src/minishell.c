@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/24 14:23:05 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/29 15:41:52 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@ void	big_loop(t_data *data)
 			if (check_builtin(data, data->token) == false)
 				process(data);
 		}
-		wait(NULL);
+		wait_for_all(data);
+		wait_for_all(data);
 		if (data->exit_nbr != -1)
 			break ;
 		free(input);
 		free(shell_prompt);
 	}
+	// wait_for_all(data);
 	free(input);
 	free(shell_prompt);
 }
