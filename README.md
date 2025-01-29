@@ -2,12 +2,8 @@
 
 ## GENERAL TODO LIST
 
-----execute normal binary "./minishell"
-----full path binary "/bin/ls" <br /><br />
-----variable "salut=54" "salut=54 ls" gives only the var to ls <br /><br />
+----variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
 ----Simple/Double quote <br /><br />
-----pipex <br /><br />
-----give the right token from parsing <br /><br />
 ----free everything <br /><br />
 ----environement variable dollar{..} dollar? 
 
