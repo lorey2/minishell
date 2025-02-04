@@ -6,71 +6,22 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/24 16:52:10 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/04 23:21:59 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	does_contain_only(char *data, char *list_args)
-{
-	int		i;
-	int		j;
-	bool	check;
+// Cf message 4 fevrier sur whatsapp a marc c'est pas juste.
+// Ce sera fait durant l'expand
 
-	i = 0;
-	while (data[++i])
+bool	handle_dollar(t_data *data, t_parsing_data *p_data)
+{
+	if (p_data->value[1] == '?')
 	{
-		j = -1;
-		check = false;
-		while (list_args[++j])
-		{
-			if (data[i] == list_args[j])
-				check = true;
-		}
-		if (check == false)
-			return (false);
+		printf("%d%s", data->return_nbr, (p_data->value += 2));
 	}
-	return (true);
-}
-
-void	fill(char *data, t_path_data *path_data)
-{
-	int	i;
-
-	i = 0;
-	while (data[++i])
-	{
-		if (data[i] == 'L')
-			path_data->is_big_l = true;
-		else if (data[i] == 'P')
-			path_data->is_big_p = true;
-		else if (data[i] == 'E')
-			path_data->is_big_e = true;
-		else if (data[i] == 'e')
-			path_data->is_e = true;
-		else if (data[i] == '@')
-			path_data->is_at = true;
-		else if (data[i] == 'n')
-			path_data->is_n = true;
-	}
-}
-
-void	init_flags(t_path_data *path_data)
-{
-	path_data->is_big_l = false;
-	path_data->is_big_p = false;
-	path_data->is_big_e = false;
-	path_data->is_at = false;
-	path_data->is_e = false;
-	path_data->is_n = false;
-	path_data->is_v = false;
-	path_data->is_f = false;
-}
-
-void	write_err(char *message)
-{
-	write(1, message, ft_strlen(message));
+	return (false);
 }
 
 bool	check_builtin(t_data *data, t_parsing_data *p_data)
@@ -89,5 +40,7 @@ bool	check_builtin(t_data *data, t_parsing_data *p_data)
 		return (env(data->env), true);
 	else if (ft_isequal(p_data->value, "exit"))
 		return (mini_exit(data, p_data), true);
+	else if (p_data->value[0] == '$')
+		return (handle_dollar(data, p_data));
 	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/28 17:21:24 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/04 22:54:04 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_data
 	t_env_data		*env;
 	t_var			*var;
 	int				exit_nbr;
+	int				return_nbr;
 }					t_data;
 
 //setup

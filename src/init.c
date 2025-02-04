@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/24 16:36:34 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/04 22:54:27 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	init_struct(t_data *data)
 {
 	g_signal = 0;
 	data->exit_nbr = -1;
+	data->return_nbr = 0;
 	data->path = malloc(sizeof(t_path_data));
 	if (!data->path)
 		error("malloc error", NULL);
