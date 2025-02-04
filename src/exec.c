@@ -6,11 +6,13 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/29 15:56:49 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/03 15:18:30 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <fcntl.h>
+#include <unistd.h>
 
 int	count_pipe(t_data *data)
 {
@@ -75,9 +77,19 @@ void	pipex(t_data *data, t_parsing_data *token)
 	{
 		token->pid = pid;
 		close(pipefd[1]);
-		dup2(pipefd[0], token->fd_in);
+		dup2(pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
 	}
+}
+
+int	open_in_file(t_parsing_data *token)
+{
+	int	fd;
+
+	fd = open(token->value, O_RDONLY, 0666);
+	if (!fd)
+		error("Cannot open file", NULL);
+	return (fd);
 }
 
 int	open_file(t_parsing_data *token)
@@ -100,8 +112,22 @@ int	check_out_file(t_parsing_data *token)
 		if (token->next->out_file)
 		{
 			token->fd_out = open_file(token->next);
+			// dup2(token->fd_in, STDIN_FILENO);
+			// close(token->fd_in);
 			return (1);
 		}
+	}
+	return (0);
+}
+
+int	check_in_file(t_parsing_data *token)
+{
+	if (token->in_file)
+	{
+		token->next->fd_in = open_in_file(token);
+		dup2(token->next->fd_in, STDIN_FILENO);
+		close(token->next->fd_in);
+		return (1);
 	}
 	return (0);
 }
@@ -151,6 +177,8 @@ void	process(t_data *data)
 	while (nb_pipe >= 1)
 	{
 		check_out_file(token);
+		if (check_in_file(token))
+			token = token->next;
 		pipex(data, token);
 		token = token->next;
 		if (!token->is_cmd)
@@ -158,6 +186,9 @@ void	process(t_data *data)
 		nb_pipe--;
 	}
 	check_out_file(token);
+	check_in_file(token);
+	while (!token->is_cmd)
+		token = token->next;
 	last_exec(data, token, saved_stdin);
 	// wait_for_all(data);
 }

@@ -6,11 +6,10 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/29 17:40:25 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/03 15:50:00 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "minishell.h"
 #include <stdio.h>
 
@@ -73,23 +72,45 @@ void	get_arg(char **input, t_parsing_data *pars)
 	*input += len;
 }
 
-void	here_doc(char **input)
+char	*here_doc(char **input)
 {
-	
+	int		len;
+	char	*del;
+
+	skip_space(input);
+	len = 0;
+	// check here doc special delimiter cases: '', "", | etc
+	while ((*input)[len] != ' ' && (*input)[len] != ';' && (*input)[len])
+		len++;
+	del = malloc(sizeof(char) * (len + 1));
+	if (!del)
+		error("malloc error", NULL);
+	len = 0;
+	while (**input != ' ' && **input != ';' && **input)
+	{
+		del[len] = **input;
+		++(*input);
+		len++;
+	}
+	del[len] = 0;
+	return (del);
 }
 
 void	handle_in_file(char **input, t_parsing_data *pars)
 {
 	init_new_token(pars);
-	pars->in_file = true;
 	++(*input);
 	if (**input == '<')
 	{
 		++(*input);
-		here_doc(input);
+		pars->delimiter = here_doc(input);
 	}
-	skip_space(input);
-	get_value(input, pars, 1);
+	else
+	{
+		pars->in_file = true;
+		skip_space(input);
+		get_value(input, pars, 1);
+	}
 	skip_space(input);
 	if (**input == '|')
 	{
