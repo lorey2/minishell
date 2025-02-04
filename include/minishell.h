@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/29 16:51:38 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/04 14:45:31 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include <stdbool.h>
 # include <sys/types.h>
 # include <unistd.h>
+
+#define MAX_HERE_LINE_SIZE 1000
 
 extern int		g_signal;
 

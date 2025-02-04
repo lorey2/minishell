@@ -6,12 +6,11 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/03 15:18:30 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/04 15:36:43 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <fcntl.h>
 #include <unistd.h>
 
 int	count_pipe(t_data *data)
@@ -120,6 +119,88 @@ int	check_out_file(t_parsing_data *token)
 	return (0);
 }
 
+char	*gnl(void)
+{
+	char	*buff;
+	char	c;
+	int		r;
+	int		i;
+
+	buff = malloc(sizeof(char) * MAX_HERE_LINE_SIZE);
+	if (!buff)
+		error("gnl malloc error", NULL);
+	i = 0;
+	r = 1;
+	while (r)
+	{
+		r = read(STDIN_FILENO, &c, 1);
+		if (r == -1)
+			error("cannot read here_doc", NULL);
+		buff[i] = c;
+		buff[i + 1] = 0;
+		if (c == '\n')
+			return (buff);
+		i++;
+	}
+	return (NULL);
+}
+
+void	flush_fdin()
+{
+	char	buff[1000];
+
+	ft_putstr_fd("A", STDIN_FILENO);
+	while (read(STDIN_FILENO, buff, sizeof(buff)))
+		;
+}
+
+void	here_doc_write(t_parsing_data *token, int *pipefd)
+{
+	char	*line;
+
+	close(pipefd[0]);
+	while (1)
+	{
+		line = gnl();
+		if (!ft_strncmp(line, token->delimiter,
+				ft_strlen(token->delimiter)))
+		{
+			free(token->delimiter);
+			free(line);
+			exit(0);
+		}
+		ft_putstr_fd(line, pipefd[1]);
+		free(line);
+	}
+}
+
+void	here_doc(t_parsing_data *token)
+{
+	int		pipefd[2];
+	pid_t	pid;
+
+	if (pipe(pipefd) == -1)
+		exit(0);
+	pid = fork();
+	if (pid == -1)
+		exit(0);
+	if (!pid)
+		here_doc_write(token, pipefd);
+	else
+	{
+		close(pipefd[1]);
+		dup2(pipefd[0], token->fd_in);
+		close(pipefd[0]);
+		wait(NULL);
+	}
+}
+
+// void	check_here(t_parsing_data *token)
+// {
+// 	if (token->delimiter)
+// 		here_doc(token);
+// }
+
 int	check_in_file(t_parsing_data *token)
 {
 	if (token->in_file)
@@ -127,6 +208,12 @@ int	check_in_file(t_parsing_data *token)
 		token->next->fd_in = open_in_file(token);
 		dup2(token->next->fd_in, STDIN_FILENO);
 		close(token->next->fd_in);
+		return (1);
+	}
+	else if (token->delimiter)
+	{
+		// flush_fdin();
+		here_doc(token);
 		return (1);
 	}
 	return (0);
@@ -176,15 +263,17 @@ void	process(t_data *data)
 	token = data->token;
 	while (nb_pipe >= 1)
 	{
+		// check_here(token);
 		check_out_file(token);
 		if (check_in_file(token))
 			token = token->next;
 		pipex(data, token);
 		token = token->next;
-		if (!token->is_cmd)
+		if (!token->is_cmd && !token->delimiter)
 			token = token->next;
 		nb_pipe--;
 	}
+	// check_here(token);
 	check_out_file(token);
 	check_in_file(token);
 	while (!token->is_cmd)

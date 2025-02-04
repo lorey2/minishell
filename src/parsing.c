@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/03 15:50:00 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/04 14:48:55 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	get_arg(char **input, t_parsing_data *pars)
 	*input += len;
 }
 
-char	*here_doc(char **input)
+char	*check_here_doc_del(char **input)
 {
 	int		len;
 	char	*del;
@@ -103,7 +103,7 @@ void	handle_in_file(char **input, t_parsing_data *pars)
 	if (**input == '<')
 	{
 		++(*input);
-		pars->delimiter = here_doc(input);
+		pars->delimiter = check_here_doc_del(input);
 	}
 	else
 	{
