@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/04 22:54:04 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/05 14:06:41 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@
 # include <stdbool.h>
 # include <sys/types.h>
 # include <unistd.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1000000
+# endif
+
+
 
 extern int		g_signal;
 
@@ -87,6 +93,8 @@ typedef struct s_data
 	int				return_nbr;
 }					t_data;
 
+//animation
+void		explosion_animation(void);
 //setup
 void		setup_env(t_data *data, char **env);
 void		setup_path(t_path_data *path_data);
@@ -125,5 +133,7 @@ bool		is_valid_var_name(char	*arg);
 void		error(char *message, t_data *data);
 void		free_double_point(char **point);
 void		free_everything(t_data *data);
+//gnl
+char		*get_next_line(int fd);
 
 #endif
