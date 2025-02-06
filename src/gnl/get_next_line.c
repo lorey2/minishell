@@ -5,122 +5,73 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/29 16:41:30 by lorey             #+#    #+#             */
-/*   Updated: 2024/10/30 13:47:03 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2025/02/06 02:56:13 by lorey             #+#    #+#             */
+/*   Updated: 2025/02/06 03:11:42 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "minishell.h"
 
-static char	*safe_free(char **ptr)
+void	*safe_malloc(size_t size)
 {
-	if (ptr && *ptr)
+	void	*ptr;
+
+	ptr = malloc(size);
+	if (ptr == NULL)
 	{
-		free(*ptr);
-		*ptr = NULL;
+		printf("malloc error");
+		exit(EXIT_FAILURE);
 	}
-	return (NULL);
+	return (ptr);
 }
 
-static char	*handle_rest(char **rest)
+char	*resize_buff(char *buff, int *size)
 {
-	char	*line;
-	int		i_bksp;
-	char	*temp;
+	char	*new_buff;
+	int		new_size;
+	int		i;
 
-	line = NULL;
-	i_bksp = ft_strchr(*rest, '\n');
-	if (i_bksp != -1)
-	{
-		line = ft_substr(*rest, 0, i_bksp + 1);
-		if (!line)
-			return (safe_free(rest));
-		temp = ft_strdup(*rest);
-		if (!temp)
-			return (safe_free(&line), safe_free(rest), NULL);
-		free(*rest);
-		*rest = ft_substr(temp, i_bksp + 1, ft_strlen(temp) - i_bksp - 1);
-		free(temp);
-	}
-	else if (*rest)
-	{
-		line = ft_strdup(*rest);
-		free(*rest);
-		*rest = NULL;
-	}
-	return (line);
-}
-
-static int	tests_and_setup(char **temp, char **buffer, char **rest, int fd)
-{
-	*temp = NULL;
-	*buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!*buffer || fd < 0 || BUFFER_SIZE <= 0)
-	{
-		free(*buffer);
-		return (1);
-	}
-	if (!(*rest))
-	{
-		*rest = ft_strdup("");
-		if (!(*rest))
-		{
-			free(*buffer);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-char	*get_next_line(int fd)
-{
-	char		*buffer;
-	static char	*rest[1024];
-	char		*temp;
-	int			nbread;
-
-	if (tests_and_setup(&temp, &buffer, &rest[fd], fd))
+	new_size = *size * 2;
+	new_buff = malloc(new_size);
+	if (!new_buff)
 		return (NULL);
-	while (1)
-	{
-		if (rest[fd] && ft_strchr(rest[fd], '\n') != -1)
-			break ;
-		nbread = read(fd, buffer, BUFFER_SIZE);
-		if (nbread < 0 || (nbread == 0 && *rest[fd] == '\0'))
-			return (safe_free(&rest[fd]), safe_free(&buffer), NULL);
-		if (nbread == 0)
-			break ;
-		buffer[nbread] = '\0';
-		temp = ft_strjoin(rest[fd], buffer);
-		if (!temp)
-			return (safe_free(&buffer));
-		free(rest[fd]);
-		rest[fd] = temp;
-	}
-	free(buffer);
-	return (handle_rest(&rest[fd]));
+	i = -1;
+	while (++i < *size)
+		new_buff[i] = buff[i];
+	free(buff);
+	*size = new_size;
+	return (new_buff);
 }
 
-/*
-int	main(void)
+char	*gnl(int fd)
 {
-	int		fd;
-	char	*line;
+	char	*buff;
+	char	c;
+	int		r;
+	int		size;
 	int		i;
 
 	i = 0;
-	fd = open("test.txt", O_RDONLY);
-	while (i < 6)
+	size = 10;
+	buff = malloc(size);
+	if (!buff)
+		return (NULL);
+	r = read(fd, &c, 1);
+	while (r > 0)
 	{
-		line = get_next_line(fd);
-		printf("%s", line);
-		free(line);
-		i++;
+		if (i + 1 >= size)
+		{
+			buff = resize_buff(buff, &size);
+			if (!buff)
+				return (NULL);
+		}
+		buff[i++] = c;
+		if (c == '\n')
+			break ;
+		r = read(fd, &c, 1);
 	}
-	//line = get_next_line(fd);
-	//printf("%s\n", line);
-	//free(line);
-	close(fd);
-	return (0);
+	if (r <= 0 && i == 0)
+		return (NULL);
+	buff[i] = '\0';
+	return (buff);
 }
-*/

@@ -35,9 +35,9 @@ SRC_FILES        = minishell handle_signal \
 
 BUILTINS_LIST    = builtins builtins_utils export export_2 cd pwd echo env exit unset
 
-GNL_FILES        = get_next_line get_next_line_utils
+GNL_FILES        = get_next_line
 
-ANIM_FILES       = animation
+ANIM_FILES       = animation explo_anim
 
 # Object files for main sources
 OBJ_MAIN         = $(addprefix $(OBJ_DIR)/main/, $(addsuffix .o, $(SRC_FILES)))

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/05 14:06:41 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/06 02:16:58 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,17 @@
 # include <sys/types.h>
 # include <unistd.h>
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1000000
-# endif
-
-
+# define RESET        "\033[0m"
+# define BLACK        "\033[0;30m"
+# define RED          "\033[0;31m"
+# define GREEN        "\033[0;32m"
+# define YELLOW       "\033[0;33m"
+# define BLUE         "\033[0;34m"
+# define MAGENTA      "\033[0;35m"
+# define CYAN         "\033[0;36m"
+# define WHITE        "\033[0;37m"
+# define BRIGHT_RED   "\033[0;91m"
+# define BRIGHT_GREEN "\033[0;92m"
 
 extern int		g_signal;
 
@@ -93,7 +99,9 @@ typedef struct s_data
 	int				return_nbr;
 }					t_data;
 
+char		*gnl(int fd);
 //animation
+void		text_animation(void);
 void		explosion_animation(void);
 //setup
 void		setup_env(t_data *data, char **env);

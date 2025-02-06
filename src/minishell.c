@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/05 21:28:30 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/06 02:53:11 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int argc __attribute__((unused)),
 	t_data	data;
 
 	explosion_animation();
-	printf("\033[H\033[J\033[?25h");
+	text_animation();
 	init_struct(&data);
 	setup_env(&data, env);
 	setup_path(data.path);
