@@ -35,7 +35,7 @@ SRC_FILES        = minishell handle_signal \
 
 BUILTINS_LIST    = builtins builtins_utils export export_2 cd pwd echo env exit unset
 
-GNL_FILES        = get_next_line
+GNL_FILES        = get_next_line_bonus get_next_line_utils_bonus
 
 ANIM_FILES       = animation explo_anim
 

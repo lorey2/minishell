@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 14:04:45 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/06 02:47:44 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/06 19:05:46 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	text_animation(void)
 	i = -1;
 	while (++i < 10)
 	{
-		logo[i] = gnl(fd);
+		logo[i] = get_next_line(fd);
 		if (logo[i] && logo[i][strlen(logo[i]) - 1] == '\n')
 			logo[i][strlen(logo[i]) - 1] = '\0';
 	}

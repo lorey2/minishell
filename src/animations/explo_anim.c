@@ -6,14 +6,12 @@
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:34:56 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/06 02:49:57 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/06 19:04:40 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#define LINE 175
-
 #include "minishell.h"
+#define LINE 175
 
 static void	print_algo(char **explo)
 {
@@ -58,7 +56,7 @@ void	explosion_animation(void)
 	i = -1;
 	while (++i < LINE)
 	{
-		explo[i] = gnl(fd);
+		explo[i] = get_next_line(fd);
 		if (explo[i] && explo[i][strlen(explo[i]) - 1] == '\n')
 			explo[i][strlen(explo[i]) - 1] = '\0';
 	}

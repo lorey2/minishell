@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/06 02:53:11 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/06 19:07:11 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	big_loop(t_data *data)
 	while (1)
 	{
 		shell_prompt = setup_prompt(data);
+		printf("\r\033[K");
 		input = readline(shell_prompt);
 		if (!input || data->exit_nbr != -1)
 			break ;
