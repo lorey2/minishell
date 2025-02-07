@@ -27,6 +27,7 @@ void	big_loop(t_data *data)
 	while (1)
 	{
 		shell_prompt = setup_prompt(data);
+		printf("\r\033[K");
 		input = readline(shell_prompt);
 		if (!input || data->exit_nbr != -1)
 			break ;
@@ -54,6 +55,8 @@ int	main(int argc __attribute__((unused)),
 {
 	t_data	data;
 
+	explosion_animation();
+	text_animation();
 	init_struct(&data);
 	setup_env(&data, env);
 	setup_path(data.path);

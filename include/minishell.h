@@ -29,6 +29,18 @@
 
 #define MAX_HERE_LINE_SIZE 1000
 
+# define RESET        "\033[0m"
+# define BLACK        "\033[0;30m"
+# define RED          "\033[0;31m"
+# define GREEN        "\033[0;32m"
+# define YELLOW       "\033[0;33m"
+# define BLUE         "\033[0;34m"
+# define MAGENTA      "\033[0;35m"
+# define CYAN         "\033[0;36m"
+# define WHITE        "\033[0;37m"
+# define BRIGHT_RED   "\033[0;91m"
+# define BRIGHT_GREEN "\033[0;92m"
+
 extern int		g_signal;
 
 typedef struct s_path_data
@@ -91,8 +103,13 @@ typedef struct s_data
 	t_env_data		*env;
 	t_var			*var;
 	int				exit_nbr;
+	int				return_nbr;
 }					t_data;
 
+char		*gnl(int fd);
+//animation
+void		text_animation(void);
+void		explosion_animation(void);
 //setup
 void		setup_env(t_data *data, char **env);
 void		setup_path(t_path_data *path_data);
@@ -132,5 +149,7 @@ bool		is_valid_var_name(char	*arg);
 void		error(char *message, t_data *data);
 void		free_double_point(char **point);
 void		free_everything(t_data *data);
+//gnl
+char		*get_next_line(int fd);
 
 #endif

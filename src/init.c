@@ -37,6 +37,7 @@ void	init_struct(t_data *data)
 {
 	g_signal = 0;
 	data->exit_nbr = -1;
+	data->return_nbr = 0;
 	data->path = malloc(sizeof(t_path_data));
 	if (!data->path)
 		error("malloc error", NULL);

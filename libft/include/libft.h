@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:45:21 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/01/17 17:18:20 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/06 19:01:09 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/uio.h>
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
 
 typedef struct s_list
 {

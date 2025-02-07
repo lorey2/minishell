@@ -30,14 +30,16 @@ int	count_pipe(t_data *data)
 }
 
 //we do execve with no path if value has already one
+//but we shouldnt be able to execute file in pwd except if ./ before NOT DONE
 
 void	execute(t_data *data, t_parsing_data *token)
 {
 	int	i;
 
 	i = -1;
-	if (!(execve(token->value, token->arg, data->env->env) == -1))
-		return ;
+	if (token->value[0] == '.' || token->value[0] == '/')
+		if (!(execve(token->value, token->arg, data->env->env) == -1))
+			return ;
 	while (data->path->path_split[++i])
 	{
 		data->path->path_with_com
