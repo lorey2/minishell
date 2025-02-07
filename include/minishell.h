@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/07 13:33:56 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 16:43:49 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ typedef struct s_data
 	int				return_nbr;
 }					t_data;
 
-char		*gnl(int fd);
 //animation
 void		text_animation(void);
 void		explosion_animation(void);
