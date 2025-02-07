@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/04 22:54:27 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 13:53:53 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@ int	g_signal;
 
 void	init_new_token(t_parsing_data *token)
 {
+	token->delimiter = NULL;
 	token->fd_out = STDOUT_FILENO;
 	token->fd_in = STDIN_FILENO;
 	token->value = NULL;
 	token->pos = -1;
+	token->infile = NULL;
+	token->outfile = NULL;
+	token->here = NULL;
 	token->in_file = false;
 	token->out_file = false;
 	token->is_cmd = false;

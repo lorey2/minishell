@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/06 02:16:58 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 13:33:56 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include <stdbool.h>
 # include <sys/types.h>
 # include <unistd.h>
+
+#define MAX_HERE_LINE_SIZE 1000
 
 # define RESET        "\033[0m"
 # define BLACK        "\033[0;30m"
@@ -64,8 +66,13 @@ typedef struct s_parsing_data
 	int						fd_in;
 	int						fd_out;
 	char					*value;
+	char					*delimiter;
 	char					**arg;
+	char					*here;
+	char					*infile;
+	char					*outfile;
 	int						pos;
+	int						saved_stdin;
 	bool					in_file;
 	bool					out_file;
 	bool					append_file;
@@ -116,6 +123,7 @@ void		process(t_data *data);
 void		setup_signal(void);
 //execution
 void		execute(t_data *data, t_parsing_data *token);
+void		wait_for_all(t_data *data);
 //buitins
 void		fill(char *data, t_path_data *path_data);
 bool		does_contain_only(char *data, char *list_args);
