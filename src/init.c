@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/29 17:38:11 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 13:53:53 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ void	init_new_token(t_parsing_data *token)
 	token->fd_in = STDIN_FILENO;
 	token->value = NULL;
 	token->pos = -1;
+	token->infile = NULL;
+	token->outfile = NULL;
+	token->here = NULL;
 	token->in_file = false;
 	token->out_file = false;
 	token->is_cmd = false;

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/04 14:45:31 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 13:33:56 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,11 @@ typedef struct s_parsing_data
 	char					*value;
 	char					*delimiter;
 	char					**arg;
+	char					*here;
+	char					*infile;
+	char					*outfile;
 	int						pos;
+	int						saved_stdin;
 	bool					in_file;
 	bool					out_file;
 	bool					append_file;

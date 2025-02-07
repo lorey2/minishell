@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/04 15:36:43 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 15:22:50 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ void	pipex(t_data *data, t_parsing_data *token)
 	}
 }
 
-int	open_in_file(t_parsing_data *token)
+int	open_in_file(char *file_name)
 {
 	int	fd;
 
-	fd = open(token->value, O_RDONLY, 0666);
+	fd = open(file_name, O_RDONLY, 0666);
 	if (!fd)
 		error("Cannot open file", NULL);
 	return (fd);
@@ -96,9 +96,9 @@ int	open_file(t_parsing_data *token)
 	int	fd;
 
 	if (token->append_file)
-		fd = open(token->value, O_WRONLY | O_APPEND | O_CREAT, 0666);
+		fd = open(token->outfile, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	else
-		fd = open(token->value, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+		fd = open(token->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (fd == -1)
 		error("Cannot open file", NULL);
 	return (fd);
@@ -106,15 +106,12 @@ int	open_file(t_parsing_data *token)
 
 int	check_out_file(t_parsing_data *token)
 {
-	if (token->next)
+	if (token->outfile)
 	{
-		if (token->next->out_file)
-		{
-			token->fd_out = open_file(token->next);
-			// dup2(token->fd_in, STDIN_FILENO);
-			// close(token->fd_in);
-			return (1);
-		}
+		token->fd_out = open_file(token);
+		// dup2(token->fd_in, STDIN_FILENO);
+		// close(token->fd_in);
+		return (1);
 	}
 	return (0);
 }
@@ -145,13 +142,26 @@ char	*gnl(void)
 	return (NULL);
 }
 
-void	flush_fdin()
+void	flush_fdin(t_parsing_data *token)
 {
 	char	buff[1000];
-
-	ft_putstr_fd("A", STDIN_FILENO);
-	while (read(STDIN_FILENO, buff, sizeof(buff)))
-		;
+	int		r;
+	(void)token;
+	// (void)token;
+	// if (in_pipe)
+	// 	gnl();
+	// close(token->fd_in);
+	// dup2(token->fd_in, 0);
+	// close(0);
+	// char	buff[1000];
+	//
+	// ft_putstr_fd("A", STDIN_FILENO);
+	r = 1;
+	while (r)
+	{
+		r = read(STDIN_FILENO, buff, sizeof(buff));
+		(void)r;
+	}
 }
 
 void	here_doc_write(t_parsing_data *token, int *pipefd)
@@ -195,24 +205,17 @@ void	here_doc(t_parsing_data *token)
 	}
 }
 
-// void	check_here(t_parsing_data *token)
-// {
-// 	if (token->delimiter)
-// 		here_doc(token);
-// }
-
 int	check_in_file(t_parsing_data *token)
 {
-	if (token->in_file)
+	if (token->infile)
 	{
-		token->next->fd_in = open_in_file(token);
-		dup2(token->next->fd_in, STDIN_FILENO);
-		close(token->next->fd_in);
+		token->fd_in = open_in_file(token->infile);
+		dup2(token->fd_in, STDIN_FILENO);
+		close(token->fd_in);
 		return (1);
 	}
 	else if (token->delimiter)
 	{
-		// flush_fdin();
 		here_doc(token);
 		return (1);
 	}
@@ -264,13 +267,15 @@ void	process(t_data *data)
 	while (nb_pipe >= 1)
 	{
 		// check_here(token);
+		token->saved_stdin = saved_stdin;
 		check_out_file(token);
-		if (check_in_file(token))
-			token = token->next;
+		check_in_file(token);
+		// if (check_in_file(token))
+		// 	token = token->next;
 		pipex(data, token);
 		token = token->next;
-		if (!token->is_cmd && !token->delimiter)
-			token = token->next;
+		// if (!token->is_cmd && !token->delimiter)
+		// 	token = token->next;
 		nb_pipe--;
 	}
 	// check_here(token);

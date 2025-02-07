@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/04 14:48:55 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 15:28:07 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,43 @@ int	check_meta_char_arg(char c)
 	return (0);
 }
 
-void	get_value(char **input, t_parsing_data *pars, int make_offset)
+char	*get_value(char **input, t_parsing_data *pars, int make_offset)
 {
-	int	len;
+	int		len;
+	char	*value;
+	(void)pars;
 
 	len = 0;
 	while (ft_isprint((*input)[len]) && !check_meta_char((*input)[len]) && (*input)[len] != ' ')
 		len++;
-	pars->value = malloc(sizeof(char) * (len + 1));
-	if (!pars->value)
+	value = malloc(sizeof(char) * (len + 1));
+	if (!value)
 		error("malloc error", NULL);
-	ft_strlcpy(pars->value, *input, len + 1);
-	if (make_offset)
+	ft_strlcpy(value, *input, len + 1);
+	// if (make_offset)
+	(void)make_offset;
 		*input += len;
+	return (value);
+}
+
+void	rebuild_arg(t_parsing_data *pars)
+{
+	int		i;
+	int		j;
+	char	**arg_with_cmd;
+
+	i = 0;
+	j = 0;
+	while (pars->arg[i])
+		i++;
+	arg_with_cmd = malloc(sizeof(char *) * i + 2);
+	arg_with_cmd[j++] = ft_strdup(pars->value);
+	i = 0;
+	while (pars->arg[i])
+		arg_with_cmd[j++] = ft_strdup(pars->arg[i++]);
+	arg_with_cmd[j] = NULL;
+	free_double_point(pars->arg);
+	pars->arg = arg_with_cmd;
 }
 
 void	get_arg(char **input, t_parsing_data *pars)
@@ -70,6 +94,7 @@ void	get_arg(char **input, t_parsing_data *pars)
 	if (!pars->arg)
 		error("malloc error", NULL);
 	*input += len;
+	rebuild_arg(pars);
 }
 
 char	*check_here_doc_del(char **input)
@@ -98,30 +123,32 @@ char	*check_here_doc_del(char **input)
 
 void	handle_in_file(char **input, t_parsing_data *pars)
 {
-	init_new_token(pars);
+	// init_new_token(pars);
 	++(*input);
 	if (**input == '<')
 	{
 		++(*input);
 		pars->delimiter = check_here_doc_del(input);
+		pars->infile = NULL;
 	}
 	else
 	{
 		pars->in_file = true;
 		skip_space(input);
-		get_value(input, pars, 1);
+		pars->infile = get_value(input, pars, 1);
+		pars->delimiter = NULL;
 	}
 	skip_space(input);
-	if (**input == '|')
-	{
-		pars->pipe = true;
-		++(*input);
-	}
+	// if (**input == '|')
+	// {
+	// 	pars->pipe = true;
+	// 	++(*input);
+	// }
 }
 
 void	handle_out_file(char **input, t_parsing_data *pars)
 {
-	init_new_token(pars);
+	// init_new_token(pars);
 	pars->out_file = true;
 	++(*input);
 	if (**input == '>')
@@ -130,23 +157,42 @@ void	handle_out_file(char **input, t_parsing_data *pars)
 		++(*input);
 	}
 	skip_space(input);
-	get_value(input, pars, 1);
+	pars->outfile = get_value(input, pars, 1);
 	skip_space(input);
-	if (**input == '|')
+	// if (**input == '|')
+	// {
+	// 	pars->pipe = true;
+	// 	++(*input);
+	// }
+}
+
+int	check_for_file(char **input, t_parsing_data *pars)
+{
+	if (**input == '<')
 	{
-		pars->pipe = true;
-		++(*input);
+		handle_in_file(input, pars);
+		return (1);
 	}
+	else if (**input == '>')
+	{
+		handle_out_file(input, pars);
+		return (1);
+	}
+	return (0);
 }
 
 void	handle_cmd(char **input, t_parsing_data *pars)
 {
-	init_new_token(pars);
 	pars->is_cmd = true;
 	skip_space(input);
-	get_value(input, pars, 0);
+	pars->value = get_value(input, pars, 0);
 	skip_space(input);
+	while (check_for_file(input, pars))
+		;
 	get_arg(input, pars);
+	while (check_for_file(input, pars))
+		;
+	skip_space(input);
 	if (**input == '|')
 	{
 		pars->pipe = true;
@@ -165,6 +211,7 @@ void	parsing(char *input, t_data *data)
 	while (*input)
 	{
 		pars = malloc(sizeof(t_parsing_data));
+		pars->previous = prev;
 		if (!pars)
 			error("malloc error", data);
 		if (!prev)
@@ -172,15 +219,18 @@ void	parsing(char *input, t_data *data)
 		if (prev)
 			prev->next = pars;
 		prev = pars;
+		init_new_token(pars);
 		skip_space(&input);
-		if (*input == '<')
-			handle_in_file(&input, pars);
-		else if (*input == '>')
-			handle_out_file(&input, pars);
-		else if (*input == '<')
-			handle_in_file(&input, pars);
-		else
-			handle_cmd(&input, pars);
+		// if (*input == '<')
+		// 	handle_in_file(&input, pars);
+		// else if (*input == '>')
+		// 	handle_out_file(&input, pars);
+		// else if (*input == '<')
+		// 	handle_in_file(&input, pars);
+		// else
+		while (check_for_file(&input, pars))
+			;
+		handle_cmd(&input, pars);
 		pars->pos = pos;
 		pos++;
 	}
