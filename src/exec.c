@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/07 15:22:50 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 16:28:19 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,6 @@ int	check_out_file(t_parsing_data *token)
 	if (token->outfile)
 	{
 		token->fd_out = open_file(token);
-		// dup2(token->fd_in, STDIN_FILENO);
-		// close(token->fd_in);
 		return (1);
 	}
 	return (0);
@@ -140,28 +138,6 @@ char	*gnl(void)
 		i++;
 	}
 	return (NULL);
-}
-
-void	flush_fdin(t_parsing_data *token)
-{
-	char	buff[1000];
-	int		r;
-	(void)token;
-	// (void)token;
-	// if (in_pipe)
-	// 	gnl();
-	// close(token->fd_in);
-	// dup2(token->fd_in, 0);
-	// close(0);
-	// char	buff[1000];
-	//
-	// ft_putstr_fd("A", STDIN_FILENO);
-	r = 1;
-	while (r)
-	{
-		r = read(STDIN_FILENO, buff, sizeof(buff));
-		(void)r;
-	}
 }
 
 void	here_doc_write(t_parsing_data *token, int *pipefd)
@@ -235,7 +211,7 @@ void	wait_for_all(t_data *data)
 	}
 }
 
-void	last_exec(t_data *data, t_parsing_data *token, int saved_stdin)
+void	last_exec(t_data *data, t_parsing_data *token)
 {
 	int	child_pid;
 
@@ -250,7 +226,6 @@ void	last_exec(t_data *data, t_parsing_data *token, int saved_stdin)
 	}
 	else
 	{
-		dup2(saved_stdin, STDIN_FILENO);
 		token->pid = child_pid;
 	}
 }
@@ -266,23 +241,17 @@ void	process(t_data *data)
 	token = data->token;
 	while (nb_pipe >= 1)
 	{
-		// check_here(token);
 		token->saved_stdin = saved_stdin;
 		check_out_file(token);
 		check_in_file(token);
-		// if (check_in_file(token))
-		// 	token = token->next;
-		pipex(data, token);
+		if (token->value)
+			pipex(data, token);
 		token = token->next;
-		// if (!token->is_cmd && !token->delimiter)
-		// 	token = token->next;
 		nb_pipe--;
 	}
-	// check_here(token);
 	check_out_file(token);
 	check_in_file(token);
-	while (!token->is_cmd)
-		token = token->next;
-	last_exec(data, token, saved_stdin);
-	// wait_for_all(data);
+	if (token->value)
+		last_exec(data, token);
+	dup2(saved_stdin, STDIN_FILENO);
 }

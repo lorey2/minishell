@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/07 15:28:07 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 16:25:35 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ char	*get_value(char **input, t_parsing_data *pars, int make_offset)
 	value = malloc(sizeof(char) * (len + 1));
 	if (!value)
 		error("malloc error", NULL);
+	if (!len)
+		return (NULL);
 	ft_strlcpy(value, *input, len + 1);
 	// if (make_offset)
 	(void)make_offset;
