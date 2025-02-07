@@ -6,6 +6,35 @@
 ----Simple/Double quote <br /><br />
 ----free everything <br /><br />
 ----environement variable dollar{..} dollar? 
+----we can have tons of fun expanding variable :)))))))))))
+-----------------------------------------------------------
+
+BASIQUE
+$ USER="lorey"
+$ ${USER}
+bash: ${USER}: command not found
+
+LONGUEUR DE LA VARIABLE
+$ STRING="hello"
+$ ${#STRING}
+5
+
+DECOUPER UN STRING
+$ STRING="lorey123"
+$ ${STRING:5:3}
+123
+
+SETUP UNE VARIABLE AVEC UNE AURTE VARIABLE
+$ HOME=$(pwd)
+$ ${HOME}
+/home/lorey
+
+FAIRE DES OPERATION ARITHMETIQUES
+$ ((result = 2 + 3))
+$ echo $((result))
+5
+
+-----------------------------------------------------------
 
 ## BUILTINS
 

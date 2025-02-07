@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2025/01/27 17:38:56 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/01/27 18:02:54 by lorey            ###   LAUSANNE.ch       */
-/*																			*/
+/*                                                    +:+ +:+         +:+     */
+/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/06 17:38:14 by lorey             #+#    #+#             */
+/*   Updated: 2025/02/06 17:50:19 by lorey            ###   LAUSANNE.ch       */
+/*                                                                            */
 /* ************************************************************************** */
 
 // Options:
@@ -99,15 +99,15 @@ int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
 		{
 			if (ft_strchr(p_data->arg[i], '='))
 			{
-				if (!isalpha(p_data->arg[i][0]) || !(p_data->arg[i][0] == '_'))
-					write(1, "invalid var name \n", 18);
-				else
+				if (isalpha(p_data->arg[i][0]) || (p_data->arg[i][0] == '_'))
 					put_var_with_equal_in_env(p_data->arg[i], e_data);
+				else
+					write(1, "invalid var name \n", 18);
 			}
-			else if (!isalpha(p_data->arg[i][0]) || !(p_data->arg[i][0] == '_'))
-				write(1, "invalid var name \n", 18);
-			else
+			else if (isalpha(p_data->arg[i][0]) || (p_data->arg[i][0] == '_'))
 				put_var_without_equal_in_env(v_data, p_data->arg[i], e_data);
+			else
+				write(1, "invalid var name \n", 18);
 		}
 	}
 	else

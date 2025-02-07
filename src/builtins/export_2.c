@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 17:59:35 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/27 18:02:41 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/06 17:47:12 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	copy_and_sort_array(char **src)
 		perror("Unable to allocate memory for destination array");
 	bubble_sort(dest, rows, cols);
 	i = -1;
-	while (dest[++i])
+	while (++i < rows)
 	{
 		write(1, "declare -x ", ft_strlen("declare -x "));
 		write(1, dest[i], ft_strlen(dest[i]));

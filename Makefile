@@ -6,6 +6,8 @@ NAME          = minishell
 INCLUDE       = include/
 SRC_DIR       = src/
 BUILTINS_DIR  = src/builtins/
+GNL_DIR       = src/gnl/
+ANIM_DIR      = src/animations/
 OBJ_DIR       = obj/
 CC            = gcc
 CFLAGS        = -g -Wall -Werror -Wextra -I$(INCLUDE)
@@ -17,10 +19,10 @@ AR            = ar rcs
 # --------------------------------------------
 
 DEF_COLOR = \033[0;39m
-GREEN = \033[0;92m
-YELLOW = \033[0;93m
-BLUE = \033[0;94m
-CYAN = \033[0;96m
+GREEN     = \033[0;92m
+YELLOW    = \033[0;93m
+BLUE      = \033[0;94m
+CYAN      = \033[0;96m
 
 # --------------------------------------------
 # Source and Object Files
@@ -31,7 +33,11 @@ SRC_FILES        = minishell handle_signal \
                    exec parsing \
                    update_env free error_free
 
-BUILTINS_LIST    = builtins export export_2 cd pwd echo env exit unset
+BUILTINS_LIST    = builtins builtins_utils export export_2 cd pwd echo env exit unset
+
+GNL_FILES        = get_next_line_bonus get_next_line_utils_bonus
+
+ANIM_FILES       = animation explo_anim
 
 # Object files for main sources
 OBJ_MAIN         = $(addprefix $(OBJ_DIR)/main/, $(addsuffix .o, $(SRC_FILES)))
@@ -39,8 +45,14 @@ OBJ_MAIN         = $(addprefix $(OBJ_DIR)/main/, $(addsuffix .o, $(SRC_FILES)))
 # Object files for builtins
 OBJ_BUILTINS     = $(addprefix $(OBJ_DIR)/builtins/, $(addsuffix .o, $(BUILTINS_LIST)))
 
+# Object files for gnl source files
+OBJ_GNL          = $(addprefix $(OBJ_DIR)/gnl/, $(addsuffix .o, $(GNL_FILES)))
+
+# Object files for anim source files
+OBJ_ANIM         = $(addprefix $(OBJ_DIR)/animations/, $(addsuffix .o, $(ANIM_FILES)))
+
 # Combine both into one list
-OBJ              = $(OBJ_MAIN) $(OBJ_BUILTINS)
+OBJ              = $(OBJ_MAIN) $(OBJ_BUILTINS) $(OBJ_GNL) $(OBJ_ANIM)
 
 # --------------------------------------------
 # Libc (custom library)
@@ -77,6 +89,18 @@ $(OBJ_DIR)/builtins/%.o: $(BUILTINS_DIR)%.c
 	@echo "$(YELLOW)Compiling built-in: $<$(DEF_COLOR)"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
+# Object files compilation (gnl source files)
+$(OBJ_DIR)/gnl/%.o: $(GNL_DIR)%.c
+	@mkdir -p $(OBJ_DIR)/gnl
+	@echo "$(YELLOW)Compiling gnl: $<$(DEF_COLOR)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+# Object files compilation (anim source files)
+$(OBJ_DIR)/animations/%.o: $(ANIM_DIR)%.c
+	@mkdir -p $(OBJ_DIR)/animations
+	@echo "$(YELLOW)Compiling anim: $<$(DEF_COLOR)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 # --------------------------------------------
 # Clean and Remove Object Files
 # --------------------------------------------
@@ -96,14 +120,6 @@ fclean: clean
 # Rebuild everything
 re: fclean all
 	@echo "$(GREEN)Cleaned and rebuilt everything for minishell!$(DEF_COLOR)"
-
-# --------------------------------------------
-# Norminette Check
-# --------------------------------------------
-
-# Norminette code style check
-norm:
-	@norminette $(SRC_DIR) $(BUILTINS_DIR) $(INCLUDE) | grep -v Norme -B1 || true
 
 # --------------------------------------------
 # Phony Targets
