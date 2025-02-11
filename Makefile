@@ -30,7 +30,7 @@ CYAN      = \033[0;96m
 
 SRC_FILES        = minishell handle_signal \
                    init setup \
-                   exec parsing \
+                   exec parsing pre_parsing\
                    update_env free error_free
 
 BUILTINS_LIST    = builtins builtins_utils export export_2 cd pwd echo env exit unset
