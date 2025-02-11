@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/07 16:44:58 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 16:54:34 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int	main(int argc __attribute__((unused)),
 {
 	t_data	data;
 
-	explosion_animation();
-	text_animation();
+	// explosion_animation();
+	// text_animation();
 	init_struct(&data);
 	setup_env(&data, env);
 	setup_path(data.path);
