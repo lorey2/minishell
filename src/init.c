@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/11 13:15:22 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/11 17:15:26 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	init_new_token(t_parsing_data *token)
 void	init_struct(t_data *data)
 {
 	g_signal = 0;
+	data->token = NULL;
 	data->exit_nbr = -1;
 	data->return_nbr = 0;
 	data->path = malloc(sizeof(t_path_data));

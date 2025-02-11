@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/11 16:54:55 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/11 17:15:44 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,22 +169,6 @@ char	*conca_here_doc(char *line, t_parsing_data *token)
 
 void	here_doc_write(t_parsing_data *token, int *pipefd)
 {
-	// char	*line;
-	//
-	// close(pipefd[0]);
-	// while (1)
-	// {
-	// 	line = gnl();
-	// 	if (!ft_strncmp(line, token->delimiter,
-	// 			ft_strlen(token->delimiter)))
-	// 	{
-	// 		free(token->delimiter);
-	// 		free(line);
-	// 		exit(0);
-	// 	}
-	// 	ft_putstr_fd(line, pipefd[1]);
-	// 	free(line);
-	// }
 	close(pipefd[0]);
 	ft_putstr_fd(token->here, pipefd[1]);
 	close(pipefd[1]);
@@ -234,6 +218,8 @@ void	wait_for_all(t_data *data)
 	int				status;
 	t_parsing_data	*token;
 
+	if (!data->token)
+		return ;
 	token = data->token;
 	while (token)
 	{
@@ -271,8 +257,8 @@ void	get_here_docs(t_parsing_data *token)
 		if (!ft_strncmp(line, token->delimiter,
 				ft_strlen(token->delimiter)))
 		{
-			// free(token->delimiter);
-			// token->delimiter = NULL;
+			free(token->delimiter);
+			token->delimiter = NULL;
 			free(line);
 			return ;
 		}
