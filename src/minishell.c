@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/07 16:44:58 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/11 15:19:28 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,16 @@
 /* list of malloc at this point : nothing                                     */
 /* added malloc : path_data->path_split                                       */
 /* ************************************************************************** */
+
+void	setup_arg_if_empty(t_parsing_data *p_data)
+{
+	if (!p_data->arg && p_data->value[0] != 0)
+	{
+		p_data->arg = malloc(sizeof(char *) * 2);
+		p_data->arg[0] = ft_strdup(p_data->value);
+		p_data->arg[1] = NULL;
+	}
+}
 
 void	big_loop(t_data *data)
 {
@@ -35,6 +45,7 @@ void	big_loop(t_data *data)
 		{
 			add_history(input);
 			parsing(input, data);
+			setup_arg_if_empty(data->token);
 			if (check_builtin(data, data->token) == false)
 				process(data);
 		}
@@ -55,8 +66,8 @@ int	main(int argc __attribute__((unused)),
 {
 	t_data	data;
 
-	explosion_animation();
-	text_animation();
+//	explosion_animation();
+//	text_animation();
 	init_struct(&data);
 	setup_env(&data, env);
 	setup_path(data.path);

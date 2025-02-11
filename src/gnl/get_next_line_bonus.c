@@ -6,10 +6,11 @@
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:12:19 by lorey             #+#    #+#             */
-/*   Updated: 2024/10/30 11:12:25 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/11 16:09:22 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "get_next_line_bonus.h"
 
 static char	*safe_free(char **ptr)
@@ -29,7 +30,7 @@ static char	*handle_rest(char **rest)
 	char	*temp;
 
 	line = NULL;
-	i_bksp = ft_strchr(*rest, '\n');
+	i_bksp = ft_strchr_gnl(*rest, '\n');
 	if (i_bksp != -1)
 	{
 		line = ft_substr(*rest, 0, i_bksp + 1);
@@ -83,7 +84,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	while (1)
 	{
-		if (rest[fd] && ft_strchr(rest[fd], '\n') != -1)
+		if (rest[fd] && ft_strchr_gnl(rest[fd], '\n') != -1)
 			break ;
 		nbread = read(fd, buffer, BUFFER_SIZE);
 		if (nbread < 0 || (nbread == 0 && *rest[fd] == '\0'))

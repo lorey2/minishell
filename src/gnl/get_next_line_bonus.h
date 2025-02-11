@@ -6,7 +6,7 @@
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 02:01:51 by lorey             #+#    #+#             */
-/*   Updated: 2024/10/30 11:13:36 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/11 16:08:39 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@
 #  define BUFFER_SIZE 1000000
 # endif
 
-char	*get_next_line(int fd);
-char	*ft_strjoin(char const *s1, char const *s2);
-size_t	ft_strlen(const char *s);
-int		ft_strchr(const char *s, int c);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strdup(const char *s1);
+int		ft_strchr_gnl(const char *s, int c);
 
 #endif
