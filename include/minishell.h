@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/11 18:28:48 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 18:14:30 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_parsing_data
 	char					*outfile;
 	int						pos;
 	int						saved_stdin;
+	int						status;
 	bool					in_file;
 	bool					out_file;
 	bool					append_file;
@@ -103,8 +104,16 @@ typedef struct s_data
 	t_env_data		*env;
 	t_var			*var;
 	int				exit_nbr;
+	int				last_exit;
 	int				return_nbr;
 }					t_data;
+
+typedef struct s_shell_var
+{
+	char				*name;
+	char				*value;
+	struct s_shell_var	*next;
+}						t_shell_var;
 
 //animation
 void		text_animation(void);

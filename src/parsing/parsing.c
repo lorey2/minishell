@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/12 16:25:41 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 16:36:19 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ char	*check_here_doc_del(char **input)
 
 void	handle_in_file(char **input, t_parsing_data *pars)
 {
-	// init_new_token(pars);
 	++(*input);
 	if (**input == '<')
 	{
@@ -141,16 +140,10 @@ void	handle_in_file(char **input, t_parsing_data *pars)
 		pars->delimiter = NULL;
 	}
 	skip_space(input);
-	// if (**input == '|')
-	// {
-	// 	pars->pipe = true;
-	// 	++(*input);
-	// }
 }
 
 void	handle_out_file(char **input, t_parsing_data *pars)
 {
-	// init_new_token(pars);
 	pars->out_file = true;
 	++(*input);
 	if (**input == '>')
@@ -161,11 +154,6 @@ void	handle_out_file(char **input, t_parsing_data *pars)
 	skip_space(input);
 	pars->outfile = get_value(input, pars, 1);
 	skip_space(input);
-	// if (**input == '|')
-	// {
-	// 	pars->pipe = true;
-	// 	++(*input);
-	// }
 }
 
 int	check_for_file(char **input, t_parsing_data *pars)
@@ -208,7 +196,7 @@ void	parsing(char *input, t_data *data)
 	t_parsing_data	*prev;
 	int				pos;
 
-	prev = 0;
+	prev = NULL;
 	pos = 0;
 	while (*input)
 	{
@@ -223,13 +211,6 @@ void	parsing(char *input, t_data *data)
 		prev = pars;
 		init_new_token(pars);
 		skip_space(&input);
-		// if (*input == '<')
-		// 	handle_in_file(&input, pars);
-		// else if (*input == '>')
-		// 	handle_out_file(&input, pars);
-		// else if (*input == '<')
-		// 	handle_in_file(&input, pars);
-		// else
 		while (check_for_file(&input, pars))
 			;
 		handle_cmd(&input, pars);
