@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/07 16:25:35 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 16:25:41 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,3 +238,4 @@ void	parsing(char *input, t_data *data)
 	}
 	pars->next = NULL;
 }
+
