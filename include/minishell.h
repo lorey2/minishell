@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/07 16:43:49 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/11 18:28:48 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ void		setup_env(t_data *data, char **env);
 void		setup_path(t_path_data *path_data);
 char		*setup_prompt(t_data *data);
 void		init_struct(t_data *data);
+// pre_parsing
+int			pre_parsing(char **input, t_data *data);
 //parsing
 void		parsing(char *input, t_data *data);
 void		init_new_token(t_parsing_data *token);

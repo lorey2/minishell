@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/24 13:21:48 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/11 22:22:22 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ char	*get_env(t_env_data *e_data, char *var_name)
 
 	i = find_index(e_data, var_name, false);
 	if (i < 0)
-		return (NULL);
+		return ("");
 	value_start = ft_strchr(e_data->env[i], '=');
 	if (value_start == NULL)
 		return (write_env_error(var_name, "variable exists but no '=' "), NULL);
 	if (value_start[1] != 0)
 		return (ft_strdup(value_start + 1));
-	return (NULL);
+	return ("");
 }
 
 void	set_env(t_env_data *e_data, char *var_name, char *value)
