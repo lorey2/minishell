@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:45:21 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/06 19:01:09 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 16:07:52 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-char	*get_next_line(int fd);
 char	*ft_conca(char *dst, char *src);
 char	*ft_calloc_char(size_t size);
 char	*ft_getline(char *s);
