@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/07 16:28:19 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 16:18:42 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,24 +142,37 @@ char	*gnl(void)
 	return (NULL);
 }
 
+char	*conca_here_doc(char *line, t_parsing_data *token)
+{
+	int		len;
+	char	*conca;
+	int		i;
+	int		j;
+
+	len = ft_strlen(line) + ft_strlen(token->here);
+	conca = malloc(sizeof(char) * (len + 1));
+	if (!conca)
+		error("Malloc conca error", NULL);
+	i = 0;
+	while (token->here[i])
+	{
+		conca[i] = token->here[i];
+		i++;
+	}
+	j = 0;
+	while (line[j])
+		conca[i++] = line[j++];
+	conca[i] = '\0';
+	free(token->here);
+	return (conca);
+}
+
 void	here_doc_write(t_parsing_data *token, int *pipefd)
 {
-	char	*line;
-
 	close(pipefd[0]);
-	while (1)
-	{
-		line = gnl();
-		if (!ft_strncmp(line, token->delimiter,
-				ft_strlen(token->delimiter)))
-		{
-			free(token->delimiter);
-			free(line);
-			exit(0);
-		}
-		ft_putstr_fd(line, pipefd[1]);
-		free(line);
-	}
+	ft_putstr_fd(token->here, pipefd[1]);
+	close(pipefd[1]);
+	exit(0);
 }
 
 void	here_doc(t_parsing_data *token)
@@ -192,7 +205,7 @@ int	check_in_file(t_parsing_data *token)
 		close(token->fd_in);
 		return (1);
 	}
-	else if (token->delimiter)
+	else if (token->here)
 	{
 		here_doc(token);
 		return (1);
@@ -205,6 +218,8 @@ void	wait_for_all(t_data *data)
 	int				status;
 	t_parsing_data	*token;
 
+	if (!data->token)
+		return ;
 	token = data->token;
 	while (token)
 	{
@@ -232,6 +247,46 @@ void	last_exec(t_data *data, t_parsing_data *token)
 	}
 }
 
+void	get_here_docs(t_parsing_data *token)
+{
+	char	*line;
+
+	while (1)
+	{
+		line = gnl();
+		if (!ft_strncmp(line, token->delimiter,
+				ft_strlen(token->delimiter)))
+		{
+			free(token->delimiter);
+			token->delimiter = NULL;
+			free(line);
+			return ;
+		}
+		token->here = conca_here_doc(line, token);
+		free(line);
+	}
+}
+
+void	load_here(t_parsing_data *token)
+{
+	while (token)
+	{
+		if (token->delimiter)
+		{
+			if (!token->here)
+			{
+				token->here = malloc(sizeof(char));
+				if (!token->here)
+					error("Malloc error", NULL);
+				token->here[0] = '\0';
+			}
+			get_here_docs(token);
+
+		}
+		token = token->next;
+	}
+}
+
 void	process(t_data *data)
 {
 	int				nb_pipe;
@@ -241,6 +296,7 @@ void	process(t_data *data)
 	saved_stdin = dup(STDIN_FILENO);
 	nb_pipe = count_pipe(data);
 	token = data->token;
+	load_here(token);
 	while (nb_pipe >= 1)
 	{
 		token->saved_stdin = saved_stdin;
@@ -257,3 +313,4 @@ void	process(t_data *data)
 		last_exec(data, token);
 	dup2(saved_stdin, STDIN_FILENO);
 }
+
