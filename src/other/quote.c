@@ -6,26 +6,13 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 16:23:45 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/04 18:00:34 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 18:03:06 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //to_do FREE EVERYTHING IF MALLOC FAILS
-void	*safe_malloc(size_t size)
-{
-	void	*ptr;
-
-	ptr = malloc(size);
-	if (ptr == NULL)
-	{
-		printf("malloc error");
-		exit(EXIT_FAILURE);
-	}
-	return (ptr);
-}
-
 //here we expand variables
 char	*simple_quote(char *arg)
 {

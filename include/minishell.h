@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/11 18:28:48 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 18:06:14 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,5 +152,8 @@ void		free_double_point(char **point);
 void		free_everything(t_data *data);
 //gnl
 char		*get_next_line(int fd);
+//utils
+void		*safe_malloc(size_t size);
+char		*safe_free(char **ptr);
 
 #endif
