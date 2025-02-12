@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/02/12 15:46:35 by lorey             #+#    #+#              #
+#    Updated: 2025/02/12 15:59:56 by lorey            ###   LAUSANNE.ch        #
+#                                                                              #
+# **************************************************************************** #
+
 # --------------------------------------------
 # Variables
 # --------------------------------------------
@@ -8,6 +20,10 @@ SRC_DIR       = src/
 BUILTINS_DIR  = src/builtins/
 GNL_DIR       = src/gnl/
 ANIM_DIR      = src/animations/
+EXEC_DIR      = src/execution/
+PARSING_DIR   = src/parsing/
+SETUP_DIR     = src/setup/
+OTHER_DIR     = src/other/
 OBJ_DIR       = obj/
 CC            = gcc
 CFLAGS        = -g -Wall -Werror -Wextra -I$(INCLUDE)
@@ -28,16 +44,21 @@ CYAN      = \033[0;96m
 # Source and Object Files
 # --------------------------------------------
 
-SRC_FILES        = minishell handle_signal \
-                   init setup \
-                   exec parsing pre_parsing\
-                   update_env free error_free
+SRC_FILES        = minishell
 
 BUILTINS_LIST    = builtins builtins_utils export export_2 cd pwd echo env exit unset
 
 GNL_FILES        = get_next_line_bonus get_next_line_utils_bonus
 
 ANIM_FILES       = animation explo_anim
+
+EXEC_FILES       = exec
+
+PARSING_FILES    = parsing pre_parsing
+
+SETUP_FILES      = init setup
+
+OTHER_FILES      = error_free free handle_signal quote update_env
 
 # Object files for main sources
 OBJ_MAIN         = $(addprefix $(OBJ_DIR)/main/, $(addsuffix .o, $(SRC_FILES)))
@@ -51,8 +72,21 @@ OBJ_GNL          = $(addprefix $(OBJ_DIR)/gnl/, $(addsuffix .o, $(GNL_FILES)))
 # Object files for anim source files
 OBJ_ANIM         = $(addprefix $(OBJ_DIR)/animations/, $(addsuffix .o, $(ANIM_FILES)))
 
+# Object files for exec source files
+OBJ_EXEC         = $(addprefix $(OBJ_DIR)/execution/, $(addsuffix .o, $(EXEC_FILES)))
+
+# Object files for parsing source files
+OBJ_PARSING      = $(addprefix $(OBJ_DIR)/parsing/, $(addsuffix .o, $(PARSING_FILES)))
+
+# Object files for setuo source files
+OBJ_SETUP        = $(addprefix $(OBJ_DIR)/setup/, $(addsuffix .o, $(SETUP_FILES)))
+
+# Object files for setuo source files
+OBJ_OTHER        = $(addprefix $(OBJ_DIR)/other/, $(addsuffix .o, $(OTHER_FILES)))
+
+
 # Combine both into one list
-OBJ              = $(OBJ_MAIN) $(OBJ_BUILTINS) $(OBJ_GNL) $(OBJ_ANIM)
+OBJ              = $(OBJ_MAIN) $(OBJ_BUILTINS) $(OBJ_GNL) $(OBJ_ANIM) $(OBJ_EXEC) $(OBJ_PARSING) $(OBJ_SETUP) $(OBJ_OTHER)
 
 # --------------------------------------------
 # Libc (custom library)
@@ -100,6 +134,31 @@ $(OBJ_DIR)/animations/%.o: $(ANIM_DIR)%.c
 	@mkdir -p $(OBJ_DIR)/animations
 	@echo "$(YELLOW)Compiling anim: $<$(DEF_COLOR)"
 	@$(CC) $(CFLAGS) -c $< -o $@
+
+# Object files compilation (exec source files)
+$(OBJ_DIR)/execution/%.o: $(EXEC_DIR)%.c
+	@mkdir -p $(OBJ_DIR)/execution
+	@echo "$(YELLOW)Compiling execution: $<$(DEF_COLOR)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+# Object files compilation (parsing source files)
+$(OBJ_DIR)/parsing/%.o: $(PARSING_DIR)%.c
+	@mkdir -p $(OBJ_DIR)/parsing
+	@echo "$(YELLOW)Compiling parsing: $<$(DEF_COLOR)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+# Object files compilation (setup source files)
+$(OBJ_DIR)/setup/%.o: $(SETUP_DIR)%.c
+	@mkdir -p $(OBJ_DIR)/setup
+	@echo "$(YELLOW)Compiling setup: $<$(DEF_COLOR)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+# Object files compilation (setup source files)
+$(OBJ_DIR)/other/%.o: $(OTHER_DIR)%.c
+	@mkdir -p $(OBJ_DIR)/other
+	@echo "$(YELLOW)Compiling other: $<$(DEF_COLOR)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 
 # --------------------------------------------
 # Clean and Remove Object Files

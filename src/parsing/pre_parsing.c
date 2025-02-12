@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:08:08 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/12 15:35:11 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 16:01:03 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ Undefined (no variable extention)", 66);
 		free(*input);
 		*input = strdup(modified);
 	}
-	printf("\n%s\n", *input);
+//	printf("\n%s\n", *input);
 	free(modified);
 	return (0);
 }
