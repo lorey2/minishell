@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:08:08 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/11 22:26:54 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 03:04:50 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,26 @@ int	pre_parsing(char **input, t_data *data)
 	modified = ft_strdup("");
 	while (++i < (int)ft_strlen(*input) && (*input)[i])
 	{
+		if ((*input)[i] == '\'')
+		{
+			while ((*input[i]) && (*input[i]) != '\'')
+				i++;
+			if ((*input[i]) == '\0')
+			{
+				write(1, "simple quote [\'] are not closed. \
+Undefined (no variable extention)", 66);
+				break ;
+			}
+		}
 		if ((*input)[i] == '$')
 		{
 			modified = ft_strjoin(modified, ft_substr(*input, bkp2, i - bkp2));
 			i++;
 			backup = i;
-			while ((*input)[i] && (*input)[i] != ' ' && (*input)[i] != '$')
+			while ((*input)[i] && (*input)[i] != ' ' && (*input)[i] != '$' && (*input)[i] != '\'')
 				i++;
-			var = ft_substr(*input, backup, i - backup);
+			var = ft_substr(*input, backup, i - backup - 1);
 			expanded_var = get_env(data->env, var);
-//			printf("\n%s\n", expanded_var);
 			modified = ft_strjoin(modified, expanded_var);
 			bkp2 = i;
 			i--;
@@ -49,8 +59,8 @@ int	pre_parsing(char **input, t_data *data)
 	{
 		free(*input);
 		*input = strdup(modified);
-//		printf("\n%s\n", *input);
 	}
 	printf("\n%s\n", *input);
+	free(modified);
 	return (0);
 }

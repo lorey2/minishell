@@ -9,30 +9,66 @@
 ----we can have tons of fun expanding variable :)))))))))))
 -----------------------------------------------------------
 
-BASIQUE
-$ USER="lorey"
-$ ${USER}
-bash: ${USER}: command not found
+list of every malloc done for now (usefull to make sure they are set to null at begining)
 
-LONGUEUR DE LA VARIABLE
-$ STRING="hello"
-$ ${#STRING}
-5
+{animations}
 
-DECOUPER UN STRING
-$ STRING="lorey123"
-$ ${STRING:5:3}
-123
+animation.c
+   (0) logo is malloced but normally freed in there
+explo_anim.c
+   (0) explo is malloced but normally freed in there
 
-SETUP UNE VARIABLE AVEC UNE AURTE VARIABLE
-$ HOME=$(pwd)
-$ ${HOME}
-/home/lorey
+{gnl}
 
-FAIRE DES OPERATION ARITHMETIQUES
-$ ((result = 2 + 3))
-$ echo $((result))
-5
+get_next_line_bonus.c
+   (0) the static is not freed (classic)
+
+{builtins}
+
+builtins.c
+    0
+builtins_utils.c
+    0
+cd.c
+    0
+echo.c
+    0
+env.c
+    0
+exit.c
+    0
+export.c
+    var_name with a lot of mallocs. To check.
+    same for var_value
+export_2.c
+   (0) there is the copy of env (**dest) but it is freed in there
+pwd.c
+    0
+unset.c
+    0
+
+{other}
+
+error_free.c
+    0 here we will free
+exec.c
+    TBD
+free.c
+    0 here we will free
+handle_signal.c
+    0
+init.c
+    here we malloc structure path and env
+minishell.c
+    input shell prompt others??
+parsing.c
+    TBD
+quote.c
+    (0) a lot of mallocs but freed in there
+setup.c
+    (0) the malloc in there are already handeled in other files
+update_env.c
+    (0) are these malloc mandatory?
 
 -----------------------------------------------------------
 
