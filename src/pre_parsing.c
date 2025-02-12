@@ -6,13 +6,14 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:08:08 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/12 03:04:50 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 15:35:11 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //DONC EN GROS
+//ON ITERE
 //ON ITERE SUR INPUT TANT QU'ON TROUVE PAS DE $
 //
 
