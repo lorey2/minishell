@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/12 18:06:14 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/18 15:05:26 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <sys/types.h>
 # include <unistd.h>
 
-#define MAX_HERE_LINE_SIZE 1000
+# define MAX_HERE_LINE_SIZE 1000
 
 # define RESET        "\033[0m"
 # define BLACK        "\033[0;30m"
@@ -102,6 +102,7 @@ typedef struct s_data
 	t_path_data		*path;
 	t_env_data		*env;
 	t_var			*var;
+	char			*input;
 	int				exit_nbr;
 	int				return_nbr;
 }					t_data;
@@ -115,7 +116,7 @@ void		setup_path(t_path_data *path_data);
 char		*setup_prompt(t_data *data);
 void		init_struct(t_data *data);
 // pre_parsing
-int			pre_parsing(char **input, t_data *data);
+int			pre_parsing(t_data *data, bool here_doc);
 //parsing
 void		parsing(char *input, t_data *data);
 void		init_new_token(t_parsing_data *token);
