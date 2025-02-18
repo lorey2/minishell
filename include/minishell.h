@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/12 18:14:30 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/18 14:26:58 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ typedef struct s_var
 	char			*var_name;
 	char			*var_value;
 	struct s_var	*next;
-	struct s_var	*previous;
 }					t_var;
 
 typedef struct s_data
@@ -107,13 +106,6 @@ typedef struct s_data
 	int				last_exit;
 	int				return_nbr;
 }					t_data;
-
-typedef struct s_shell_var
-{
-	char				*name;
-	char				*value;
-	struct s_shell_var	*next;
-}						t_shell_var;
 
 //animation
 void		text_animation(void);

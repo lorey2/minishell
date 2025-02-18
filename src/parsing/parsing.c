@@ -6,12 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/12 16:36:19 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/18 17:34:38 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
 
 // TODO error gestion
 //
@@ -190,6 +189,80 @@ void	handle_cmd(char **input, t_parsing_data *pars)
 	}
 }
 
+t_var	*allocate_var(char **input)
+{
+	t_var	*var;
+	int		name_len;
+	int		value_len;
+
+	var = malloc(sizeof(t_var));
+	if (!var)
+		error("malloc error", NULL);
+	name_len = 0;
+	while ((*input)[name_len] != '=')
+		name_len++;
+	var->var_name = malloc(sizeof(name_len + 1));
+	if (!var->var_name)
+		error("malloc error", NULL);
+	++name_len;
+	value_len = 0;
+	while (((*input)[name_len] != ' ' || (*input)[name_len] != '\t') && (*input)[name_len] != '\0')
+	{
+		name_len++;
+		value_len++;
+	}
+	var->var_value = malloc(sizeof(value_len + 1));
+	if (!var->var_value)
+		error("malloc error", NULL);
+	return (var);
+}
+
+void	add_var(char **input, t_data *data)
+{
+	t_var	*var;
+	int		i;
+
+	i = 0;
+	var = allocate_var(input);
+	while (**input != '=')
+	{
+		var->var_name[i++] = **input;
+		(*input)++;
+	}
+	(*input)++;
+	var->var_name[i] = '\0';
+	i = 0;
+	while ((**input != ' ' || **input != '\t') && **input)
+	{
+		var->var_value[i++] = **input;
+		(*input)++;
+	}
+	var->var_value[i] = '\0';
+	while (data->var)
+		data->var = data->var->next;
+	data->var = var;
+}
+
+int	check_vars(char **input)
+{
+	int	i;
+
+	i = 0;
+	skip_space(input);
+	if (ft_isalpha(**input) || **input == '_')
+	{
+		while ((*input)[i])
+		{
+			if ((*input)[i] == ' ' || (*input)[i] == '\t')
+				return (0);
+			if ((*input)[i] == '=')
+				return (1);
+			i++;
+		}
+	}
+	return (0);
+}
+
 void	parsing(char *input, t_data *data)
 {
 	t_parsing_data	*pars;
@@ -209,6 +282,8 @@ void	parsing(char *input, t_data *data)
 		if (prev)
 			prev->next = pars;
 		prev = pars;
+		if (check_vars(&input))
+			add_var(&input, data);
 		init_new_token(pars);
 		skip_space(&input);
 		while (check_for_file(&input, pars))
