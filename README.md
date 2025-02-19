@@ -3,13 +3,13 @@
 
 
 ## ?!?!crash list?!?! :
-   echo with two args
-   notbuiltin | builtin
-   builtin | builtin
+----commands with two args 3 works but not 2<br /><br />
+----notbuiltin | builtin<br /><br />
+----builtin | builtin<br /><br />
    
-## GENERAL TODO LIST
+## GENERAL TODO LIST :
 ----variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
-----Simple/Double quote <br /><br /> DONE (WE WILL SEE)
+----Simple/Double quote DONE (WE WILL SEE) <br /><br />
 ----free everything <br /><br />
 ----environement variable dollar{..} dollar? 
 -----------------------------------------------------------
