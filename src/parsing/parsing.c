@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/18 17:34:38 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 17:51:38 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,29 @@ int	check_for_file(char **input, t_parsing_data *pars)
 	return (0);
 }
 
+int	check_vars_count(char **input)
+{
+	int	i;
+
+	i = 0;
+	while ((*input)[i])
+	{
+		while ((*input)[i] == ' ' || (*input)[i] == '\t')
+			i++;
+		while (ft_isalpha((*input)[i]) || (*input)[i] == '_')
+			i++;
+		if ((*input)[i] != '=' || !i)
+			return (0);
+		++i;
+		while ((*input)[i] != ' ' && (*input)[i] != '\t' && (*input)[i])
+			i++;
+	}
+	return (i);
+}
+
 void	handle_cmd(char **input, t_parsing_data *pars)
 {
+	(*input) += check_vars_count(input);
 	pars->is_cmd = true;
 	skip_space(input);
 	pars->value = get_value(input, pars, 0);
@@ -196,6 +217,7 @@ t_var	*allocate_var(char **input)
 	int		value_len;
 
 	var = malloc(sizeof(t_var));
+	init_new_var(var);
 	if (!var)
 		error("malloc error", NULL);
 	name_len = 0;
@@ -223,6 +245,7 @@ void	add_var(char **input, t_data *data)
 	int		i;
 
 	i = 0;
+	skip_space(input);
 	var = allocate_var(input);
 	while (**input != '=')
 	{
@@ -232,35 +255,20 @@ void	add_var(char **input, t_data *data)
 	(*input)++;
 	var->var_name[i] = '\0';
 	i = 0;
-	while ((**input != ' ' || **input != '\t') && **input)
+	while ((**input != ' ' && **input != '\t') && **input)
 	{
 		var->var_value[i++] = **input;
 		(*input)++;
 	}
 	var->var_value[i] = '\0';
-	while (data->var)
-		data->var = data->var->next;
-	data->var = var;
-}
-
-int	check_vars(char **input)
-{
-	int	i;
-
-	i = 0;
-	skip_space(input);
-	if (ft_isalpha(**input) || **input == '_')
+	if (!data->var)
+		data->var = var;
+	else
 	{
-		while ((*input)[i])
-		{
-			if ((*input)[i] == ' ' || (*input)[i] == '\t')
-				return (0);
-			if ((*input)[i] == '=')
-				return (1);
-			i++;
-		}
+		while (data->var->next)
+			data->var = data->var->next;
+		data->var->next = var;
 	}
-	return (0);
 }
 
 void	parsing(char *input, t_data *data)
@@ -273,6 +281,15 @@ void	parsing(char *input, t_data *data)
 	pos = 0;
 	while (*input)
 	{
+		while (check_vars_count(&input))
+			add_var(&input, data);
+		skip_space(&input);
+		input += check_vars_count(&input);
+		if (*input == '\0')
+		{
+			data->token = NULL;
+			return ;
+		}
 		pars = malloc(sizeof(t_parsing_data));
 		pars->previous = prev;
 		if (!pars)
@@ -282,10 +299,7 @@ void	parsing(char *input, t_data *data)
 		if (prev)
 			prev->next = pars;
 		prev = pars;
-		if (check_vars(&input))
-			add_var(&input, data);
 		init_new_token(pars);
-		skip_space(&input);
 		while (check_for_file(&input, pars))
 			;
 		handle_cmd(&input, pars);

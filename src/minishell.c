@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/12 18:00:40 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 16:06:33 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,12 @@ void	big_loop(t_data *data)
 			add_history(input);
 			pre_parsing(&input, data);
 			parsing(input, data);
-			setup_arg_if_empty(data->token);
-			if (check_builtin(data, data->token) == false)
-				process(data);
+			if (data->token)
+			{
+				setup_arg_if_empty(data->token);
+				if (check_builtin(data, data->token) == false)
+					process(data);
+			}
 		}
 		wait_for_all(data);
 		wait_for_all(data);

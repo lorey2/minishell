@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/18 17:23:04 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 15:04:56 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ void	init_new_token(t_parsing_data *token)
 	token->is_after_pipe = false;
 	token->pipe = false;
 	token->append_file = false;
+}
+
+void	init_new_var(t_var *var)
+{
+	var->var_name = NULL;
+	var->var_value = NULL;
+	var->next = NULL;
 }
 
 void	init_struct(t_data *data)

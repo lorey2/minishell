@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/18 14:26:58 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 15:01:57 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int			pre_parsing(char **input, t_data *data);
 //parsing
 void		parsing(char *input, t_data *data);
 void		init_new_token(t_parsing_data *token);
+void		init_new_var(t_var *var);
 void		process(t_data *data);
 //signal
 void		setup_signal(void);
