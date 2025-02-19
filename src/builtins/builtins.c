@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 14:52:58 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 20:19:08 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,18 @@ bool	handle_dollar(t_data *data, t_parsing_data *p_data)
 	return (false);
 }
 
-bool	check_builtin(t_data *data, t_parsing_data *p_data)
+bool	is_builtin(char *cmd)
+{
+	return (ft_isequal(cmd, "echo")
+		|| ft_isequal(cmd, "cd")
+		|| ft_isequal(cmd, "pwd")
+		|| ft_isequal(cmd, "export")
+		|| ft_isequal(cmd, "unset")
+		|| ft_isequal(cmd, "env")
+		|| ft_isequal(cmd, "exit"));
+}
+
+bool	exec_builtin(t_data *data, t_parsing_data *p_data)
 {
 	if (ft_isequal(p_data->value, "echo"))
 		return (echo(p_data, data->path), true);
@@ -43,4 +54,11 @@ bool	check_builtin(t_data *data, t_parsing_data *p_data)
 	else if (p_data->value[0] == '$')
 		return (handle_dollar(data, p_data));
 	return (false);
+}
+
+bool	check_builtin(t_data *data, t_parsing_data *p_data)
+{
+	if (!is_builtin(p_data->value))
+		return (false);
+	return (exec_builtin(data, p_data));
 }
