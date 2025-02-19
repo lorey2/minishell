@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:03:28 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/04 23:21:59 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 14:52:58 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	check_builtin(t_data *data, t_parsing_data *p_data)
 	else if (ft_isequal(p_data->value, "unset"))
 		return (unset(data->env, data->path, p_data), true);
 	else if (ft_isequal(p_data->value, "env"))
-		return (env(data->env), true);
+		return (env(data->env, p_data), true);
 	else if (ft_isequal(p_data->value, "exit"))
 		return (mini_exit(data, p_data), true);
 	else if (p_data->value[0] == '$')

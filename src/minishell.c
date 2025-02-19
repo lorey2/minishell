@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/18 17:00:26 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 14:17:50 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ static void	big_loop_execution(t_data *data)
 		pre_parsing(data, 0);
 		parsing(data->input, data);
 		setup_arg_if_empty(data->token);
-		if (check_builtin(data, data->token) == false)
-			process(data);
+		process(data);
 	}
 }
 

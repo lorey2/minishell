@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/18 15:05:26 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 15:01:13 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,13 +136,13 @@ void		pwd(t_parsing_data *p_data, t_path_data *path_data);
 void		echo(t_parsing_data *p_data, t_path_data *path_data);
 int			unset(t_env_data *e_data,
 				t_path_data *path_data, t_parsing_data *p_data);
-void		env(t_env_data *e_data);
+void		env(t_env_data *e_data, t_parsing_data *p_data);
 void		init_flags(t_path_data *path_data);
 void		write_err(char *message);
 int			mini_exit(t_data *data, t_parsing_data *p_data);
 int			mini_export(t_parsing_data *p_data, t_path_data *path_data,
 				t_var *v_data, t_env_data *e_data);
-void		copy_and_sort_array(char **src);
+void		copy_and_sort_array(char **src, t_parsing_data *data);
 //update env
 void		set_env(t_env_data *e_data, char *var_name, char *value);
 char		*get_env(t_env_data *e_data, char *var_name);

@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/12 16:18:42 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 14:36:30 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,6 +309,11 @@ void	process(t_data *data)
 	}
 	check_out_file(token);
 	check_in_file(token);
+	if(check_builtin(data, token))
+	{
+		dup2(saved_stdin, STDIN_FILENO);
+		return ;
+	}
 	if (token->value)
 		last_exec(data, token);
 	dup2(saved_stdin, STDIN_FILENO);

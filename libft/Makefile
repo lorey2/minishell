@@ -64,7 +64,7 @@ bonus: $(OBJ_BONUS)
 # Object files compilation (Main source files)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	@echo "$(YELLOW)Compiling: $<$(DEF_COLOR)"
+#	@echo "$(YELLOW)Compiling: $<$(DEF_COLOR)"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Object files compilation (Bonus source files)

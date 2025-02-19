@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:08:08 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/18 15:12:01 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 14:23:39 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,5 @@ int	pre_parsing(t_data *data, bool here_doc)
 		free(data->input);
 		data->input = strdup(modified);
 	}
-	return (printf("\n%s\n", data->input), free(modified), 0);
+	return (free(modified), 0);
 }
