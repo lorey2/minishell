@@ -1,12 +1,17 @@
 # minishell
 
-## GENERAL TODO LIST
 
+
+## ?!?!crash list?!?! :
+   echo with two args
+   notbuiltin | builtin
+   builtin | builtin
+   
+## GENERAL TODO LIST
 ----variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
-----Simple/Double quote <br /><br />
+----Simple/Double quote <br /><br /> DONE (WE WILL SEE)
 ----free everything <br /><br />
 ----environement variable dollar{..} dollar? 
-----we can have tons of fun expanding variable :)))))))))))
 -----------------------------------------------------------
 
 list of every malloc done for now (usefull to make sure they are set to null at begining)
