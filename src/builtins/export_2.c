@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 17:59:35 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/06 17:47:12 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 15:00:51 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static char	**copy_array(char **src, int rows)
 	return (dest);
 }
 
-void	copy_and_sort_array(char **src)
+void	copy_and_sort_array(char **src, t_parsing_data *p_data)
 {
 	int		rows;
 	int		cols;
@@ -100,9 +100,9 @@ void	copy_and_sort_array(char **src)
 	i = -1;
 	while (++i < rows)
 	{
-		write(1, "declare -x ", ft_strlen("declare -x "));
-		write(1, dest[i], ft_strlen(dest[i]));
-		write(1, "\n", 1);
+		write(p_data->fd_out, "declare -x ", ft_strlen("declare -x "));
+		write(p_data->fd_out, dest[i], ft_strlen(dest[i]));
+		write(p_data->fd_out, "\n", 1);
 	}
 	i = -1;
 	while (++i < rows)

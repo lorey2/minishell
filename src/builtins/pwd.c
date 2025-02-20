@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:08:54 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/22 15:10:00 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 15:02:51 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ void	pwd(t_parsing_data *p_data, t_path_data *path_data)
 	if (setup_flags(p_data, path_data) == -1)
 		return ;
 	if (getcwd(shell_prompt, sizeof(shell_prompt)) == NULL)
-		write(1, "getcwd retruned null, idk why\n", 30);
+		write_err("getcwd retruned null, idk why\n");
 	else
 	{
-		write(1, shell_prompt, ft_strlen(shell_prompt));
-		write(1, "\n", 1);
+		write(p_data->fd_out, shell_prompt, ft_strlen(shell_prompt));
+		write(p_data->fd_out, "\n", 1);
 	}
 }

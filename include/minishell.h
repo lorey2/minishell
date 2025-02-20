@@ -27,7 +27,7 @@
 # include <sys/types.h>
 # include <unistd.h>
 
-#define MAX_HERE_LINE_SIZE 1000
+# define MAX_HERE_LINE_SIZE 1000
 
 # define RESET        "\033[0m"
 # define BLACK        "\033[0;30m"
@@ -102,6 +102,7 @@ typedef struct s_data
 	t_path_data		*path;
 	t_env_data		*env;
 	t_var			*var;
+	char			*input;
 	int				exit_nbr;
 	int				last_exit;
 	int				return_nbr;
@@ -116,7 +117,7 @@ void		setup_path(t_path_data *path_data);
 char		*setup_prompt(t_data *data);
 void		init_struct(t_data *data);
 // pre_parsing
-int			pre_parsing(char **input, t_data *data);
+int			pre_parsing(t_data *data, bool here_doc);
 //parsing
 void		parsing(char *input, t_data *data);
 void		init_new_token(t_parsing_data *token);
@@ -128,6 +129,8 @@ void		setup_signal(void);
 void		execute(t_data *data, t_parsing_data *token);
 void		wait_for_all(t_data *data);
 //buitins
+bool		exec_builtin(t_data *data, t_parsing_data *p_data);
+bool		is_builtin(char *cmd);
 void		fill(char *data, t_path_data *path_data);
 bool		does_contain_only(char *data, char *list_args);
 bool		check_builtin(t_data *data, t_parsing_data *p_data);
@@ -137,13 +140,13 @@ void		pwd(t_parsing_data *p_data, t_path_data *path_data);
 void		echo(t_parsing_data *p_data, t_path_data *path_data);
 int			unset(t_env_data *e_data,
 				t_path_data *path_data, t_parsing_data *p_data);
-void		env(t_env_data *e_data);
+void		env(t_env_data *e_data, t_parsing_data *p_data);
 void		init_flags(t_path_data *path_data);
 void		write_err(char *message);
 int			mini_exit(t_data *data, t_parsing_data *p_data);
 int			mini_export(t_parsing_data *p_data, t_path_data *path_data,
 				t_var *v_data, t_env_data *e_data);
-void		copy_and_sort_array(char **src);
+void		copy_and_sort_array(char **src, t_parsing_data *data);
 //update env
 void		set_env(t_env_data *e_data, char *var_name, char *value);
 char		*get_env(t_env_data *e_data, char *var_name);
@@ -154,5 +157,8 @@ void		free_double_point(char **point);
 void		free_everything(t_data *data);
 //gnl
 char		*get_next_line(int fd);
+//utils
+void		*safe_malloc(size_t size);
+char		*safe_free(char **ptr);
 
 #endif

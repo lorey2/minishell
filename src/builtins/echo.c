@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:55:52 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/21 04:18:01 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 14:51:49 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	echo_write(t_parsing_data *p_data, int i)
 	{
 		if (p_data->arg[i][j] == '\\')
 			j++;
-		write(1, &p_data->arg[i][j], 1);
+		write(p_data->fd_out, &p_data->arg[i][j], 1);
 	}
 }
 
@@ -69,9 +69,9 @@ void	echo(t_parsing_data *p_data, t_path_data *path_data)
 		echo_write(p_data, i);
 	while (p_data->arg[++i])
 	{
-		write(1, " ", 1);
+		write(p_data->fd_out, " ", 1);
 		echo_write(p_data, i);
 	}
 	if (path_data->is_n == false)
-		write(1, "\n", 1);
+		write(p_data->fd_out, "\n", 1);
 }

@@ -13,19 +13,6 @@
 #include "minishell.h"
 
 //to_do FREE EVERYTHING IF MALLOC FAILS
-void	*safe_malloc(size_t size)
-{
-	void	*ptr;
-
-	ptr = malloc(size);
-	if (ptr == NULL)
-	{
-		printf("malloc error");
-		exit(EXIT_FAILURE);
-	}
-	return (ptr);
-}
-
 //here we expand variables
 char	*simple_quote(char *arg)
 {

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/11 22:22:22 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/18 16:53:31 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,7 @@ void	set_env(t_env_data *e_data, char *var_name, char *value)
 
 	i = find_index(e_data, var_name, true);
 	if (i >= 0)
-	{
-		e_data->env[i] = ft_strjoin(var_name, "=");
-		e_data->env[i] = ft_strjoin(e_data->env[i], value);
-	}
+		e_data->env[i] = ft_strjoin(ft_strjoin(var_name, "="), value);
 	else if (i == -2)
 	{
 		count = 0;
@@ -92,8 +89,9 @@ void	set_env(t_env_data *e_data, char *var_name, char *value)
 		new_env = malloc(sizeof(char *) * (count + 2));
 		if (!new_env)
 			return ;
-		for (int j = 0; j < count; j++)
-			new_env[j] = e_data->env[j];
+		i = -1;
+		while (++i < count)
+			new_env[i] = e_data->env[i];
 		new_env[count] = ft_strjoin(var_name, "=");
 		new_env[count] = ft_strjoin(new_env[count], value);
 		new_env[count + 1] = NULL;

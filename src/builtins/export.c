@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:38:14 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/06 17:50:19 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 14:59:55 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,6 @@ int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
 		}
 	}
 	else
-		copy_and_sort_array(e_data->env);
+		copy_and_sort_array(e_data->env, p_data);
 	return (0);
 }

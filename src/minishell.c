@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+//
+
 #include "minishell.h"
 
 /* ************************************************************************** */
@@ -19,7 +21,7 @@
 /* added malloc : path_data->path_split                                       */
 /* ************************************************************************** */
 
-void	setup_arg_if_empty(t_parsing_data *p_data)
+static void	setup_arg_if_empty(t_parsing_data *p_data)
 {
 	if (!p_data->arg && p_data->value[0] != 0)
 	{
@@ -29,40 +31,41 @@ void	setup_arg_if_empty(t_parsing_data *p_data)
 	}
 }
 
-void	big_loop(t_data *data)
+static void	big_loop_execution(t_data *data)
 {
-	char	*input;
+	if (!(*data->input == '\0'))
+	{
+		add_history(data->input);
+		pre_parsing(data, 0);
+		parsing(data->input, data);
+    if (data->token)
+		  setup_arg_if_empty(data->token);
+		process(data);
+	}
+}
+
+static void	big_loop(t_data *data)
+{
 	char	*shell_prompt;
 
 	while (1)
 	{
 		shell_prompt = setup_prompt(data);
 		printf("\r\033[K");
-		input = readline(shell_prompt);
-		if (!input || data->exit_nbr != -1)
+		data->input = readline(shell_prompt);
+		if (!data->input || data->exit_nbr != -1)
 			break ;
-		if (!(*input == '\0'))
-		{
-			add_history(input);
-			pre_parsing(&input, data);
-			parsing(input, data);
-			if (data->token)
-			{
-				setup_arg_if_empty(data->token);
-				if (check_builtin(data, data->token) == false)
-					process(data);
-			}
-		}
+		big_loop_execution(data);
 		wait_for_all(data);
 		wait_for_all(data);
 		printf("LAST EXIT = %d\n", data->last_exit);
 		if (data->exit_nbr != -1)
 			break ;
-		free(input);
+		free(data->input);
 		free(shell_prompt);
 	}
 	// wait_for_all(data);
-	free(input);
+	free(data->input);
 	free(shell_prompt);
 }
 
