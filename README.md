@@ -3,9 +3,7 @@
 
 
 ## ?!?!crash list?!?! :
-----commands with two args 3 works but not 2<br /><br />
 ----notbuiltin | builtin<br /><br />
-----builtin | builtin<br /><br />
    
 ## GENERAL TODO LIST :
 ----variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
