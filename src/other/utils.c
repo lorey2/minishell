@@ -1,23 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 20:51:52 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/16 22:41:04 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2025/02/12 17:58:57 by lorey             #+#    #+#             */
+/*   Updated: 2025/02/12 18:07:18 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <readline/history.h>
-#include <readline/readline.h>
 
-void	free_everything(t_data *data)
+void	*safe_malloc(size_t size)
 {
-	free(data->env);
-	free_double_point(data->path->path_split);
-	free(data->path);
-	clear_history();
+	void	*ptr;
+
+	ptr = malloc(size);
+	if (ptr == NULL)
+	{
+		printf("malloc error");
+		exit(EXIT_FAILURE);
+	}
+	return (ptr);
+}
+
+char	*safe_free(char **ptr)
+{
+	if (ptr && *ptr)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
+	return (NULL);
+}
+
+void	free_double_point(char **point)
+{
+	int	j;
+
+	j = -1;
+	while (point[++j])
+		free(point[j]);
+	free(point);
 }

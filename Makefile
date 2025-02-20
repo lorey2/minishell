@@ -6,7 +6,7 @@
 #    By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 15:46:35 by lorey             #+#    #+#              #
-#    Updated: 2025/02/12 15:59:56 by lorey            ###   LAUSANNE.ch        #
+#    Updated: 2025/02/19 15:12:46 by lorey            ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ PARSING_FILES    = parsing pre_parsing
 
 SETUP_FILES      = init setup
 
-OTHER_FILES      = error_free free handle_signal quote update_env
+OTHER_FILES      = error_free handle_signal quote update_env utils
 
 # Object files for main sources
 OBJ_MAIN         = $(addprefix $(OBJ_DIR)/main/, $(addsuffix .o, $(SRC_FILES)))
@@ -104,7 +104,7 @@ all: $(NAME)
 
 # Build Libc
 $(LIBC):
-	make -C $(LIBC_DIR) all
+	@make -s -C $(LIBC_DIR) all
 
 # Minishell Compilation
 $(NAME): $(LIBC) $(OBJ)
@@ -167,13 +167,13 @@ $(OBJ_DIR)/other/%.o: $(OTHER_DIR)%.c
 # Clean object files
 clean:
 	@rm -rf $(OBJ_DIR)
-	make -C $(LIBC_DIR) clean
+	@make -s -C $(LIBC_DIR) clean
 	@echo "$(BLUE)minishell object files cleaned!$(DEF_COLOR)"
 
 # Full clean (objects and executables)
 fclean: clean
 	@rm -f $(NAME)
-	make -C $(LIBC_DIR) fclean
+	@make -s -C $(LIBC_DIR) fclean
 	@echo "$(CYAN)minishell executables cleaned!$(DEF_COLOR)"
 
 # Rebuild everything
