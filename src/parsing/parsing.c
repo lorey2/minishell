@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 23:26:50 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/20 16:17:28 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,6 @@ char    *check_here_doc_del(char **input)
 
 void	handle_in_file(char **input, t_parsing_data *pars)
 {
-	// init_new_token(pars);
 	++(*input);
 	if (**input == '<')
 	{
@@ -227,16 +226,10 @@ void	handle_in_file(char **input, t_parsing_data *pars)
 		pars->delimiter = NULL;
 	}
 	skip_space(input);
-	// if (**input == '|')
-	// {
-	// 	pars->pipe = true;
-	// 	++(*input);
-	// }
 }
 
 void	handle_out_file(char **input, t_parsing_data *pars)
 {
-	// init_new_token(pars);
 	pars->out_file = true;
 	++(*input);
 	if (**input == '>')
@@ -247,11 +240,6 @@ void	handle_out_file(char **input, t_parsing_data *pars)
 	skip_space(input);
 	pars->outfile = get_value(input, pars, 1);
 	skip_space(input);
-	// if (**input == '|')
-	// {
-	// 	pars->pipe = true;
-	// 	++(*input);
-	// }
 }
 
 int	check_for_file(char **input, t_parsing_data *pars)
@@ -269,8 +257,38 @@ int	check_for_file(char **input, t_parsing_data *pars)
 	return (0);
 }
 
+int	check_vars_count(char **input)
+{
+	int	i;
+	int	j;
+	int	found;
+
+	i = 0;
+	found = 0;
+	skip_space(input);
+	while ((*input)[i])
+	{
+		j = 0;
+		while (ft_isalpha((*input)[i + j]) || (*input)[i + j] == '_')
+			j++;
+		if (((*input)[i + j] != '=' || !j) && !found)
+			return (0);
+		else if (((*input)[i + j] != '=') && found)
+			return (i * -1);
+		++i;
+		i += j;
+		while ((*input)[i] != ' ' && (*input)[i] != '\t' && (*input)[i])
+			i++;
+		while ((*input)[i] == ' ' || (*input)[i] == '\t')
+			i++;
+		found = 1;
+	}
+	return (i);
+}
+
 void	handle_cmd(char **input, t_parsing_data *pars)
 {
+	(*input) += check_vars_count(input);
 	pars->is_cmd = true;
 	skip_space(input);
 	pars->value = get_value(input, pars, 0);
@@ -288,16 +306,101 @@ void	handle_cmd(char **input, t_parsing_data *pars)
 	}
 }
 
+t_var	*allocate_var(char **input)
+{
+	t_var	*var;
+	int		name_len;
+	int		value_len;
+
+	var = malloc(sizeof(t_var));
+	init_new_var(var);
+	if (!var)
+		error("malloc error", NULL);
+	name_len = 0;
+	while ((*input)[name_len] != '=')
+		name_len++;
+	var->var_name = malloc(sizeof(name_len + 1));
+	if (!var->var_name)
+		error("malloc error", NULL);
+	++name_len;
+	value_len = 0;
+	while (((*input)[name_len] != ' ' || (*input)[name_len] != '\t') && (*input)[name_len] != '\0')
+	{
+		name_len++;
+		value_len++;
+	}
+	var->var_value = malloc(sizeof(value_len + 1));
+	if (!var->var_value)
+		error("malloc error", NULL);
+	return (var);
+}
+
+t_var	*get_last(t_var *var)
+{
+	t_var	*head;
+
+	head = var;
+	while (head)
+	{
+		if (!head->next)
+			return (head);
+		head = head->next;
+	}
+	return (head);
+}
+
+void	add_var(char **input, t_data *data)
+{
+	t_var	*var;
+	t_var	*last_var;
+	int		i;
+
+	i = 0;
+	skip_space(input);
+	var = allocate_var(input);
+	while (**input != '=')
+	{
+		var->var_name[i++] = **input;
+		(*input)++;
+	}
+	(*input)++;
+	var->var_name[i] = '\0';
+	i = 0;
+	while ((**input != ' ' && **input != '\t') && **input)
+	{
+		var->var_value[i++] = **input;
+		(*input)++;
+	}
+	var->var_value[i] = '\0';
+	if (!data->var)
+		data->var = var;
+	else
+	{
+		last_var = get_last(data->var);
+		last_var->next = var;
+	}
+}
+
 void	parsing(char *input, t_data *data)
 {
 	t_parsing_data	*pars;
 	t_parsing_data	*prev;
 	int				pos;
+	int				remove_offset;
 
-	prev = 0;
+	prev = NULL;
 	pos = 0;
 	while (*input)
 	{
+		while (check_vars_count(&input) > 0)
+			add_var(&input, data);
+		if (*input == '\0')
+		{
+			data->token = NULL;
+			return ;
+		}
+		remove_offset = check_vars_count(&input);
+		input += (remove_offset * -1);
 		pars = malloc(sizeof(t_parsing_data));
 		pars->previous = prev;
 		if (!pars)
@@ -308,14 +411,6 @@ void	parsing(char *input, t_data *data)
 			prev->next = pars;
 		prev = pars;
 		init_new_token(pars);
-		skip_space(&input);
-		// if (*input == '<')
-		// 	handle_in_file(&input, pars);
-		// else if (*input == '>')
-		// 	handle_out_file(&input, pars);
-		// else if (*input == '<')
-		// 	handle_in_file(&input, pars);
-		// else
 		while (check_for_file(&input, pars))
 			;
 		handle_cmd(&input, pars);

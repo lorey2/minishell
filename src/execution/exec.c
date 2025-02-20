@@ -6,11 +6,12 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/19 23:00:56 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 18:03:37 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 #include <unistd.h>
 
 void    execute_builtin_pipe(t_data *data, t_parsing_data *token, int pipefd[2])
@@ -244,15 +245,26 @@ int	check_in_file(t_parsing_data *token)
 
 void	wait_for_all(t_data *data)
 {
-	int				status;
 	t_parsing_data	*token;
+	int				status;
 
 	if (!data->token)
+	{
+		data->last_exit = 0;
 		return ;
+	}
 	token = data->token;
 	while (token)
 	{
 		waitpid(token->pid, &status, 0);
+		if (WIFEXITED(status))
+			token->status = WEXITSTATUS(status);
+		token = token->next;
+	}
+	token = data->token;
+	while (token)
+	{
+		data->last_exit = token->status;
 		token = token->next;
 	}
 }

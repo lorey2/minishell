@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 20:23:37 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 15:01:57 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_parsing_data
 	char					*outfile;
 	int						pos;
 	int						saved_stdin;
+	int						status;
 	bool					in_file;
 	bool					out_file;
 	bool					append_file;
@@ -93,7 +94,6 @@ typedef struct s_var
 	char			*var_name;
 	char			*var_value;
 	struct s_var	*next;
-	struct s_var	*previous;
 }					t_var;
 
 typedef struct s_data
@@ -104,6 +104,7 @@ typedef struct s_data
 	t_var			*var;
 	char			*input;
 	int				exit_nbr;
+	int				last_exit;
 	int				return_nbr;
 }					t_data;
 
@@ -120,6 +121,7 @@ int			pre_parsing(t_data *data, bool here_doc);
 //parsing
 void		parsing(char *input, t_data *data);
 void		init_new_token(t_parsing_data *token);
+void		init_new_var(t_var *var);
 void		process(t_data *data);
 //signal
 void		setup_signal(void);

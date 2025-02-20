@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/12 16:29:42 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 15:04:56 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	g_signal;
 
 void	init_new_token(t_parsing_data *token)
 {
+	token->status = 0;
 	token->delimiter = NULL;
 	token->fd_out = STDOUT_FILENO;
 	token->fd_in = STDIN_FILENO;
@@ -33,9 +34,17 @@ void	init_new_token(t_parsing_data *token)
 	token->append_file = false;
 }
 
+void	init_new_var(t_var *var)
+{
+	var->var_name = NULL;
+	var->var_value = NULL;
+	var->next = NULL;
+}
+
 void	init_struct(t_data *data)
 {
 	g_signal = 0;
+	data->var = NULL;
 	data->token = NULL;
 	data->exit_nbr = -1;
 	data->return_nbr = 0;
