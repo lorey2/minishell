@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/20 15:44:14 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/20 16:17:28 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,9 +248,24 @@ t_var	*allocate_var(char **input)
 	return (var);
 }
 
+t_var	*get_last(t_var *var)
+{
+	t_var	*head;
+
+	head = var;
+	while (head)
+	{
+		if (!head->next)
+			return (head);
+		head = head->next;
+	}
+	return (head);
+}
+
 void	add_var(char **input, t_data *data)
 {
 	t_var	*var;
+	t_var	*last_var;
 	int		i;
 
 	i = 0;
@@ -274,9 +289,8 @@ void	add_var(char **input, t_data *data)
 		data->var = var;
 	else
 	{
-		while (data->var->next)
-			data->var = data->var->next;
-		data->var->next = var;
+		last_var = get_last(data->var);
+		last_var->next = var;
 	}
 }
 
