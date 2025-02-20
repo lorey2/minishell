@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/19 20:22:31 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 23:00:56 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,7 +337,7 @@ void    process(t_data *data)
     t_parsing_data  *token;
     int             saved_stdin;
 
-    saved_stdin = dup(STDIN_FILENO);
+	saved_stdin = dup(STDIN_FILENO);
     if (saved_stdin == -1)
         error("dup error", data);
 

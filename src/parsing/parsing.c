@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 20:07:05 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/19 23:26:50 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,11 +165,12 @@ void    get_arg(char **input, t_parsing_data *pars)
     arg[j] = '\0';
     
     pars->arg = ft_split(arg, ' ');
-    free(arg);
     if (!pars->arg)
         error("malloc error", NULL);
     *input += len;
     rebuild_arg(pars);
+	if (arg)
+    	free(arg);
 }
 
 char    *check_here_doc_del(char **input)
