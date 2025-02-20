@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 17:51:38 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/20 15:44:14 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,19 +173,28 @@ int	check_for_file(char **input, t_parsing_data *pars)
 int	check_vars_count(char **input)
 {
 	int	i;
+	int	j;
+	int	found;
 
 	i = 0;
+	found = 0;
+	skip_space(input);
 	while ((*input)[i])
 	{
-		while ((*input)[i] == ' ' || (*input)[i] == '\t')
-			i++;
-		while (ft_isalpha((*input)[i]) || (*input)[i] == '_')
-			i++;
-		if ((*input)[i] != '=' || !i)
+		j = 0;
+		while (ft_isalpha((*input)[i + j]) || (*input)[i + j] == '_')
+			j++;
+		if (((*input)[i + j] != '=' || !j) && !found)
 			return (0);
+		else if (((*input)[i + j] != '=') && found)
+			return (i * -1);
 		++i;
+		i += j;
 		while ((*input)[i] != ' ' && (*input)[i] != '\t' && (*input)[i])
 			i++;
+		while ((*input)[i] == ' ' || (*input)[i] == '\t')
+			i++;
+		found = 1;
 	}
 	return (i);
 }
@@ -276,20 +285,21 @@ void	parsing(char *input, t_data *data)
 	t_parsing_data	*pars;
 	t_parsing_data	*prev;
 	int				pos;
+	int				remove_offset;
 
 	prev = NULL;
 	pos = 0;
 	while (*input)
 	{
-		while (check_vars_count(&input))
+		while (check_vars_count(&input) > 0)
 			add_var(&input, data);
-		skip_space(&input);
-		input += check_vars_count(&input);
 		if (*input == '\0')
 		{
 			data->token = NULL;
 			return ;
 		}
+		remove_offset = check_vars_count(&input);
+		input += (remove_offset * -1);
 		pars = malloc(sizeof(t_parsing_data));
 		pars->previous = prev;
 		if (!pars)
