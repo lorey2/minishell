@@ -4,6 +4,7 @@
 
 ## ?!?!crash list?!?! :
 ----notbuiltin | builtin<br /><br />
+----echo -n {arg} / echo -n
    
 ## GENERAL TODO LIST :
 ----variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
