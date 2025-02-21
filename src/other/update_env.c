@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/18 16:53:31 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/20 20:07:14 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,24 @@ static int	find_index(t_env_data *e_data, char *var_name, bool is_set)
 	return (-2);
 }
 
-char	*get_env(t_env_data *e_data, char *var_name)
+char	*get_env(t_env_data *e_data, char *var_name, t_var *var)
 {
 	int		i;
 	char	*value_start;
 
+	if (var)
+	{
+		if (var->var_name && ft_isequal(var_name, var->var_name))
+			if (var->var_value)
+				return (var->var_value);
+		while (var->next)
+		{
+			var = var->next;
+			if (var->var_name && ft_isequal(var_name, var->var_name))
+				if (var->var_value)
+					return (var->var_value);
+		}
+	}
 	i = find_index(e_data, var_name, false);
 	if (i < 0)
 		return ("");

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:08:08 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 14:23:39 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/20 19:27:35 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static int	expansion(
 			&& (data->input)[i] != '\''
 			&& (data->input)[i] != '\"')
 			i++;
-		var = ft_substr(data->input, backup, i - backup - 1);
-		expanded_var = get_env(data->env, var);
+		var = ft_substr(data->input, backup, i - backup);
+		expanded_var = get_env(data->env, var, data->var);
 		*modified = ft_strjoin(*modified, expanded_var);
 		*bkp2 = i;
 		i--;
