@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/12 18:03:37 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/21 14:13:30 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,6 +375,5 @@ void    process(t_data *data)
     
     dup2(saved_stdin, STDIN_FILENO);
     close(saved_stdin);
-    wait_for_all(data);
 }
 
