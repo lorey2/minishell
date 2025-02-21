@@ -3,13 +3,13 @@
 
 
 ## ?!?!crash list?!?! :
----- [❌] builtin | [whatever]<br /><br />
+---- [🙄] builtin | [whatever]<br /><br />
 ---- [❌] echo -n {arg} / echo -n<br /><br />
----- [❌] les guillemets deuxieme arg est split<br /><br />
+---- [🙄] les guillemets deuxieme arg est split<br /><br />
 ---- [❌] heredoc ctrlc... sigals<br /><br />
----- [❌] cat << EOF1 << EOF2<br /><br />
+---- [⏩] cat << EOF1 << EOF2<br /><br />
 ---- [✅] file redir do not create all files <br /><br />
----- [❌] export salutand all export... salut=123<br /><br />
+---- [⏩] export salutand all export... salut=123<br /><br />
 ---- [❌] ctrl c supprime la ligne pour l'instant les command sans \n marchent pas<br /><br />
 ---- [❌] last exit<br /><br />
 ---- [❌] builtins return<br /><br />
@@ -84,13 +84,11 @@ setup.c
 update_env.c
     (0) are these malloc mandatory?
 
------------------------------------------------------------
-
 ## BUILTINS
 
 ### cd  DONE
   works with <br />
-  ----"cd" "cd ~" "cd {absolute and relative path}" <br />
+  "cd" "cd ~" "cd {absolute and relative path}" <br />
   ----"cd -" works perfectly<br />
   does not work with <br />
   ---- "cd -L" "cd -P" but the parsing in done for all of that <br />
