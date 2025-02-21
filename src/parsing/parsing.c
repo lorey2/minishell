@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/20 16:17:28 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/21 15:50:13 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,17 +228,47 @@ void	handle_in_file(char **input, t_parsing_data *pars)
 	skip_space(input);
 }
 
+t_file	*get_last_file(t_file *file)
+{
+	t_file	*head;
+
+	head = file;
+	while (head)
+	{
+		if (!head->next)
+			return (head);
+		head = head->next;
+	}
+	return (head);
+}
+
 void	handle_out_file(char **input, t_parsing_data *pars)
 {
+	t_file	*file;
+	t_file	*last_file;
+
+	file = malloc(sizeof(t_file));
+	if (!file)
+		error("malloc error", NULL);
+	init_new_file(file);
 	pars->out_file = true;
 	++(*input);
 	if (**input == '>')
 	{
 		pars->append_file = true;
+		file->append = true;
 		++(*input);
 	}
 	skip_space(input);
 	pars->outfile = get_value(input, pars, 1);
+	file->name = pars->outfile;
+	if (!pars->outfile_list)
+		pars->outfile_list = file;
+	else
+	{
+		last_file = get_last_file(pars->outfile_list);
+		last_file->next = file;
+	}
 	skip_space(input);
 }
 

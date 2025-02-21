@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/21 14:13:30 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/21 16:02:50 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,14 +123,14 @@ int	open_in_file(char *file_name)
 	return (fd);
 }
 
-int	open_file(t_parsing_data *token)
+int	open_file(t_file *file)
 {
 	int	fd;
 
-	if (token->append_file)
-		fd = open(token->outfile, O_WRONLY | O_APPEND | O_CREAT, 0666);
+	if (file->append)
+		fd = open(file->name, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	else
-		fd = open(token->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+		fd = open(file->name, O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (fd == -1)
 		error("Cannot open file", NULL);
 	return (fd);
@@ -138,9 +138,16 @@ int	open_file(t_parsing_data *token)
 
 int	check_out_file(t_parsing_data *token)
 {
+	t_file	*file;
+
+	file = token->outfile_list;
 	if (token->outfile)
 	{
-		token->fd_out = open_file(token);
+		while (file)
+		{
+			token->fd_out = open_file(file);
+			file = file->next;
+		}
 		return (1);
 	}
 	return (0);
