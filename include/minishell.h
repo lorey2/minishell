@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/21 16:10:06 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/21 16:46:29 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_file
 
 typedef struct s_here_docs
 {
-	char				delimiter;
+	char				*delimiter;
 	struct s_here_docs	*next;
 }						t_here_docs;
 

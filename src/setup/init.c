@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/21 15:59:39 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/21 16:46:23 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ void	init_new_file(t_file *file)
 	file->name = NULL;
 	file->append = false;
 	file->next = NULL;
+}
+
+void	init_new_here(t_here_docs *here)
+{
+	here->delimiter = NULL;
+	here->next = NULL;
 }
 
 void	init_struct(t_data *data)
