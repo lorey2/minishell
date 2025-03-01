@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/21 16:46:29 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/26 19:45:28 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void		init_struct(t_data *data);
 int			pre_parsing(t_data *data, bool here_doc);
 //parsing
 void		parsing(char *input, t_data *data);
+void		init_new_here(t_here_docs *here);
 void		init_new_token(t_parsing_data *token);
 void		init_new_var(t_var *var);
 void		init_new_file(t_file *file);

@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/21 16:02:50 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/26 20:10:11 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,11 +317,11 @@ void	get_here_docs(t_parsing_data *token)
 	while (1)
 	{
 		line = gnl();
-		if (!ft_strncmp(line, token->delimiter,
-				ft_strlen(token->delimiter)))
+		if (!ft_strncmp(line, token->here_docs->delimiter,
+				ft_strlen(token->here_docs->delimiter)))
 		{
-			free(token->delimiter);
-			token->delimiter = NULL;
+			free(token->here_docs->delimiter);
+			token->here_docs->delimiter = NULL;
 			free(line);
 			return ;
 		}
@@ -336,15 +336,17 @@ void	load_here(t_parsing_data *token)
 	{
 		if (token->delimiter)
 		{
-			if (!token->here)
+			while (token->here_docs)
 			{
+				free(token->here);
+				token->here = NULL;
 				token->here = malloc(sizeof(char));
 				if (!token->here)
 					error("Malloc error", NULL);
 				token->here[0] = '\0';
+				get_here_docs(token);
+				token->here_docs = token->here_docs->next;
 			}
-			get_here_docs(token);
-
 		}
 		token = token->next;
 	}
