@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/26 20:10:11 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/03 22:55:16 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,11 @@ char	*gnl(void)
 		buff[i + 1] = 0;
 		if (c == '\n')
 			return (buff);
+		if (c == -1)
+		{
+			ft_putstr_fd("Receive end of file", 1);
+			return (NULL);
+		}
 		i++;
 	}
 	return (NULL);
