@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/20 19:19:09 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/04 21:18:08 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ static int	do_cd_update_env(char *arg, t_env_data *e_data)
 
 	if (chdir(arg) == -1)
 		return (write_err("cd : No such file or directory\n"), 1);
-	set_env(e_data, "OLDPWD", get_env(e_data, "PWD", NULL));
+	set_env(e_data, "OLDPWD", get_env(e_data, "PWD", NULL), true);
 	if (get_env(e_data, "OLDPWD", NULL) == NULL)
 		return (write_err("cd : Memory allocation failed for OLDPWD\n"), 1);
 	getcwd(cwd, 1024);
-	set_env(e_data, "PWD", cwd);
+	set_env(e_data, "PWD", cwd, true);
 	if (get_env(e_data, "PWD", NULL) == NULL)
 		return (write_err("cd : Memory allocation failed for PWD\n"), 1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/20 16:41:29 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/04 21:45:10 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ static void	big_loop(t_data *data)
 	while (1)
 	{
 		shell_prompt = setup_prompt(data);
-		printf("\r\033[K");
+//		printf("\r\033[K");
 		data->input = readline(shell_prompt);
 		if (!data->input || data->exit_nbr != -1)
 			break ;
 		big_loop_execution(data);
 		wait_for_all(data);
 		wait_for_all(data);
-		printf("LAST EXIT = %d\n", data->last_exit);
+		//printf("LAST EXIT = %d\n", data->last_exit);
 		if (data->exit_nbr != -1)
 			break ;
 		free(data->input);

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/20 20:07:14 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/04 21:21:44 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*get_env(t_env_data *e_data, char *var_name, t_var *var)
 	return ("");
 }
 
-void	set_env(t_env_data *e_data, char *var_name, char *value)
+void	set_env(t_env_data *e_data, char *var_name, char *value, bool is_equal)
 {
 	int		i;
 	int		count;
@@ -94,7 +94,7 @@ void	set_env(t_env_data *e_data, char *var_name, char *value)
 	i = find_index(e_data, var_name, true);
 	if (i >= 0)
 		e_data->env[i] = ft_strjoin(ft_strjoin(var_name, "="), value);
-	else if (i == -2)
+	else if (i < 0)
 	{
 		count = 0;
 		while (e_data->env[count])
@@ -105,8 +105,12 @@ void	set_env(t_env_data *e_data, char *var_name, char *value)
 		i = -1;
 		while (++i < count)
 			new_env[i] = e_data->env[i];
-		new_env[count] = ft_strjoin(var_name, "=");
-		new_env[count] = ft_strjoin(new_env[count], value);
+		if (is_equal)
+			new_env[count] = ft_strjoin(var_name, "=");
+		else
+			new_env[count] = ft_strdup(var_name);
+		if (value != NULL)
+			new_env[count] = ft_strjoin(new_env[count], value);
 		new_env[count + 1] = NULL;
 		e_data->env = new_env;
 	}

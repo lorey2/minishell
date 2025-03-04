@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:55:52 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 14:51:49 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/04 21:28:34 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ void	echo(t_parsing_data *p_data, t_path_data *path_data)
 	int	i;
 
 	i = setup_flags(p_data, path_data);
+	if (p_data->arg[i] == NULL)
+	{
+		if (path_data->is_n == false)
+			write(p_data->fd_out, "\n", 1);
+		return ;
+	}
 	if (i == -1)
 		return ;
 	if (p_data->arg[i])
