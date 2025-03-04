@@ -13,7 +13,7 @@
 ---- [❌] ctrl c supprime la ligne pour l'instant les command sans \n marchent pas<br /><br />
 ---- [❌] last exit<br /><br />
 ---- [❌] builtins return<br /><br />
----- [❌] $?<br /><br />
+---- [✅] $?<br /><br />
    
 ## GENERAL TODO LIST :
 ---- variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
