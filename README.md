@@ -4,7 +4,7 @@
 
 ## ?!?!crash list?!?! :
 ---- [🙄] builtin | [whatever]<br /><br />
----- [❌] echo -n {arg} / echo -n<br /><br />
+---- [✅] echo -n {arg} / echo -n<br /><br />
 ---- [🙄] les guillemets deuxieme arg est split<br /><br />
 ---- [❌] heredoc ctrlc... sigals<br /><br />
 ---- [⏩] cat << EOF1 << EOF2<br /><br />
