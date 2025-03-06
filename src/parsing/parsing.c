@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/20 16:17:28 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/06 08:32:36 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,7 +319,7 @@ t_var	*allocate_var(char **input)
 	name_len = 0;
 	while ((*input)[name_len] != '=')
 		name_len++;
-	var->var_name = malloc(sizeof(name_len + 1));
+	var->var_name = malloc(sizeof(char) * (name_len + 1));
 	if (!var->var_name)
 		error("malloc error", NULL);
 	++name_len;

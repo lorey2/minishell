@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:38:14 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/04 21:19:37 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/06 09:08:16 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static void	put_var_without_equal_in_env(
 	{
 		if (ft_isequal(v_data->var_name, var))
 		{
-			set_env(e_data, v_data->var_name, v_data->var_value, false);
-			break ;
+			set_env(e_data, v_data->var_name, v_data->var_value, true);
+			return ;
 		}
 		v_data = v_data->next;
 	}
