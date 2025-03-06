@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/12 18:03:37 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/06 14:36:50 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,7 @@ void	wait_for_all(t_data *data)
 	t_parsing_data	*token;
 	int				status;
 
+	status = 0;
 	if (!data->token)
 	{
 		data->last_exit = 0;

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/06 08:32:36 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/06 14:55:30 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,9 @@ void	rebuild_arg(t_parsing_data *pars)
 	j = 0;
 	while (pars->arg[i])
 		i++;
-	arg_with_cmd = malloc(sizeof(char *) * i + 2);
+	arg_with_cmd = malloc(sizeof(char *) * (i + 2));
+	if (!arg_with_cmd)
+    	error("malloc error", NULL);
 	arg_with_cmd[j++] = ft_strdup(pars->value);
 	i = 0;
 	while (pars->arg[i])
@@ -132,7 +134,7 @@ void    get_arg(char **input, t_parsing_data *pars)
         len++;
     }
     
-    if (!len)
+    if (len == 0)
         return;
         
     arg = malloc(sizeof(char) * (len + 1));
