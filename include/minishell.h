@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/04 21:17:02 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/17 15:57:24 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,14 @@ typedef struct s_parsing_data
 	struct s_parsing_data	*previous;
 }							t_parsing_data;
 
+typedef struct s_pre_parsing_data
+{
+	int		i;
+	bool	in_dquotes;
+	char	*modified;
+	int		bkp2;
+}			t_pre_pars_data;
+
 typedef struct s_env_data
 {
 	char	**env;
@@ -102,6 +110,7 @@ typedef struct s_data
 	t_path_data		*path;
 	t_env_data		*env;
 	t_var			*var;
+	t_pre_pars_data	*pp_data;
 	char			*input;
 	int				exit_nbr;
 	int				last_exit;
@@ -117,7 +126,7 @@ void		setup_path(t_path_data *path_data);
 char		*setup_prompt(t_data *data);
 void		init_struct(t_data *data);
 // pre_parsing
-int			pre_parsing(t_data *data, bool here_doc);
+int			pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data);
 //parsing
 void		parsing(char *input, t_data *data);
 void		init_new_token(t_parsing_data *token);
@@ -151,6 +160,7 @@ void		copy_and_sort_array(char **src, t_parsing_data *data);
 void		set_env(t_env_data *e_data, char *var_name,
 				char *value, bool is_equal);
 char		*get_env(t_env_data *e_data, char *var_name, t_var *var);
+void		write_env_error(char *var_name, char *message);
 bool		is_valid_var_name(char	*arg);
 //error and free
 void		error(char *message, t_data *data);
