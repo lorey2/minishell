@@ -9,19 +9,22 @@
 ---- [❌] heredoc ctrlc... sigals<br /><br />
 ---- [⏩] cat << EOF1 << EOF2<br /><br />
 ---- [✅] file redir do not create all files <br /><br />
----- [⏩] export salutand all export... salut=123<br /><br />
+---- [✅] export salutand all export... salut=123<br /><br />
 ---- [❌] ctrl c supprime la ligne pour l'instant les command sans \n marchent pas<br /><br />
----- [❌] last exit<br /><br />
+---- [❌] !!!last exit!!!<br /><br />
 ---- [❌] builtins return<br /><br />
 ---- [✅] $?<br /><br />
----- [ ] echo $ echo $ echo "$"<br /><br />
----- [ ] env -i and launch<br /><br />
-   
+---- [✅] ~ is expanded with getenv HOME<br /><br />
+---- [✅] echo $ echo $ echo "$"<br /><br />
+---- [✅] env -i and launch. TELLS THERE IS NO PATH AND EXIT<br /><br />
+---- [❌] export salut="|"  ls $salut the pipe is a ls arg, not a pipe (we shurely wont do that----<br /><br />
+---- [ ] ctrl cd\ after an infinite command   
 ## GENERAL TODO LIST :
 ---- variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
 ---- Simple/Double quote DONE (WE WILL SEE) <br /><br />
 ---- free everything <br /><br />
 ---- environement variable dollar{..} dollar?
+---- between each command reparse bash
 
 ## MALLOC LIST :
 
