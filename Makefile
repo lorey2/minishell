@@ -6,7 +6,7 @@
 #    By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 15:46:35 by lorey             #+#    #+#              #
-#    Updated: 2025/03/17 15:59:03 by lorey            ###   LAUSANNE.ch        #
+#    Updated: 2025/03/17 22:42:58 by lorey            ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ ANIM_FILES       = animation explo_anim
 
 EXEC_FILES       = exec
 
-PARSING_FILES    = parsing pre_parsing
+PARSING_FILES    = parsing pre_parsing pre_pars_expans
 
 SETUP_FILES      = init setup
 

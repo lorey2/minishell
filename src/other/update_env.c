@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/17 15:57:40 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 00:00:46 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ char	*get_env(t_env_data *e_data, char *var_name, t_var *var)
 	}
 	i = find_index(e_data, var_name, false);
 	if (i < 0)
-		return ("");
+		return (ft_strdup(""));
 	value_start = ft_strchr(e_data->env[i], '=');
 	if (value_start == NULL)
-		return ("");
+		return (ft_strdup(""));
 	if (value_start[1] != 0)
 		return (ft_strdup(value_start + 1));
 	return ("");

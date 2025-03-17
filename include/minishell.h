@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/17 15:57:24 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 00:01:25 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ extern int		g_signal;
 
 typedef struct s_path_data
 {
-	char	*path;
+	char	*env_path;
 	char	**path_split;
 	char	**path_split_slash;
 	char	*path_with_com;
@@ -122,11 +122,13 @@ void		text_animation(void);
 void		explosion_animation(void);
 //setup
 void		setup_env(t_data *data, char **env);
-void		setup_path(t_path_data *path_data);
+void		setup_path(t_data *data, t_path_data *path_data);
 char		*setup_prompt(t_data *data);
 void		init_struct(t_data *data);
 // pre_parsing
 int			pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data);
+void		expansion(t_data *data, t_pre_pars_data *pp_data);
+void		expand_tilde(t_data *data, t_pre_pars_data *pp_data);
 //parsing
 void		parsing(char *input, t_data *data);
 void		init_new_token(t_parsing_data *token);

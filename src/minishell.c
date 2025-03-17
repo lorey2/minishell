@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/17 15:39:36 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 00:02:53 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static void	big_loop(t_data *data)
 
 	while (1)
 	{
+		setup_path(data, data->path);
 		shell_prompt = setup_prompt(data);
 //		printf("\r\033[K");
 		data->input = readline(shell_prompt);
@@ -80,7 +81,6 @@ int	main(int argc __attribute__((unused)),
 //	text_animation();
 	init_struct(&data);
 	setup_env(&data, env);
-	setup_path(data.path);
 	setup_signal();
 	big_loop(&data);
 	free_everything(&data);

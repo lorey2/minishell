@@ -6,11 +6,12 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/17 15:17:22 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 00:01:31 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdbool.h>
 
 int	g_signal;
 
@@ -41,6 +42,23 @@ void	init_new_var(t_var *var)
 	var->next = NULL;
 }
 
+void	init_path(t_path_data *path_data)
+{
+	path_data->env_path = NULL;
+	path_data->path_split = NULL;
+	path_data->path_split_slash = NULL;
+	path_data->path_with_com = NULL;
+	path_data->is_at = false;
+	path_data->is_e = false;
+	path_data->is_n = false;
+	path_data->is_v = false;
+	path_data->is_f = false;
+	path_data->is_p = false;
+	path_data->is_big_l = false;
+	path_data->is_big_p = false;
+	path_data->is_big_e = false;
+}
+
 void	init_struct(t_data *data)
 {
 	g_signal = 0;
@@ -52,6 +70,7 @@ void	init_struct(t_data *data)
 	data->path = malloc(sizeof(t_path_data));
 	if (!data->path)
 		error("malloc error", NULL);
+	init_path(data->path);
 	data->pp_data = malloc(sizeof(t_pre_pars_data));
 	if (!data->pp_data)
 		error("malloc error", NULL);

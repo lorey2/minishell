@@ -6,22 +6,36 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:21:16 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/22 19:00:29 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/17 23:59:31 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 
-void	setup_path(t_path_data *path_data)
+void	free_path(t_path_data *path_data)
 {
-	char	*path;
+	if (path_data->env_path != NULL)
+		free(path_data->env_path);
+	path_data->env_path = NULL;
+	if (path_data->path_split != NULL)
+		free_double_point(path_data->path_split);
+	if (path_data->path_split_slash != NULL)
+		free_double_point(path_data->path_split_slash);
+	if (path_data->path_with_com != NULL)
+		free(path_data->path_with_com);
+	path_data->path_with_com = NULL;
+}
+
+void	setup_path(t_data *data, t_path_data *path_data)
+{
 	int		i;
 
-	path = getenv("PATH");
-	if (!path)
+	free_path(path_data);
+	path_data->env_path = get_env(data->env, "PATH", NULL);
+	if (!path_data->env_path)
 		error("PATH environment variable not found", NULL);
-	path_data->path_split = ft_split(path, ':');
+	path_data->path_split = ft_split(path_data->env_path, ':');
 	if (!path_data->path_split)
 		error("Malloc error for path_split", NULL);
 	i = 0;
