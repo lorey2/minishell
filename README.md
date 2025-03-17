@@ -14,8 +14,8 @@
 ---- [❌] last exit<br /><br />
 ---- [❌] builtins return<br /><br />
 ---- [✅] $?<br /><br />
----- [ ] echo $ echo $ echo "$"
----- [ ] env -i and launch
+---- [ ] echo $ echo $ echo "$"<br /><br />
+---- [ ] env -i and launch<br /><br />
    
 ## GENERAL TODO LIST :
 ---- variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
