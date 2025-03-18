@@ -3,6 +3,8 @@
 
 
 ## ?!?!crash list?!?! :
+
+BUILTINS FINIRONT PROBABLERMENT PAR EXIT
 ---- [🙄] builtin | [whatever]<br /><br />
 ---- [✅] echo -n {arg} / echo -n<br /><br />
 ---- [🙄] les guillemets deuxieme arg est split<br /><br />
