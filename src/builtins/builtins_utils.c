@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:02:25 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/11 14:23:26 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/06 08:50:25 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	init_flags(t_path_data *path_data)
 	path_data->is_big_p = false;
 	path_data->is_big_e = false;
 	path_data->is_at = false;
+	path_data->is_p = false;
 	path_data->is_e = false;
 	path_data->is_n = false;
 	path_data->is_v = false;

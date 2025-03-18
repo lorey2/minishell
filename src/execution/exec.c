@@ -92,6 +92,7 @@ void	execute(t_data *data, t_parsing_data *token)
 			token->arg, data->env->env) == -1))
 			break ;
 		free(data->path->path_with_com);
+		data->path->path_with_com = NULL;
 	}
 	error("command not found", NULL);
 }
@@ -260,6 +261,7 @@ void	wait_for_all(t_data *data)
 	t_parsing_data	*token;
 	int				status;
 
+	status = 0;
 	if (!data->token)
 	{
 		data->last_exit = 0;

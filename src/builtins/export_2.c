@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 17:59:35 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 15:00:51 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/21 15:48:20 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,33 @@ static char	**copy_array(char **src, int rows)
 	return (dest);
 }
 
+static void	write_result(t_parsing_data *p_data, int rows, char **dest)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < rows)
+	{
+		write(p_data->fd_out, "declare -x ", 11);
+		if (ft_strchr(dest[i], '='))
+		{
+			j = -1;
+			while (dest[i][++j] != '=')
+				write(p_data->fd_out, &dest[i][j], 1);
+			write(p_data->fd_out, "=\"", 2);
+			while (dest[i][++j])
+				write(p_data->fd_out, &dest[i][j], 1);
+			write(p_data->fd_out, "\"\n", 2);
+		}
+		else
+		{
+			write(p_data->fd_out, dest[i], ft_strlen(dest[i]));
+			write(p_data->fd_out, "\n", 1);
+		}
+	}
+}
+
 void	copy_and_sort_array(char **src, t_parsing_data *p_data)
 {
 	int		rows;
@@ -97,13 +124,7 @@ void	copy_and_sort_array(char **src, t_parsing_data *p_data)
 	if (dest == NULL)
 		perror("Unable to allocate memory for destination array");
 	bubble_sort(dest, rows, cols);
-	i = -1;
-	while (++i < rows)
-	{
-		write(p_data->fd_out, "declare -x ", ft_strlen("declare -x "));
-		write(p_data->fd_out, dest[i], ft_strlen(dest[i]));
-		write(p_data->fd_out, "\n", 1);
-	}
+	write_result(p_data, rows, dest);
 	i = -1;
 	while (++i < rows)
 		free(dest[i]);

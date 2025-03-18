@@ -36,9 +36,9 @@ static void	big_loop_execution(t_data *data)
 	if (!(*data->input == '\0'))
 	{
 		add_history(data->input);
-		pre_parsing(data, 0);
+		pre_parsing(data, 0, data->pp_data);
 		parsing(data->input, data);
-    	if (data->token)
+		if (data->token)
 		{
 			if (data->token->value)
 				setup_arg_if_empty(data->token);
@@ -53,15 +53,16 @@ static void	big_loop(t_data *data)
 
 	while (1)
 	{
+		setup_path(data, data->path);
 		shell_prompt = setup_prompt(data);
-		printf("\r\033[K");
+//		printf("\r\033[K");
 		data->input = readline(shell_prompt);
 		if (!data->input || data->exit_nbr != -1)
 			break ;
 		big_loop_execution(data);
 		wait_for_all(data);
 		wait_for_all(data);
-		printf("LAST EXIT = %d\n", data->last_exit);
+		//printf("LAST EXIT = %d\n", data->last_exit);
 		if (data->exit_nbr != -1)
 			break ;
 		free(data->input);
@@ -81,7 +82,6 @@ int	main(int argc __attribute__((unused)),
 //	text_animation();
 	init_struct(&data);
 	setup_env(&data, env);
-	setup_path(data.path);
 	setup_signal();
 	big_loop(&data);
 	free_everything(&data);

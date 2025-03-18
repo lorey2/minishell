@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:38:14 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 14:59:55 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/06 09:08:16 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ static void	put_var_without_equal_in_env(
 	{
 		if (ft_isequal(v_data->var_name, var))
 		{
-			set_env(e_data, v_data->var_name, v_data->var_value);
-			break ;
+			set_env(e_data, v_data->var_name, v_data->var_value, true);
+			return ;
 		}
 		v_data = v_data->next;
 	}
+	set_env(e_data, var, NULL, false);
 }
 
 static int	extract_var_name_value(
@@ -79,7 +80,7 @@ static void	put_var_with_equal_in_env(char *arg, t_env_data *e_data)
 		return ;
 	}
 	if (isalpha(arg[0]) || (arg[0] == '_'))
-		set_env(e_data, var_name, var_value);
+		set_env(e_data, var_name, var_value, true);
 	else
 		write(1, "invalid var name\n", 18);
 	free(var_name);

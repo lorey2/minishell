@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 14:47:57 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/17 12:51:51 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ static int	do_cd_update_env(char *arg, t_env_data *e_data)
 
 	if (chdir(arg) == -1)
 		return (write_err("cd : No such file or directory\n"), 1);
-	set_env(e_data, "OLDPWD", get_env(e_data, "PWD"));
-	if (get_env(e_data, "OLDPWD") == NULL)
+	set_env(e_data, "OLDPWD", get_env(e_data, "PWD", NULL), true);
+	if (get_env(e_data, "OLDPWD", NULL) == NULL)
 		return (write_err("cd : Memory allocation failed for OLDPWD\n"), 1);
 	getcwd(cwd, 1024);
-	set_env(e_data, "PWD", cwd);
-	if (get_env(e_data, "PWD") == NULL)
+	set_env(e_data, "PWD", cwd, true);
+	if (get_env(e_data, "PWD", NULL) == NULL)
 		return (write_err("cd : Memory allocation failed for PWD\n"), 1);
 	return (0);
 }
@@ -57,7 +57,7 @@ static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
 {
 	char	*oldpwd;
 
-	oldpwd = get_env(e_data, "OLDPWD");
+	oldpwd = get_env(e_data, "OLDPWD", NULL);
 	if (ft_isequal(p_data->arg[i], "-"))
 	{
 		if (oldpwd == NULL)
@@ -133,20 +133,13 @@ int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
 		return (1);
 	if (p_data->arg[i])
 	{
-		if (check_dash(p_data, e_data, get_env(e_data, "HOME"), i))
+		if (check_dash(p_data, e_data, get_env(e_data, "HOME", NULL), i))
 			return (1);
 		else if (p_data->arg[i + 1])
 			return (write_err("cd : too many arguments\n"), 1);
-		else if (ft_isequal(p_data->arg[i], "~"))
-		{
-			if (!get_env(e_data, "HOME"))
-				return (write_err("cd : HOME environment variable not set\n"), \
-				1);
-			return (do_cd_update_env(get_env(e_data, "HOME"), e_data), 0);
-		}
 		return (do_cd_update_env(p_data->arg[i], e_data), 0);
 	}
-	if (!get_env(e_data, "HOME"))
+	if (!get_env(e_data, "HOME", NULL))
 		return (write_err("cd : HOME environment variable not set\n"), 1);
-	return (do_cd_update_env(get_env(e_data, "HOME"), e_data), 0);
+	return (do_cd_update_env(get_env(e_data, "HOME", NULL), e_data), 0);
 }

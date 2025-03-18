@@ -89,7 +89,9 @@ void	rebuild_arg(t_parsing_data *pars)
 	j = 0;
 	while (pars->arg[i])
 		i++;
-	arg_with_cmd = malloc(sizeof(char *) * i + 2);
+	arg_with_cmd = malloc(sizeof(char *) * (i + 2));
+	if (!arg_with_cmd)
+    	error("malloc error", NULL);
 	arg_with_cmd[j++] = ft_strdup(pars->value);
 	i = 0;
 	while (pars->arg[i])
@@ -132,7 +134,7 @@ void    get_arg(char **input, t_parsing_data *pars)
         len++;
     }
     
-    if (!len)
+    if (len == 0)
         return;
         
     arg = malloc(sizeof(char) * (len + 1));
@@ -385,7 +387,7 @@ t_var	*allocate_var(char **input)
 	name_len = 0;
 	while ((*input)[name_len] != '=')
 		name_len++;
-	var->var_name = malloc(sizeof(name_len + 1));
+	var->var_name = malloc(sizeof(char) * (name_len + 1));
 	if (!var->var_name)
 		error("malloc error", NULL);
 	++name_len;

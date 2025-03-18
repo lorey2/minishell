@@ -6,20 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/18 16:53:31 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 00:00:46 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	write_env_error(char *var_name, char *message)
-{
-	write_err(message);
-	write(1, "[", 1);
-	write(1, var_name, ft_strlen(var_name));
-	write(1, "]", 1);
-	write(1, "\n", 1);
-}
 
 bool	is_valid_var_name(char	*arg)
 {
@@ -56,23 +47,54 @@ static int	find_index(t_env_data *e_data, char *var_name, bool is_set)
 	return (-2);
 }
 
-char	*get_env(t_env_data *e_data, char *var_name)
+// 	if (value_start == NULL)
+// 		return ("");
+// //	return (write_env_error(var_name, "variable exists but no '=' "), NULL);
+// 	if (value_start[1] != 0)
+
+char	*get_env(t_env_data *e_data, char *var_name, t_var *var)
 {
 	int		i;
 	char	*value_start;
 
+	if (var)
+	{
+		if (var->var_name && ft_isequal(var_name, var->var_name))
+			if (var->var_value)
+				return (var->var_value);
+		while (var->next)
+		{
+			var = var->next;
+			if (var->var_name && ft_isequal(var_name, var->var_name))
+				if (var->var_value)
+					return (var->var_value);
+		}
+	}
 	i = find_index(e_data, var_name, false);
 	if (i < 0)
-		return ("");
+		return (ft_strdup(""));
 	value_start = ft_strchr(e_data->env[i], '=');
 	if (value_start == NULL)
-		return (write_env_error(var_name, "variable exists but no '=' "), NULL);
+		return (ft_strdup(""));
 	if (value_start[1] != 0)
 		return (ft_strdup(value_start + 1));
 	return ("");
 }
 
-void	set_env(t_env_data *e_data, char *var_name, char *value)
+char	*create_env_entry(char *var_name, char *value, bool is_equal)
+{
+	char	*entry;
+
+	if (is_equal)
+		entry = ft_strjoin(var_name, "=");
+	else
+		entry = ft_strdup(var_name);
+	if (value != NULL)
+		entry = ft_strjoin(entry, value);
+	return (entry);
+}
+
+void	set_env(t_env_data *e_data, char *var_name, char *value, bool is_equal)
 {
 	int		i;
 	int		count;
@@ -81,7 +103,7 @@ void	set_env(t_env_data *e_data, char *var_name, char *value)
 	i = find_index(e_data, var_name, true);
 	if (i >= 0)
 		e_data->env[i] = ft_strjoin(ft_strjoin(var_name, "="), value);
-	else if (i == -2)
+	else
 	{
 		count = 0;
 		while (e_data->env[count])
@@ -92,8 +114,7 @@ void	set_env(t_env_data *e_data, char *var_name, char *value)
 		i = -1;
 		while (++i < count)
 			new_env[i] = e_data->env[i];
-		new_env[count] = ft_strjoin(var_name, "=");
-		new_env[count] = ft_strjoin(new_env[count], value);
+		new_env[count] = create_env_entry(var_name, value, is_equal);
 		new_env[count + 1] = NULL;
 		e_data->env = new_env;
 	}

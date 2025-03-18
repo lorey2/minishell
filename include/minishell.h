@@ -45,7 +45,7 @@ extern int		g_signal;
 
 typedef struct s_path_data
 {
-	char	*path;
+	char	*env_path;
 	char	**path_split;
 	char	**path_split_slash;
 	char	*path_with_com;
@@ -99,6 +99,14 @@ typedef struct s_parsing_data
 	struct s_parsing_data	*previous;
 }							t_parsing_data;
 
+typedef struct s_pre_parsing_data
+{
+	int		i;
+	bool	in_dquotes;
+	char	*modified;
+	int		bkp2;
+}			t_pre_pars_data;
+
 typedef struct s_env_data
 {
 	char	**env;
@@ -117,6 +125,7 @@ typedef struct s_data
 	t_path_data		*path;
 	t_env_data		*env;
 	t_var			*var;
+	t_pre_pars_data	*pp_data;
 	char			*input;
 	int				exit_nbr;
 	int				last_exit;
@@ -129,11 +138,13 @@ void		text_animation(void);
 void		explosion_animation(void);
 //setup
 void		setup_env(t_data *data, char **env);
-void		setup_path(t_path_data *path_data);
+void		setup_path(t_data *data, t_path_data *path_data);
 char		*setup_prompt(t_data *data);
 void		init_struct(t_data *data);
 // pre_parsing
-int			pre_parsing(t_data *data, bool here_doc);
+int			pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data);
+void		expansion(t_data *data, t_pre_pars_data *pp_data);
+void		expand_tilde(t_data *data, t_pre_pars_data *pp_data);
 //parsing
 void		parsing(char *input, t_data *data);
 void		init_new_here(t_here_docs *here);
@@ -166,8 +177,10 @@ int			mini_export(t_parsing_data *p_data, t_path_data *path_data,
 				t_var *v_data, t_env_data *e_data);
 void		copy_and_sort_array(char **src, t_parsing_data *data);
 //update env
-void		set_env(t_env_data *e_data, char *var_name, char *value);
-char		*get_env(t_env_data *e_data, char *var_name);
+void		set_env(t_env_data *e_data, char *var_name,
+				char *value, bool is_equal);
+char		*get_env(t_env_data *e_data, char *var_name, t_var *var);
+void		write_env_error(char *var_name, char *message);
 bool		is_valid_var_name(char	*arg);
 //error and free
 void		error(char *message, t_data *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pre_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
+/*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/11 18:08:08 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 14:23:39 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2025/03/17 22:14:27 by lorey             #+#    #+#             */
+/*   Updated: 2025/03/17 22:42:05 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,57 +28,45 @@ Undefined (no variable extention)", 66);
 	return (i);
 }
 
-static int	expansion(
-	char **modified, int *bkp2, t_data *data, int i)
+void	expand_tilde(t_data *data, t_pre_pars_data *pp_data)
 {
-	char	*var;
-	char	*expanded_var;
-	int		backup;
+	char	*home_dir;
 
-	if ((data->input)[i] && (data->input)[i] == '$')
-	{
-		*modified
-			= ft_strjoin(*modified, ft_substr(data->input, *bkp2, i - *bkp2));
-		i++;
-		backup = i;
-		while ((data->input)[i] && (data->input)[i] != ' '
-			&& (data->input)[i] != '$'
-			&& (data->input)[i] != '\''
-			&& (data->input)[i] != '\"')
-			i++;
-		var = ft_substr(data->input, backup, i - backup - 1);
-		expanded_var = get_env(data->env, var);
-		*modified = ft_strjoin(*modified, expanded_var);
-		*bkp2 = i;
-		i--;
-	}
-	return (i);
+	pp_data->modified = ft_strjoin(pp_data->modified, ft_substr(data->input,
+				pp_data->bkp2, pp_data->i - pp_data->bkp2));
+	home_dir = get_env(data->env, "HOME", data->var);
+	if (home_dir)
+		pp_data->modified = ft_strjoin(pp_data->modified, home_dir);
+	else
+		pp_data->modified = ft_strjoin(pp_data->modified, "/default/home");
+	pp_data->bkp2 = pp_data->i + 1;
 }
 
-int	pre_parsing(t_data *data, bool here_doc)
+int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 {
-	int		i;
-	int		bkp2;
-	char	*modified;
-
-	i = -1;
-	bkp2 = 0;
-	modified = ft_strdup("");
-	while (++i >= 0)
+	pp_data->i = -1;
+	pp_data->bkp2 = 0;
+	pp_data->in_dquotes = false;
+	pp_data->modified = ft_strdup("");
+	while (++(pp_data->i) >= 0)
 	{
-		i = handle_simple_quote(data->input, i, here_doc);
-		i = expansion(&modified, &bkp2, data, i);
-		if (!((data->input)[i]))
+		if ((data->input)[pp_data->i]
+			&& (data->input)[pp_data->i] == '\"' && !here_doc)
+			pp_data->in_dquotes = !pp_data->in_dquotes;
+		pp_data->i = handle_simple_quote(data->input, pp_data->i, here_doc);
+		expansion(data, pp_data);
+		if (!((data->input)[pp_data->i]))
 		{
-			modified
-				= ft_strjoin(modified, ft_substr(data->input, bkp2, i - bkp2));
+			pp_data->modified
+				= ft_strjoin(pp_data->modified, ft_substr(data->input,
+						pp_data->bkp2, pp_data->i - pp_data->bkp2));
 			break ;
 		}
 	}
-	if (modified[0] != '\0')
+	if (pp_data->modified[0] != '\0')
 	{
 		free(data->input);
-		data->input = strdup(modified);
+		data->input = strdup(pp_data->modified);
 	}
-	return (free(modified), 0);
+	return (free(pp_data->modified), 0);
 }
