@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/02/12 18:03:37 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/03 22:55:16 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,14 +123,14 @@ int	open_in_file(char *file_name)
 	return (fd);
 }
 
-int	open_file(t_parsing_data *token)
+int	open_file(t_file *file)
 {
 	int	fd;
 
-	if (token->append_file)
-		fd = open(token->outfile, O_WRONLY | O_APPEND | O_CREAT, 0666);
+	if (file->append)
+		fd = open(file->name, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	else
-		fd = open(token->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+		fd = open(file->name, O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (fd == -1)
 		error("Cannot open file", NULL);
 	return (fd);
@@ -138,9 +138,16 @@ int	open_file(t_parsing_data *token)
 
 int	check_out_file(t_parsing_data *token)
 {
+	t_file	*file;
+
+	file = token->outfile_list;
 	if (token->outfile)
 	{
-		token->fd_out = open_file(token);
+		while (file)
+		{
+			token->fd_out = open_file(file);
+			file = file->next;
+		}
 		return (1);
 	}
 	return (0);
@@ -167,6 +174,11 @@ char	*gnl(void)
 		buff[i + 1] = 0;
 		if (c == '\n')
 			return (buff);
+		if (c == -1)
+		{
+			ft_putstr_fd("Receive end of file", 1);
+			return (NULL);
+		}
 		i++;
 	}
 	return (NULL);
@@ -310,11 +322,11 @@ void	get_here_docs(t_parsing_data *token)
 	while (1)
 	{
 		line = gnl();
-		if (!ft_strncmp(line, token->delimiter,
-				ft_strlen(token->delimiter)))
+		if (!ft_strncmp(line, token->here_docs->delimiter,
+				ft_strlen(token->here_docs->delimiter)))
 		{
-			free(token->delimiter);
-			token->delimiter = NULL;
+			free(token->here_docs->delimiter);
+			token->here_docs->delimiter = NULL;
 			free(line);
 			return ;
 		}
@@ -329,15 +341,17 @@ void	load_here(t_parsing_data *token)
 	{
 		if (token->delimiter)
 		{
-			if (!token->here)
+			while (token->here_docs)
 			{
+				free(token->here);
+				token->here = NULL;
 				token->here = malloc(sizeof(char));
 				if (!token->here)
 					error("Malloc error", NULL);
 				token->here[0] = '\0';
+				get_here_docs(token);
+				token->here_docs = token->here_docs->next;
 			}
-			get_here_docs(token);
-
 		}
 		token = token->next;
 	}
@@ -375,6 +389,5 @@ void    process(t_data *data)
     
     dup2(saved_stdin, STDIN_FILENO);
     close(saved_stdin);
-    wait_for_all(data);
 }
 
