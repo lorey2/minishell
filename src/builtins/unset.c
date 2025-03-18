@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:08:54 by lorey             #+#    #+#             */
-/*   Updated: 2025/01/23 03:43:00 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 15:47:25 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	unset(t_env_data *e_data, t_path_data *path_data, t_parsing_data *p_data)
 	int	i;
 	int	j;
 
+	if (p_data->pipe)
+		exit(0);
 	i = setup_flags(p_data, path_data);
 	if (i == -1)
 		return (1);

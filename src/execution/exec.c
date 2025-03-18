@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/03/18 14:52:54 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 16:21:50 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,12 @@ void	wait_for_all(t_data *data)
 
 void    last_exec(t_data *data, t_parsing_data *token)
 {
+	if (is_builtin(token->value) && !token->pipe)
+	{
+		exec_builtin(data, token);
+		return ;
+	}
+
     pid_t child_pid = fork();
     if (child_pid == -1)
         error("fork_error", NULL);
@@ -325,17 +331,21 @@ void    process(t_data *data)
     int             nb_pipe;
     t_parsing_data  *token;
     int             saved_stdin;
+	bool			is_piped;
 
 	saved_stdin = dup(STDIN_FILENO);
     if (saved_stdin == -1)
         error("dup error", data);
 
     nb_pipe = count_pipe(data);
+    if (nb_pipe >= 1)
+		is_piped = true;
     token = data->token;
     load_here(token);
     
     while (nb_pipe >= 1)
     {
+		token->pipe = true;
         token->saved_stdin = saved_stdin;
         check_out_file(token);
         check_in_file(token);
@@ -344,7 +354,8 @@ void    process(t_data *data)
         token = token->next;
         nb_pipe--;
     }
-    
+	if (is_piped)
+		token->pipe = true;
     check_out_file(token);
     check_in_file(token);
     if (token->value)
