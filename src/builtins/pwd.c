@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:08:54 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/19 15:02:51 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 14:52:14 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 
 	i = 0;
 	init_flags(path_data);
+	if (!p_data->arg)
+		return (i);
 	while (p_data->arg[++i] && p_data->arg[i][1] && p_data->arg[i][0] == '-' && \
 		does_contain_only(p_data->arg[i], "LP"))
 		fill(p_data->arg[i], path_data);
@@ -44,4 +46,5 @@ void	pwd(t_parsing_data *p_data, t_path_data *path_data)
 		write(p_data->fd_out, shell_prompt, ft_strlen(shell_prompt));
 		write(p_data->fd_out, "\n", 1);
 	}
+	exit(300);
 }

@@ -6,34 +6,13 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/03/03 22:55:16 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 14:52:54 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 #include <unistd.h>
-
-void    execute_builtin_pipe(t_data *data, t_parsing_data *token, int pipefd[2])
-{
-    pid_t   pid;
-
-    pid = fork();
-    if (pid == -1)
-        error("Cannot fork process", data);
-    if (pid == 0)
-    {
-        close(pipefd[0]);
-        if (token->fd_out != STDOUT_FILENO)
-            dup2(token->fd_out, STDOUT_FILENO);
-        else
-            dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[1]);
-        exec_builtin(data, token);
-        exit(0);
-    }
-    token->pid = pid;
-}
 
 void    execute_command_pipe(t_data *data, t_parsing_data *token, int pipefd[2])
 {
@@ -79,6 +58,8 @@ void	execute(t_data *data, t_parsing_data *token)
 	int	i;
 
 	i = -1;
+	if (is_builtin(token->value))
+		exec_builtin(data, token);
 	if (token->value[0] == '.' || token->value[0] == '/')
 		if (!(execve(token->value, token->arg, data->env->env) == -1))
 			return ;
@@ -104,10 +85,10 @@ void    pipex(t_data *data, t_parsing_data *token)
     if (pipe(pipefd) == -1)
         error("Pipe err", data);
 
-    if (is_builtin(token->value))
-        execute_builtin_pipe(data, token, pipefd);
-    else
-        execute_command_pipe(data, token, pipefd);
+    // if (is_builtin(token->value))
+    //     execute_builtin_pipe(data, token, pipefd);
+    // else
+    execute_command_pipe(data, token, pipefd);
 
     close(pipefd[1]);
     dup2(pipefd[0], STDIN_FILENO);
@@ -285,26 +266,6 @@ void	wait_for_all(t_data *data)
 
 void    last_exec(t_data *data, t_parsing_data *token)
 {
-    if (is_builtin(token->value))
-    {
-        int stdout_backup = -1;
-        
-        if (token->fd_out != STDOUT_FILENO)
-        {
-            stdout_backup = dup(STDOUT_FILENO);
-            dup2(token->fd_out, STDOUT_FILENO);
-        }
-        
-        exec_builtin(data, token);
-        
-        if (stdout_backup != -1)
-        {
-            dup2(stdout_backup, STDOUT_FILENO);
-            close(stdout_backup);
-        }
-        return;
-    }
-
     pid_t child_pid = fork();
     if (child_pid == -1)
         error("fork_error", NULL);
