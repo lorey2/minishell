@@ -85,6 +85,7 @@ int	main(int argc __attribute__((unused)),
 	setup_signal();
 	big_loop(&data);
 	free_everything(&data);
+	write(1, "exit", 4);
 	if (data.exit_nbr == -1)
 		return (0);
 	else
