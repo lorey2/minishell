@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/18 00:01:25 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/03 22:53:06 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,19 @@ typedef struct s_path_data
 	bool	is_p;
 }				t_path_data;
 
+typedef struct s_file
+{
+	char			*name;
+	bool			append;
+	struct s_file	*next;
+}					t_file;
+
+typedef struct s_here_docs
+{
+	char				*delimiter;
+	struct s_here_docs	*next;
+}						t_here_docs;
+
 typedef struct s_parsing_data
 {
 	pid_t					pid;
@@ -80,6 +93,8 @@ typedef struct s_parsing_data
 	bool					is_cmd;
 	bool					is_after_pipe;
 	bool					pipe;
+	t_file					*outfile_list;
+	t_here_docs				*here_docs;
 	struct s_parsing_data	*next;
 	struct s_parsing_data	*previous;
 }							t_parsing_data;
@@ -117,6 +132,7 @@ typedef struct s_data
 	int				return_nbr;
 }					t_data;
 
+
 //animation
 void		text_animation(void);
 void		explosion_animation(void);
@@ -131,8 +147,10 @@ void		expansion(t_data *data, t_pre_pars_data *pp_data);
 void		expand_tilde(t_data *data, t_pre_pars_data *pp_data);
 //parsing
 void		parsing(char *input, t_data *data);
+void		init_new_here(t_here_docs *here);
 void		init_new_token(t_parsing_data *token);
 void		init_new_var(t_var *var);
+void		init_new_file(t_file *file);
 void		process(t_data *data);
 //signal
 void		setup_signal(void);

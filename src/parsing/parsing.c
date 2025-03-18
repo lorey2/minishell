@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/06 14:55:30 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/26 19:51:54 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,14 +211,50 @@ char    *check_here_doc_del(char **input)
     return (del);
 }
 
+t_here_docs	*get_last_here(t_here_docs *here)
+{
+	t_here_docs	*head;
+
+	head = here;
+	while (head)
+	{
+		if (!head->next)
+			return (head);
+		head = head->next;
+	}
+	return (head);
+}
+
+void	handle_here(char **input, t_parsing_data *pars)
+{
+	t_here_docs	*here;
+	t_here_docs	*last_here;
+	char		*delimiter;
+
+	here = malloc(sizeof(t_here_docs));
+	if (!here)
+		error("malloc err", NULL);
+	init_new_here(here);
+	delimiter = check_here_doc_del(input);
+	pars->delimiter = delimiter;
+	here->delimiter = delimiter;
+	if (!pars->here_docs)
+		pars->here_docs = here;
+	else
+	{
+		last_here = get_last_here(pars->here_docs);
+		last_here->next = here;
+	}
+	skip_space(input);
+}
+
 void	handle_in_file(char **input, t_parsing_data *pars)
 {
 	++(*input);
 	if (**input == '<')
 	{
 		++(*input);
-		pars->delimiter = check_here_doc_del(input);
-		pars->infile = NULL;
+		handle_here(input, pars);
 	}
 	else
 	{
@@ -230,17 +266,47 @@ void	handle_in_file(char **input, t_parsing_data *pars)
 	skip_space(input);
 }
 
+t_file	*get_last_file(t_file *file)
+{
+	t_file	*head;
+
+	head = file;
+	while (head)
+	{
+		if (!head->next)
+			return (head);
+		head = head->next;
+	}
+	return (head);
+}
+
 void	handle_out_file(char **input, t_parsing_data *pars)
 {
+	t_file	*file;
+	t_file	*last_file;
+
+	file = malloc(sizeof(t_file));
+	if (!file)
+		error("malloc error", NULL);
+	init_new_file(file);
 	pars->out_file = true;
 	++(*input);
 	if (**input == '>')
 	{
 		pars->append_file = true;
+		file->append = true;
 		++(*input);
 	}
 	skip_space(input);
 	pars->outfile = get_value(input, pars, 1);
+	file->name = pars->outfile;
+	if (!pars->outfile_list)
+		pars->outfile_list = file;
+	else
+	{
+		last_file = get_last_file(pars->outfile_list);
+		last_file->next = file;
+	}
 	skip_space(input);
 }
 

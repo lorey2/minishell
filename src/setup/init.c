@@ -18,6 +18,7 @@ int	g_signal;
 void	init_new_token(t_parsing_data *token)
 {
 	token->status = 0;
+	token->outfile_list = NULL;
 	token->delimiter = NULL;
 	token->fd_out = STDOUT_FILENO;
 	token->fd_in = STDIN_FILENO;
@@ -25,6 +26,7 @@ void	init_new_token(t_parsing_data *token)
 	token->pos = -1;
 	token->infile = NULL;
 	token->outfile = NULL;
+	token->here_docs = NULL;
 	token->here = NULL;
 	token->in_file = false;
 	token->out_file = false;
@@ -57,6 +59,19 @@ void	init_path(t_path_data *path_data)
 	path_data->is_big_l = false;
 	path_data->is_big_p = false;
 	path_data->is_big_e = false;
+}
+
+void	init_new_file(t_file *file)
+{
+	file->name = NULL;
+	file->append = false;
+	file->next = NULL;
+}
+
+void	init_new_here(t_here_docs *here)
+{
+	here->delimiter = NULL;
+	here->next = NULL;
 }
 
 void	init_struct(t_data *data)
