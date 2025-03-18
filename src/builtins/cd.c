@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/17 12:51:51 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 15:43:35 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,11 @@ int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
 {
 	int	i;
 
+	if (p_data->pipe)
+		exit(0);
 	i = setup_flags(p_data, path_data);
 	if (i == -1)
-		return (1);
+		return(1);
 	if (p_data->arg[i])
 	{
 		if (check_dash(p_data, e_data, get_env(e_data, "HOME", NULL), i))

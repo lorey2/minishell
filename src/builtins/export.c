@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:38:14 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/06 09:08:16 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/18 16:05:23 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 
 	i = 0;
 	init_flags(path_data);
+	if (!p_data->arg)
+		return (i);
 	while (p_data->arg[++i] && p_data->arg[i][1] && p_data->arg[i][0] == '-' && \
 		does_contain_only(p_data->arg[i], "fnp"))
 		fill(p_data->arg[i], path_data);
@@ -91,10 +93,12 @@ int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
 			t_var *v_data, t_env_data *e_data)
 {
 	int		i;
-
+	
 	i = setup_flags(p_data, path_data);
-	if (p_data->arg[i])
+	if (p_data->arg && p_data->arg[i])
 	{
+		if (p_data->pipe)
+			exit(0);
 		i--;
 		while (p_data->arg[++i])
 		{
