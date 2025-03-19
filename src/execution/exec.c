@@ -6,13 +6,11 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/03/18 16:21:50 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 15:14:13 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 void    execute_command_pipe(t_data *data, t_parsing_data *token, int pipefd[2])
 {
@@ -75,7 +73,8 @@ void	execute(t_data *data, t_parsing_data *token)
 		free(data->path->path_with_com);
 		data->path->path_with_com = NULL;
 	}
-	error("command not found", NULL);
+	ft_putstr_fd("Command not found\n", STDERR_FILENO);
+	exit(127);
 }
 
 void    pipex(t_data *data, t_parsing_data *token)
@@ -237,6 +236,18 @@ int	check_in_file(t_parsing_data *token)
 	return (0);
 }
 
+void	final_wait(t_data *data)
+{
+	t_parsing_data	*token;
+	
+	token = data->token;
+	while (token)
+	{
+		waitpid(token->pid, NULL, 0);
+		token = token->next;
+	}
+}
+
 void	wait_for_all(t_data *data)
 {
 	t_parsing_data	*token;
@@ -251,9 +262,12 @@ void	wait_for_all(t_data *data)
 	token = data->token;
 	while (token)
 	{
-		waitpid(token->pid, &status, 0);
-		if (WIFEXITED(status))
-			token->status = WEXITSTATUS(status);
+		if (token->status == -1)
+		{
+			waitpid(token->pid, &status, 0);
+			if (WIFEXITED(status))
+				token->status = WEXITSTATUS(status);
+		}
 		token = token->next;
 	}
 	token = data->token;
@@ -262,6 +276,7 @@ void	wait_for_all(t_data *data)
 		data->last_exit = token->status;
 		token = token->next;
 	}
+	final_wait(data);
 }
 
 void    last_exec(t_data *data, t_parsing_data *token)
