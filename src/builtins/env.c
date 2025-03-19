@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:57:47 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/18 16:12:05 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 15:18:12 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	env(t_env_data *e_data, t_parsing_data *p_data)
 		write(p_data->fd_out, e_data->env[i], ft_strlen(e_data->env[i]));
 		write(p_data->fd_out, "\n", 1);
 	}
+	p_data->status = 0;
 	if (p_data->pipe)
-		exit(100);
+		exit(0);
 }

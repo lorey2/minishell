@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/18 15:43:35 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 16:23:50 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ static int	do_cd_update_env(char *arg, t_env_data *e_data)
 	char	cwd[1024];
 
 	if (chdir(arg) == -1)
-		return (write_err("cd : No such file or directory\n"), 1);
+		return (write_err("cd : No such file or directory\n"), -1);
 	set_env(e_data, "OLDPWD", get_env(e_data, "PWD", NULL), true);
 	if (get_env(e_data, "OLDPWD", NULL) == NULL)
-		return (write_err("cd : Memory allocation failed for OLDPWD\n"), 1);
+		return (write_err("cd : Memory allocation failed for OLDPWD\n"), -1);
 	getcwd(cwd, 1024);
 	set_env(e_data, "PWD", cwd, true);
 	if (get_env(e_data, "PWD", NULL) == NULL)
-		return (write_err("cd : Memory allocation failed for PWD\n"), 1);
+		return (write_err("cd : Memory allocation failed for PWD\n"), -1);
 	return (0);
 }
 
@@ -61,9 +61,9 @@ static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
 	if (ft_isequal(p_data->arg[i], "-"))
 	{
 		if (oldpwd == NULL)
-			return (write_err("cd : OLDPWD not set\n"), 1);
+			return (write_err("cd : OLDPWD not set\n"), -1);
 		else if (p_data->arg[i + 1])
-			return (write_err("cd : too many arguments\n"), 1);
+			return (write_err("cd : too many arguments\n"), -1);
 		write(p_data->fd_out, oldpwd, ft_strlen(oldpwd));
 		write(p_data->fd_out, "\n", 1);
 		return (do_cd_update_env(oldpwd, e_data), 1);
@@ -86,18 +86,18 @@ static int	check_dash(t_parsing_data *p_data, t_env_data *e_data
 			{
 				if (!home)
 					return (write_err(
-							"cd : HOME environment variable not set\n"), 1);
+							"cd : HOME environment variable not set\n"), -1);
 				else
 					do_cd_update_env(home, e_data);
 			}
 			else if (p_data->arg[i + 2])
-				return (write_err("cd : too many argumets\n"), 1);
+				return (write_err("cd : too many argumets\n"), -1);
 			else
 				do_cd_update_env(p_data->arg[2], e_data);
 		}
 		else
 			return (write_err("cd : Illegal option (--, -,[working])\n \
-                     (-L, -P, -@, -e[not implemented])\n"), 1);
+                     (-L, -P, -@, -e[not implemented])\n"), -2);
 	}
 	return (0);
 }
@@ -128,20 +128,26 @@ int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
 {
 	int	i;
 
+	p_data->status = 0;
 	if (p_data->pipe)
 		exit(0);
 	i = setup_flags(p_data, path_data);
 	if (i == -1)
-		return(1);
+		return (p_data->status = 1, 1);
 	if (p_data->arg[i])
 	{
-		if (check_dash(p_data, e_data, get_env(e_data, "HOME", NULL), i))
-			return (1);
+		i = check_dash(p_data, e_data, get_env(e_data, "HOME", NULL), i);
+		if (i == -1)
+			return (p_data->status = 1, 1);
+		if (i == -2)
+			return (p_data->status = 2, 1);
 		else if (p_data->arg[i + 1])
-			return (write_err("cd : too many arguments\n"), 1);
+			return (p_data->status = 1
+				, write_err("cd : too many arguments\n"), 1);
 		return (do_cd_update_env(p_data->arg[i], e_data), 0);
 	}
 	if (!get_env(e_data, "HOME", NULL))
-		return (write_err("cd : HOME environment variable not set\n"), 1);
+		return (p_data->status = 1
+			, write_err("cd : HOME environment variable not set\n"), 1);
 	return (do_cd_update_env(get_env(e_data, "HOME", NULL), e_data), 0);
 }

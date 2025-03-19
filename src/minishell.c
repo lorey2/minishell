@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/18 14:35:44 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 15:25:24 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(int argc __attribute__((unused)),
 	setup_signal();
 	big_loop(&data);
 	free_everything(&data);
-	write(1, "exit", 4);
+	write(1, "exit\n", 5);
 	if (data.exit_nbr == -1)
 		return (0);
 	else

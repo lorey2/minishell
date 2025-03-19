@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:02:25 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/06 08:50:25 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 17:33:10 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ void	fill(char *data, t_path_data *path_data)
 			path_data->is_at = true;
 		else if (data[i] == 'n')
 			path_data->is_n = true;
+		else if (data[i] == 'p')
+			path_data->is_p = true;
+		else if (data[i] == 'f')
+			path_data->is_f = true;
+		else if (data[i] == 'v')
+			path_data->is_v = true;
 	}
 }
 
