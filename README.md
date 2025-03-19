@@ -7,7 +7,7 @@
 ---- [✅] builtin | [whatever]<br /><br />
 ---- [✅] echo -n {arg} / echo -n<br /><br />
 ---- [🙄] les guillemets deuxieme arg est split<br /><br />
----- [⏩] heredoc ctrlc... sigals<br /><br />
+---- [⏩] heredoc ctrlc... sigals<br /><br />i
 ---- [✅] cat << EOF1 << EOF2<br /><br />
 ---- [✅] file redir do not create all files <br /><br />
 ---- [✅] export salutand all export... salut=123<br /><br />
@@ -19,6 +19,11 @@
 ---- [✅] echo $ echo $ echo "$"<br /><br />
 ---- [✅] env -i and launch. TELLS THERE IS NO PATH AND EXIT<br /><br />
 ---- [❌] export salut="|"  ls $salut the pipe is a ls arg, not a pipe (we shurely wont do that----<br /><br />
+---- [ ] <<0 | cat -ne                   shouldn't output anything
+---- [ ] <<''      the delimiter should be an empty line
+---- [ ] <<000>00 | cat -ne             should raise error but aaa>0 works
+---- [ ] << | ls    should raise error
+---- [ ] ls || ls   shouldn't work
 ---- [ ] ctrl cd\ after an infinite command   
 ## GENERAL TODO LIST :
 ---- variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />

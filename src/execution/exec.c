@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/03/19 15:14:13 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 18:13:06 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,6 +236,20 @@ int	check_in_file(t_parsing_data *token)
 	return (0);
 }
 
+t_parsing_data	*get_last_token(t_parsing_data *token)
+{
+	t_parsing_data	*head;
+
+	head = token;
+	while (head)
+	{
+		if (!head->next)
+			return (head);
+		head = head->next;
+	}
+	return (head);
+}
+
 void	final_wait(t_data *data)
 {
 	t_parsing_data	*token;
@@ -271,11 +285,7 @@ void	wait_for_all(t_data *data)
 		token = token->next;
 	}
 	token = data->token;
-	while (token)
-	{
-		data->last_exit = token->status;
-		token = token->next;
-	}
+	data->last_exit = get_last_token(token)->status;
 	final_wait(data);
 }
 
@@ -306,8 +316,7 @@ void	get_here_docs(t_parsing_data *token)
 	while (1)
 	{
 		line = gnl();
-		if (!ft_strncmp(line, token->here_docs->delimiter,
-				ft_strlen(token->here_docs->delimiter)))
+		if (ft_check_line(line, token->delimiter))
 		{
 			free(token->here_docs->delimiter);
 			token->here_docs->delimiter = NULL;
@@ -319,12 +328,17 @@ void	get_here_docs(t_parsing_data *token)
 	}
 }
 
-void	load_here(t_parsing_data *token)
+int	load_here(t_parsing_data *token)
 {
 	while (token)
 	{
 		if (token->delimiter)
 		{
+			if (*token->delimiter == '|' || !token->delimiter)
+			{
+				ft_putstr_fd("Invalid delimiter in here doc\n", 2);
+				return (0);
+			}
 			while (token->here_docs)
 			{
 				free(token->here);
@@ -339,6 +353,7 @@ void	load_here(t_parsing_data *token)
 		}
 		token = token->next;
 	}
+	return (1);
 }
 
 void    process(t_data *data)
@@ -351,12 +366,15 @@ void    process(t_data *data)
 	saved_stdin = dup(STDIN_FILENO);
     if (saved_stdin == -1)
         error("dup error", data);
-
     nb_pipe = count_pipe(data);
     if (nb_pipe >= 1)
 		is_piped = true;
     token = data->token;
-    load_here(token);
+    if (!load_here(token))
+	{
+		get_last_token(token)->status = 2;
+		return ;
+	}
     
     while (nb_pipe >= 1)
     {
