@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:08:54 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/18 15:47:25 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 17:47:24 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,8 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 	while (p_data->arg[++i] && p_data->arg[i][1] && p_data->arg[i][0] == '-' && \
 		does_contain_only(p_data->arg[i], "vf"))
 		fill(p_data->arg[i], path_data);
-	if (path_data->is_v && path_data->is_f)
-		return (write_err("unset : \
-			cannot simultaneously unset a function and a variable"), -1);
-	if (path_data->is_f)
-		return (write_err("unset : -f is not implemented yet :'(\n"), -1);
+	if (path_data->is_f || path_data->is_v)
+		return (write_err("unset : -f and -v is not implemented yet :'(\n"), -1);
 	return (i);
 }
 

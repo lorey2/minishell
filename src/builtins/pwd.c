@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:08:54 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/18 16:16:18 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 15:12:36 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,13 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 	init_flags(path_data);
 	if (!p_data->arg)
 		return (i);
-	while (p_data->arg[++i] && p_data->arg[i][1] && p_data->arg[i][0] == '-' && \
-		does_contain_only(p_data->arg[i], "LP"))
-		fill(p_data->arg[i], path_data);
+	while (p_data->arg[++i] && p_data->arg[i][1] && p_data->arg[i][0] == '-')
+	{
+		if (does_contain_only(p_data->arg[i], "LP"))
+			fill(p_data->arg[i], path_data);
+		else
+			return (write_err("pwd: Unknown option only LP\n"), -1);
+	}
 	if (path_data->is_big_l || path_data->is_big_p)
 		return (write_err(" -L, -P are not implemented yet :'(\n"), \
 				-1);
@@ -39,8 +43,9 @@ void	pwd(t_parsing_data *p_data, t_path_data *path_data)
 
 	if (setup_flags(p_data, path_data) == -1)
 	{
+		p_data->status = 2;
 		if (p_data->pipe)
-			exit(111);
+			exit(2);
 		return ;
 	}
 	if (getcwd(shell_prompt, sizeof(shell_prompt)) == NULL)
@@ -50,6 +55,7 @@ void	pwd(t_parsing_data *p_data, t_path_data *path_data)
 		write(p_data->fd_out, shell_prompt, ft_strlen(shell_prompt));
 		write(p_data->fd_out, "\n", 1);
 	}
+	p_data->status = 0;
 	if (p_data->pipe)
-		exit(300);
+		exit(0);
 }

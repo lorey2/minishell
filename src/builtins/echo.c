@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:55:52 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/18 16:14:57 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 15:23:10 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,8 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 	return (i);
 }
 
-void	echo(t_parsing_data *p_data, t_path_data *path_data)
+void	do_echo(t_parsing_data *p_data, t_path_data *path_data, int i)
 {
-	int	i;
-
-	i = setup_flags(p_data, path_data);
-	if (p_data->arg[i] == NULL)
-	{
-		if (path_data->is_n == false)
-			write(p_data->fd_out, "\n", 1);
-		if (p_data->pipe)
-			exit(111);
-		return ;
-	}
-	if (i == -1)
-	{
-		if (p_data->pipe)
-			exit(111);
-		return ;
-	}
 	if (p_data->arg[i])
 		echo_write(p_data, i);
 	while (p_data->arg[++i])
@@ -86,6 +69,30 @@ void	echo(t_parsing_data *p_data, t_path_data *path_data)
 	}
 	if (path_data->is_n == false)
 		write(p_data->fd_out, "\n", 1);
+}
+
+void	echo(t_parsing_data *p_data, t_path_data *path_data)
+{
+	int	i;
+
+	p_data->status = 0;
+	i = setup_flags(p_data, path_data);
+	if (p_data->arg[i] == NULL)
+	{
+		if (path_data->is_n == false)
+			write(p_data->fd_out, "\n", 1);
+		if (p_data->pipe)
+			exit(0);
+		return ;
+	}
+	if (i == -1)
+	{
+		p_data->status = 2;
+		if (p_data->pipe)
+			exit(2);
+		return ;
+	}
+	do_echo(p_data, path_data, i);
 	if (p_data->pipe)
-		exit(111);
+		exit(0);
 }
