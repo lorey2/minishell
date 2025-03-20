@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/18 00:01:31 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 15:06:51 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	g_signal;
 
 void	init_new_token(t_parsing_data *token)
 {
-	token->status = 0;
+	token->status = -1;
 	token->outfile_list = NULL;
 	token->delimiter = NULL;
 	token->fd_out = STDOUT_FILENO;
