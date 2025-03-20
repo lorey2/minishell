@@ -6,13 +6,11 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/03/18 16:21:50 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 18:13:06 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 void    execute_command_pipe(t_data *data, t_parsing_data *token, int pipefd[2])
 {
@@ -75,7 +73,8 @@ void	execute(t_data *data, t_parsing_data *token)
 		free(data->path->path_with_com);
 		data->path->path_with_com = NULL;
 	}
-	error("command not found", NULL);
+	ft_putstr_fd("Command not found\n", STDERR_FILENO);
+	exit(127);
 }
 
 void    pipex(t_data *data, t_parsing_data *token)
@@ -237,6 +236,32 @@ int	check_in_file(t_parsing_data *token)
 	return (0);
 }
 
+t_parsing_data	*get_last_token(t_parsing_data *token)
+{
+	t_parsing_data	*head;
+
+	head = token;
+	while (head)
+	{
+		if (!head->next)
+			return (head);
+		head = head->next;
+	}
+	return (head);
+}
+
+void	final_wait(t_data *data)
+{
+	t_parsing_data	*token;
+	
+	token = data->token;
+	while (token)
+	{
+		waitpid(token->pid, NULL, 0);
+		token = token->next;
+	}
+}
+
 void	wait_for_all(t_data *data)
 {
 	t_parsing_data	*token;
@@ -251,17 +276,17 @@ void	wait_for_all(t_data *data)
 	token = data->token;
 	while (token)
 	{
-		waitpid(token->pid, &status, 0);
-		if (WIFEXITED(status))
-			token->status = WEXITSTATUS(status);
+		if (token->status == -1)
+		{
+			waitpid(token->pid, &status, 0);
+			if (WIFEXITED(status))
+				token->status = WEXITSTATUS(status);
+		}
 		token = token->next;
 	}
 	token = data->token;
-	while (token)
-	{
-		data->last_exit = token->status;
-		token = token->next;
-	}
+	data->last_exit = get_last_token(token)->status;
+	final_wait(data);
 }
 
 void    last_exec(t_data *data, t_parsing_data *token)
@@ -291,8 +316,7 @@ void	get_here_docs(t_parsing_data *token)
 	while (1)
 	{
 		line = gnl();
-		if (!ft_strncmp(line, token->here_docs->delimiter,
-				ft_strlen(token->here_docs->delimiter)))
+		if (ft_check_line(line, token->delimiter))
 		{
 			free(token->here_docs->delimiter);
 			token->here_docs->delimiter = NULL;
@@ -304,12 +328,17 @@ void	get_here_docs(t_parsing_data *token)
 	}
 }
 
-void	load_here(t_parsing_data *token)
+int	load_here(t_parsing_data *token)
 {
 	while (token)
 	{
 		if (token->delimiter)
 		{
+			if (*token->delimiter == '|' || !token->delimiter)
+			{
+				ft_putstr_fd("Invalid delimiter in here doc\n", 2);
+				return (0);
+			}
 			while (token->here_docs)
 			{
 				free(token->here);
@@ -324,6 +353,7 @@ void	load_here(t_parsing_data *token)
 		}
 		token = token->next;
 	}
+	return (1);
 }
 
 void    process(t_data *data)
@@ -336,12 +366,15 @@ void    process(t_data *data)
 	saved_stdin = dup(STDIN_FILENO);
     if (saved_stdin == -1)
         error("dup error", data);
-
     nb_pipe = count_pipe(data);
     if (nb_pipe >= 1)
 		is_piped = true;
     token = data->token;
-    load_here(token);
+    if (!load_here(token))
+	{
+		get_last_token(token)->status = 2;
+		return ;
+	}
     
     while (nb_pipe >= 1)
     {

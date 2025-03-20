@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/18 14:35:44 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 15:03:17 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,13 @@ static void	big_loop(t_data *data)
 			break ;
 		big_loop_execution(data);
 		wait_for_all(data);
-		wait_for_all(data);
-		// printf("LAST EXIT = %d\n", data->last_exit);
+		final_wait(data);
+		printf("LAST EXIT = %d\n", data->last_exit);
 		if (data->exit_nbr != -1)
 			break ;
 		free(data->input);
 		free(shell_prompt);
 	}
-	// wait_for_all(data);
 	free(data->input);
 	free(shell_prompt);
 }

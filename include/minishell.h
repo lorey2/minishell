@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/03 22:53:06 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 14:47:46 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ void		setup_signal(void);
 //execution
 void		execute(t_data *data, t_parsing_data *token);
 void		wait_for_all(t_data *data);
+void		final_wait(t_data *data);
 //buitins
 bool		exec_builtin(t_data *data, t_parsing_data *p_data);
 bool		is_builtin(char *cmd);
