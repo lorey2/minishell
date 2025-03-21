@@ -11,7 +11,7 @@
 ---- [✅] cat << EOF1 << EOF2<br /><br />
 ---- [✅] file redir do not create all files <br /><br />
 ---- [✅] export salutand all export... salut=123<br /><br />
----- [❌] ctrl c supprime la ligne pour l'instant les command sans \n marchent pas<br /><br />
+---- [✅] ctrl c supprime la ligne pour l'instant les command sans \n marchent pas<br /><br />
 ---- [✅] !!!last exit!!!<br /><br />
 ---- [✅] builtins return<br /><br />
 ---- [✅] $?<br /><br />
