@@ -7,7 +7,7 @@
 ---- [✅] builtin | [whatever]<br /><br />
 ---- [✅] echo -n {arg} / echo -n<br /><br />
 ---- [🙄] les guillemets deuxieme arg est split<br /><br />
----- [⏩] heredoc ctrlc... sigals<br /><br />i
+---- [⏩] heredoc ctrlc... sigals<br /><br />
 ---- [✅] cat << EOF1 << EOF2<br /><br />
 ---- [✅] file redir do not create all files <br /><br />
 ---- [✅] export salutand all export... salut=123<br /><br />
