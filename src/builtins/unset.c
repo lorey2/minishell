@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:08:54 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/19 17:47:24 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/21 16:16:32 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	unset(t_env_data *e_data, t_path_data *path_data, t_parsing_data *p_data)
 		if (j >= 0)
 		{
 			e_data->env[j] = NULL;
-			while (e_data->env[j] && e_data->env[j + 1])
+			while (e_data->env[j + 1])
 			{
 				e_data->env[j] = e_data->env[j + 1];
 				j++;
