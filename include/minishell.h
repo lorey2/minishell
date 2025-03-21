@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/19 14:47:46 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/21 14:06:59 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ typedef struct s_data
 	int				return_nbr;
 }					t_data;
 
-
 //animation
 void		text_animation(void);
 void		explosion_animation(void);
@@ -166,6 +165,7 @@ bool		does_contain_only(char *data, char *list_args);
 bool		check_builtin(t_data *data, t_parsing_data *p_data);
 int			cd(t_parsing_data *p_data, t_path_data *path_data,
 				t_env_data *e_data);
+int			do_cd_update_env(char *arg, t_env_data *e_data);
 void		pwd(t_parsing_data *p_data, t_path_data *path_data);
 void		echo(t_parsing_data *p_data, t_path_data *path_data);
 int			unset(t_env_data *e_data,
