@@ -3,33 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
+/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/17 16:27:37 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/03/19 18:13:06 by maambuhl         ###   LAUSANNE.ch       */
+/*   Created: 2025/03/21 17:59:29 by lorey             #+#    #+#             */
+/*   Updated: 2025/03/21 17:59:42 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    execute_command_pipe(t_data *data, t_parsing_data *token, int pipefd[2])
+void	execute_command_pipe(t_data *data, t_parsing_data *token, int pipefd[2])
 {
-    pid_t   pid;
+	pid_t	pid;
 
-    pid = fork();
-    if (pid == -1)
-        error("Cannot fork process", data);
-    if (pid == 0)
-    {
-        close(pipefd[0]);
-        if (token->fd_out != STDOUT_FILENO)
-            dup2(token->fd_out, STDOUT_FILENO);
-        else
-            dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[1]);
-        execute(data, token);
-    }
-    token->pid = pid;
+	pid = fork();
+	if (pid == -1)
+		error("Cannot fork process", data);
+	if (pid == 0)
+	{
+		close(pipefd[0]);
+		if (token->fd_out != STDOUT_FILENO)
+			dup2(token->fd_out, STDOUT_FILENO);
+		else
+			dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+		execute(data, token);
+	}
+	token->pid = pid;
 }
 
 int	count_pipe(t_data *data)
@@ -77,21 +77,21 @@ void	execute(t_data *data, t_parsing_data *token)
 	exit(127);
 }
 
-void    pipex(t_data *data, t_parsing_data *token)
+void	pipex(t_data *data, t_parsing_data *token)
 {
-    int     pipefd[2];
+	int	 pipefd[2];
 
-    if (pipe(pipefd) == -1)
-        error("Pipe err", data);
+	if (pipe(pipefd) == -1)
+		error("Pipe err", data);
 
-    // if (is_builtin(token->value))
-    //     execute_builtin_pipe(data, token, pipefd);
-    // else
-    execute_command_pipe(data, token, pipefd);
+	// if (is_builtin(token->value))
+	//	 execute_builtin_pipe(data, token, pipefd);
+	// else
+	execute_command_pipe(data, token, pipefd);
 
-    close(pipefd[1]);
-    dup2(pipefd[0], STDIN_FILENO);
-    close(pipefd[0]);
+	close(pipefd[1]);
+	dup2(pipefd[0], STDIN_FILENO);
+	close(pipefd[0]);
 }
 
 int	open_in_file(char *file_name)
@@ -289,7 +289,7 @@ void	wait_for_all(t_data *data)
 	final_wait(data);
 }
 
-void    last_exec(t_data *data, t_parsing_data *token)
+void	last_exec(t_data *data, t_parsing_data *token)
 {
 	if (is_builtin(token->value) && !token->pipe)
 	{
@@ -297,16 +297,16 @@ void    last_exec(t_data *data, t_parsing_data *token)
 		return ;
 	}
 
-    pid_t child_pid = fork();
-    if (child_pid == -1)
-        error("fork_error", NULL);
-    if (child_pid == 0)
-    {
-        if (token->fd_out != STDOUT_FILENO)
-            dup2(token->fd_out, STDOUT_FILENO);
-        execute(data, token);
-    }
-    token->pid = child_pid;
+	pid_t child_pid = fork();
+	if (child_pid == -1)
+		error("fork_error", NULL);
+	if (child_pid == 0)
+	{
+		if (token->fd_out != STDOUT_FILENO)
+			dup2(token->fd_out, STDOUT_FILENO);
+		execute(data, token);
+	}
+	token->pid = child_pid;
 }
 
 void	get_here_docs(t_parsing_data *token)
@@ -356,45 +356,45 @@ int	load_here(t_parsing_data *token)
 	return (1);
 }
 
-void    process(t_data *data)
+void	process(t_data *data)
 {
-    int             nb_pipe;
-    t_parsing_data  *token;
-    int             saved_stdin;
+	int			 nb_pipe;
+	t_parsing_data  *token;
+	int			 saved_stdin;
 	bool			is_piped;
 
 	saved_stdin = dup(STDIN_FILENO);
-    if (saved_stdin == -1)
-        error("dup error", data);
-    nb_pipe = count_pipe(data);
-    if (nb_pipe >= 1)
+	if (saved_stdin == -1)
+		error("dup error", data);
+	nb_pipe = count_pipe(data);
+	if (nb_pipe >= 1)
 		is_piped = true;
-    token = data->token;
-    if (!load_here(token))
+	token = data->token;
+	if (!load_here(token))
 	{
 		get_last_token(token)->status = 2;
 		return ;
 	}
-    
-    while (nb_pipe >= 1)
-    {
+	
+	while (nb_pipe >= 1)
+	{
 		token->pipe = true;
-        token->saved_stdin = saved_stdin;
-        check_out_file(token);
-        check_in_file(token);
-        if (token->value)
-            pipex(data, token);
-        token = token->next;
-        nb_pipe--;
-    }
+		token->saved_stdin = saved_stdin;
+		check_out_file(token);
+		check_in_file(token);
+		if (token->value)
+			pipex(data, token);
+		token = token->next;
+		nb_pipe--;
+	}
 	if (is_piped)
 		token->pipe = true;
-    check_out_file(token);
-    check_in_file(token);
-    if (token->value)
-        last_exec(data, token);
-    
-    dup2(saved_stdin, STDIN_FILENO);
-    close(saved_stdin);
+	check_out_file(token);
+	check_in_file(token);
+	if (token->value)
+		last_exec(data, token);
+	
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdin);
 }
 
