@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/19 16:23:50 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/21 12:19:14 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
 		write(p_data->fd_out, oldpwd, ft_strlen(oldpwd));
 		write(p_data->fd_out, "\n", 1);
 		return (do_cd_update_env(oldpwd, e_data), 1);
+//		printf(" ");
 	}
 	return (0);
 }
@@ -90,7 +91,7 @@ static int	check_dash(t_parsing_data *p_data, t_env_data *e_data
 				else
 					do_cd_update_env(home, e_data);
 			}
-			else if (p_data->arg[i + 2])
+			else if (p_data->arg[i + 1])
 				return (write_err("cd : too many argumets\n"), -1);
 			else
 				do_cd_update_env(p_data->arg[2], e_data);
@@ -99,7 +100,7 @@ static int	check_dash(t_parsing_data *p_data, t_env_data *e_data
 			return (write_err("cd : Illegal option (--, -,[working])\n \
                      (-L, -P, -@, -e[not implemented])\n"), -2);
 	}
-	return (0);
+	return (i);
 }
 
 // here we setup flags if we want to do them one day
