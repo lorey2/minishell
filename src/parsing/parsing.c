@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 14:23:58 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/19 18:11:32 by maambuhl         ###   LAUSANNE.ch       */
+/*   Created: 2025/03/21 18:23:26 by lorey             #+#    #+#             */
+/*   Updated: 2025/03/21 18:25:47 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,40 +43,40 @@ int	check_meta_char_arg(char c)
 
 char *get_value(char **input, t_parsing_data *pars, int make_offset)
 {
-    int     len;
-    char    *value;
-    char    quote_char;
-    (void)pars;
-	(void)make_offset;
+	int		len;
+	char	*value;
+	char	quote_char;
 
-    len = 0;
-    if (is_quote(**input))
-    {
-        quote_char = **input;
-        (*input)++;  // Skip opening quote
-        while ((*input)[len] && (*input)[len] != quote_char)
-            len++;
-        value = malloc(sizeof(char) * (len + 1));
-        if (!value)
-            error("malloc error", NULL);
-        ft_strlcpy(value, *input, len + 1);
-        *input += len;
-        if (**input == quote_char)
-            (*input)++;  // Skip closing quote
-    }
-    else
-    {
-        while ((*input)[len] && !check_meta_char((*input)[len]))
-            len++;
-        value = malloc(sizeof(char) * (len + 1));
-        if (!value)
-            error("malloc error", NULL);
-        if (!len)
-            return (NULL);
-        ft_strlcpy(value, *input, len + 1);
-        *input += len;
-    }
-    return (value);
+	(void)pars;
+	(void)make_offset;
+	len = 0;
+	if (is_quote(**input))
+	{
+		quote_char = **input;
+		(*input)++;
+		while ((*input)[len] && (*input)[len] != quote_char)
+			len++;
+		value = malloc(sizeof(char) * (len + 1));
+		if (!value)
+			error("malloc error", NULL);
+		ft_strlcpy(value, *input, len + 1);
+		*input += len;
+		if (**input == quote_char)
+			(*input)++;
+	}
+	else
+	{
+		while ((*input)[len] && !check_meta_char((*input)[len]))
+			len++;
+		value = malloc(sizeof(char) * (len + 1));
+		if (!value)
+			error("malloc error", NULL);
+		if (!len)
+			return (NULL);
+		ft_strlcpy(value, *input, len + 1);
+		*input += len;
+	}
+	return (value);
 }
 
 void	rebuild_arg(t_parsing_data *pars)
@@ -91,7 +91,7 @@ void	rebuild_arg(t_parsing_data *pars)
 		i++;
 	arg_with_cmd = malloc(sizeof(char *) * (i + 2));
 	if (!arg_with_cmd)
-    	error("malloc error", NULL);
+		error("malloc error", NULL);
 	arg_with_cmd[j++] = ft_strdup(pars->value);
 	i = 0;
 	while (pars->arg[i])
@@ -101,116 +101,113 @@ void	rebuild_arg(t_parsing_data *pars)
 	pars->arg = arg_with_cmd;
 }
 
-void    get_arg(char **input, t_parsing_data *pars)
+void	get_arg(char **input, t_parsing_data *pars)
 {
-    int     len;
-    char    *arg;
-    char    quote_char;
-    int     in_quote;
+	int		len;
+	char	*arg;
+	char	quote_char;
+	int		in_quote;
 
-    skip_space(input);
-    len = 0;
-    in_quote = 0;
-    quote_char = 0;
-    while ((*input)[len])
-    {
-        if (is_quote((*input)[len]))
-        {
-            if (!in_quote)
-            {
-                quote_char = (*input)[len];
-                in_quote = 1;
-            }
-            else if ((*input)[len] == quote_char)
-            {
-                quote_char = 0;
-                in_quote = 0;
-            }
-            len++;
-            continue;
-        }
-        if (!in_quote && check_meta_char_arg((*input)[len]))
-            break;
-        len++;
-    }
-    
-    if (len == 0)
-        return;
-        
-    arg = malloc(sizeof(char) * (len + 1));
-    if (!arg)
-        error("malloc error", NULL);
-    
-    int i = 0;
-    int j = 0;
-    in_quote = 0;
-    quote_char = 0;
-    while (i < len)
-    {
-        if (is_quote((*input)[i]))
-        {
-            if (!in_quote)
-            {
-                quote_char = (*input)[i];
-                in_quote = 1;
-            }
-            else if ((*input)[i] == quote_char)
-            {
-                quote_char = 0;
-                in_quote = 0;
-            }
-            i++;
-            continue;
-        }
-        arg[j++] = (*input)[i++];
-    }
-    arg[j] = '\0';
-    
-    pars->arg = ft_split(arg, ' ');
-    if (!pars->arg)
-        error("malloc error", NULL);
-    *input += len;
-    rebuild_arg(pars);
+	skip_space(input);
+	len = 0;
+	in_quote = 0;
+	quote_char = 0;
+	while ((*input)[len])
+	{
+		if (is_quote((*input)[len]))
+		{
+			if (!in_quote)
+			{
+				quote_char = (*input)[len];
+				in_quote = 1;
+			}
+			else if ((*input)[len] == quote_char)
+			{
+				quote_char = 0;
+				in_quote = 0;
+			}
+			len++;
+			continue ;
+		}
+		if (!in_quote && check_meta_char_arg((*input)[len]))
+			break ;
+		len++;
+	}
+	if (len == 0)
+		return ;
+	arg = malloc(sizeof(char) * (len + 1));
+	if (!arg)
+		error("malloc error", NULL);
+	
+	int i = 0;
+	int j = 0;
+	in_quote = 0;
+	quote_char = 0;
+	while (i < len)
+	{
+		if (is_quote((*input)[i]))
+		{
+			if (!in_quote)
+			{
+				quote_char = (*input)[i];
+				in_quote = 1;
+			}
+			else if ((*input)[i] == quote_char)
+			{
+				quote_char = 0;
+				in_quote = 0;
+			}
+			i++;
+			continue ;
+		}
+		arg[j++] = (*input)[i++];
+	}
+	arg[j] = '\0';
+	pars->arg = ft_split(arg, ' ');
+	if (!pars->arg)
+		error("malloc error", NULL);
+	*input += len;
+	rebuild_arg(pars);
 	if (arg)
-    	free(arg);
+		free(arg);
 }
 
-char    *check_here_doc_del(char **input)
+char	*check_here_doc_del(char **input)
 {
-    int     len;
-    char    *del;
-    char    quote_char;
+	int		len;
+	char	*del;
+	char	quote_char;
 
-    skip_space(input);
-    if (is_quote(**input))
-    {
-        quote_char = **input;
-        (*input)++;  // Skip opening quote
-        len = 0;
-        while ((*input)[len] && (*input)[len] != quote_char)
-            len++;
-        del = malloc(sizeof(char) * (len + 1));
-        if (!del)
-            error("malloc error", NULL);
-        ft_strlcpy(del, *input, len + 1);
-        *input += len;
-        if (**input == quote_char)
-            (*input)++;  // Skip closing quote
-    }
-    else
-    {
-        len = 0;
+	skip_space(input);
+	if (is_quote(**input))
+	{
+		quote_char = **input;
+		(*input)++;
+		len = 0;
+		while ((*input)[len] && (*input)[len] != quote_char)
+			len++;
+		del = malloc(sizeof(char) * (len + 1));
+		if (!del)
+			error("malloc error", NULL);
+		ft_strlcpy(del, *input, len + 1);
+		*input += len;
+		if (**input == quote_char)
+			(*input)++;
+	}
+	else
+	{
+		len = 0;
 		if ((*input[len] == '>' || *input[len] == '<'))
 			return (NULL);
-        while ((*input)[len] && (*input)[len] != ' ' && (*input)[len] != '>' && (*input)[len] != '<')
-            len++;
-        del = malloc(sizeof(char) * (len + 1));
-        if (!del)
-            error("malloc error", NULL);
-        ft_strlcpy(del, *input, len + 1);
-        *input += len;
-    }
-    return (del);
+		while ((*input)[len] && (*input)[len] != ' ' && (*input)[len] != '>' && (*input)[len] != '<')
+			len++;
+		del = malloc(sizeof(char) * (len + 1));
+		if (!del)
+			error("malloc error", NULL);
+		ft_strlcpy(del, *input, len + 1);
+		*input += len;
+	}
+	return (del);
 }
 
 t_here_docs	*get_last_here(t_here_docs *here)
@@ -489,4 +486,3 @@ void	parsing(char *input, t_data *data)
 	}
 	pars->next = NULL;
 }
-

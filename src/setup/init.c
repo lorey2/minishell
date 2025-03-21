@@ -6,14 +6,14 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/19 15:06:51 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/21 16:53:09 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdbool.h>
 
-int	g_signal;
+volatile sig_atomic_t	g_signal;
 
 void	init_new_token(t_parsing_data *token)
 {
