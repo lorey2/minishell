@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/21 14:08:30 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/21 14:37:48 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
 {
 	char	*oldpwd;
 
-	oldpwd = get_env(e_data, "OLDPWD", NULL);
 	if (ft_isequal(p_data->arg[i], "-"))
 	{
+		oldpwd = get_env(e_data, "OLDPWD", NULL);
 		if (oldpwd == NULL)
 			return (write_err("cd : OLDPWD not set\n"), -1);
 		else if (p_data->arg[i + 1])
@@ -49,7 +49,6 @@ static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
 		write(p_data->fd_out, oldpwd, ft_strlen(oldpwd));
 		write(p_data->fd_out, "\n", 1);
 		return (do_cd_update_env(oldpwd, e_data), 1);
-//		printf(" ");
 	}
 	return (0);
 }
@@ -71,12 +70,10 @@ static int	check_dash(t_parsing_data *p_data, t_env_data *e_data
 					return (write_err(
 							"cd : HOME environment variable not set\n"), -1);
 				else
-					do_cd_update_env(home, e_data);
+					return (do_cd_update_env(home, e_data), -3);
 			}
-			else if (p_data->arg[i + 1])
-				return (write_err("cd : too many argumets\n"), -1);
 			else
-				do_cd_update_env(p_data->arg[2], e_data);
+				return (write_err("cd : too many arguments\n"), -1);
 		}
 		else
 			return (write_err("cd : Illegal option (--, -,[working])\n \
