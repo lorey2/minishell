@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/21 12:19:14 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/21 14:08:30 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,6 @@
 //
 //		WE WONT MAkE -P -L -@ and -e...
 //		THE REST WORKS
-
-// here we chdir and we update the vars cwd and oldpwd that are normally in env
-
-static int	do_cd_update_env(char *arg, t_env_data *e_data)
-{
-	char	cwd[1024];
-
-	if (chdir(arg) == -1)
-		return (write_err("cd : No such file or directory\n"), -1);
-	set_env(e_data, "OLDPWD", get_env(e_data, "PWD", NULL), true);
-	if (get_env(e_data, "OLDPWD", NULL) == NULL)
-		return (write_err("cd : Memory allocation failed for OLDPWD\n"), -1);
-	getcwd(cwd, 1024);
-	set_env(e_data, "PWD", cwd, true);
-	if (get_env(e_data, "PWD", NULL) == NULL)
-		return (write_err("cd : Memory allocation failed for PWD\n"), -1);
-	return (0);
-}
 
 // here we only handle cd -
 // it does cd to the last directory in which we had cd
@@ -80,7 +62,7 @@ static int	check_dash(t_parsing_data *p_data, t_env_data *e_data
 	if (p_data->arg[i][0] == '-')
 	{
 		if (only_dash(p_data, e_data, i) == 1)
-			return (1);
+			return (-3);
 		else if (ft_isequal(p_data->arg[i], "--"))
 		{
 			if (!p_data->arg[i + 1])
@@ -123,6 +105,24 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 	return (i);
 }
 
+static int	cd_with_arg(int *i, t_parsing_data *p_data, t_env_data *e_data)
+{
+	*i = check_dash(p_data, e_data, get_env(e_data, "HOME", NULL), *i);
+	if (*i == -1)
+		return (p_data->status = 1, 1);
+	if (*i == -3)
+		return (0);
+	if (*i == -2)
+		return (p_data->status = 2, 1);
+	else if (p_data->arg[(*i) + 1])
+		return (p_data->status = 1
+			, write_err("cd : too many arguments\n"), 1);
+	*i = do_cd_update_env(p_data->arg[*i], e_data);
+	if (*i == -1)
+		return (p_data->status = 1, 1);
+	return (0);
+}
+
 //here is the main cd file that handle ~ and no args
 
 int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
@@ -137,18 +137,15 @@ int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
 		return (p_data->status = 1, 1);
 	if (p_data->arg[i])
 	{
-		i = check_dash(p_data, e_data, get_env(e_data, "HOME", NULL), i);
-		if (i == -1)
-			return (p_data->status = 1, 1);
-		if (i == -2)
-			return (p_data->status = 2, 1);
-		else if (p_data->arg[i + 1])
-			return (p_data->status = 1
-				, write_err("cd : too many arguments\n"), 1);
-		return (do_cd_update_env(p_data->arg[i], e_data), 0);
+		if (cd_with_arg(&i, p_data, e_data))
+			return (1);
+		return (0);
 	}
 	if (!get_env(e_data, "HOME", NULL))
 		return (p_data->status = 1
 			, write_err("cd : HOME environment variable not set\n"), 1);
-	return (do_cd_update_env(get_env(e_data, "HOME", NULL), e_data), 0);
+	i = do_cd_update_env(get_env(e_data, "HOME", NULL), e_data);
+	if (i == -1)
+		return (p_data->status = 1, 1);
+	return (0);
 }
