@@ -49,6 +49,7 @@ static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
 		write(p_data->fd_out, oldpwd, ft_strlen(oldpwd));
 		write(p_data->fd_out, "\n", 1);
 		return (do_cd_update_env(oldpwd, e_data), 1);
+//		printf(" ");
 	}
 	return (0);
 }
