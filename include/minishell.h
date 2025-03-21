@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/21 14:06:59 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/21 16:52:23 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define BRIGHT_RED   "\033[0;91m"
 # define BRIGHT_GREEN "\033[0;92m"
 
-extern int		g_signal;
+extern volatile sig_atomic_t	g_signal;
 
 typedef struct s_path_data
 {
