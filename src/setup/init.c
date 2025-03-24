@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 01:15:30 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 16:56:19 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	init_new_token(t_parsing_data *token)
 	token->here_docs = NULL;
 	token->next = NULL;
 	token->previous = NULL;
+	token->pid = 0;
 }
 
 void	init_new_var(t_var *var)

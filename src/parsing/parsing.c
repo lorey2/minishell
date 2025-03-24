@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:23:26 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 03:21:55 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 17:00:37 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,7 +353,7 @@ int	check_vars_count(char **input)
 	return (i);
 }
 
-void	handle_cmd(char **input, t_parsing_data *pars)
+int	handle_cmd(char **input, t_parsing_data *pars)
 {
 	(*input) += check_vars_count(input);
 	pars->is_cmd = true;
@@ -368,9 +368,13 @@ void	handle_cmd(char **input, t_parsing_data *pars)
 	skip_space(input);
 	if (**input == '|')
 	{
-		pars->pipe = true;
 		(*input)++;
+		skip_space(input);
+		if (**input == '|')
+			return (ft_putstr_fd("syntax error near unexpected token `|'\n", STDERR_FILENO), 0);
+		pars->pipe = true;
 	}
+	return (1);
 }
 
 t_var	*allocate_var(char **input)
@@ -448,7 +452,7 @@ void	add_var(char **input, t_data *data)
 	}
 }
 
-void	parsing(char *input, t_data *data)
+int	parsing(char *input, t_data *data)
 {
 	t_parsing_data	*pars;
 	t_parsing_data	*prev;
@@ -464,7 +468,7 @@ void	parsing(char *input, t_data *data)
 		if (*input == '\0')
 		{
 			data->token = NULL;
-			return ;
+			return (1);
 		}
 		remove_offset = check_vars_count(&input);
 		input += (remove_offset * -1);
@@ -480,9 +484,11 @@ void	parsing(char *input, t_data *data)
 		prev = pars;
 		while (check_for_file(&input, pars))
 			;
-		handle_cmd(&input, pars);
+		if (!handle_cmd(&input, pars))
+			return (0);
 		pars->pos = pos;
 		pos++;
 	}
 	pars->next = NULL;
+	return (1);
 }
