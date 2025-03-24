@@ -29,8 +29,10 @@
 ---- [✅]variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
 ---- [❌]Simple/Double quote DONE (WE WILL SEE) <br /><br />
 ---- [❌]free everything <br /><br />
----- [✅]environement variable dollar{..} dollar?
----- [✅]between each command reparse bash
+---- [✅]environement variable dollar{..} dollar? <br /><br />
+---- [✅]between each command reparse bash <br /><br /> 
+---- [⏩] exit valgrind should initialize varaibel in wait4 <br /><br />
+---- [⏩] exit | ls command not found ??<br /><br />
 
 ## MALLOC LIST :
 
