@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/23 13:45:47 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 14:51:05 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ void	set_env(t_env_data *e_data, char *var_name, char *value, bool is_equal)
 			new_env[i] = e_data->env[i];
 		new_env[count] = create_env_entry(var_name, value, is_equal);
 		new_env[count + 1] = NULL;
+		free_double_point(&e_data->env);
 		e_data->env = new_env;
 	}
 }

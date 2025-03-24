@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 16:23:45 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/20 14:25:34 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 18:49:30 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*simple_quote(char *arg)
 		while (++j < i - 2)
 			no_squote[j] = no_left_squote[j];
 		no_squote[j] = '\0';
-		free(no_left_squote);
+		safe_free((void **)&no_left_squote);
 		return (no_squote);
 	}
 }
@@ -57,7 +57,7 @@ char	*double_quote(char *arg)
 	while (++j < i)
 		no_left_dquote[j - 1] = arg[j];
 	no_left_dquote[j - 1] = '\0';
-	// free(arg);
+	// safe_free((void **)&arg);
 	if (no_left_dquote[i - 2] != '\"')
 		return (printf("WARNING there is no [\"] in \
 [%s] (we just delete the left one)\n", arg), no_left_dquote);
@@ -68,7 +68,7 @@ char	*double_quote(char *arg)
 		while (++j < i - 2)
 			no_dquote[j] = no_left_dquote[j];
 		no_dquote[j] = '\0';
-		free(no_left_dquote);
+		safe_free((void **)&no_left_dquote);
 		return (no_dquote);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:38:14 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/19 17:45:17 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 18:53:29 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	extract_var_name_value(
 	*var_value = ft_strdup(input + i + 1);
 	if (*var_value == NULL)
 	{
-		free(*var_name);
+		safe_free((void **)&var_name);
 		return (0);
 	}
 	return (1);
@@ -89,8 +89,8 @@ static int	put_var_with_equal_in_env(char *arg, t_env_data *e_data)
 		set_env(e_data, var_name, var_value, true);
 	else
 		return (write(1, "invalid var name\n", 18), -1);
-	free(var_name);
-	free(var_value);
+	safe_free((void **)&var_name);
+	safe_free((void **)&var_value);
 	return (0);
 }
 

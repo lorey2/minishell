@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/03/21 17:59:29 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/24 01:42:17 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 18:53:49 by lorey            ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	execute(t_data *data, t_parsing_data *token)
 	if (token->value[0] == '.' || token->value[0] == '/')
 		if (!(execve(token->value, token->arg, data->env->env) == -1))
 			return ;
-	while (data->path->path_split[++i])
+	while (data->path->path_split_slash[++i])
 	{
 		data->path->path_with_com
 			= ft_strjoin(data->path->path_split_slash[i], token->value);
@@ -70,7 +70,7 @@ void	execute(t_data *data, t_parsing_data *token)
 		if (!(execve(data->path->path_with_com, \
 			token->arg, data->env->env) == -1))
 			break ;
-		free(data->path->path_with_com);
+		safe_free((void **)&data->path->path_with_com);
 		data->path->path_with_com = NULL;
 	}
 	ft_putstr_fd("Command not found\n", STDERR_FILENO);
@@ -151,7 +151,7 @@ char *gnl(void)
 		r = read(STDIN_FILENO, &c, 1);
 		if (r <= 0)
 		{
-			free(buff);
+			safe_free((void **)&buff);
 			return (NULL);
 		}
 		buff[i] = c;
@@ -167,7 +167,7 @@ char *gnl(void)
 		buff[i] = '\0';
 		return (buff);
 	}
-	free(buff);
+	safe_free((void **)&buff);
 	return (NULL);
 }
 
@@ -192,7 +192,7 @@ char	*conca_here_doc(char *line, t_parsing_data *token)
 	while (line[j])
 		conca[i++] = line[j++];
 	conca[i] = '\0';
-	free(token->here);
+	safe_free((void **)&token->here);
 	return (conca);
 }
 
@@ -324,7 +324,7 @@ void	get_here_docs(t_parsing_data *token)
 		line = gnl();
 		if (!line)
 		{
-			free(token->here);
+			safe_free((void **)&token->here);
 			token->here = NULL;
 			token->here = malloc(sizeof(char));
 			if (token->here)
@@ -333,13 +333,13 @@ void	get_here_docs(t_parsing_data *token)
 		}
 		if (ft_check_line(line, token->delimiter))
 		{
-			free(token->here_docs->delimiter);
+			safe_free((void **)&token->here_docs->delimiter);
 			token->here_docs->delimiter = NULL;
-			free(line);
+			safe_free((void **)&line);
 			return ;
 		}
 		token->here = conca_here_doc(line, token);
-		free(line);
+		safe_free((void **)&line);
 	}
 }
 
@@ -356,7 +356,7 @@ int	load_here(t_parsing_data *token)
 			}
 			while (token->here_docs)
 			{
-				free(token->here);
+				safe_free((void **)&token->here);
 				token->here = NULL;
 				token->here = malloc(sizeof(char));
 				if (!token->here)

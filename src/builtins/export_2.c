@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 17:59:35 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/21 15:48:20 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 18:31:59 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ static char	**copy_array(char **src, int rows)
 		{
 			perror("Unable to allocate memory for destination row");
 			while (--i >= 0)
-				free(dest[i]);
-			free(dest);
+				safe_free((void **)&dest[i]);
+			safe_free((void **)&dest);
 			return (NULL);
 		}
 	}
@@ -127,6 +127,6 @@ void	copy_and_sort_array(char **src, t_parsing_data *p_data)
 	write_result(p_data, rows, dest);
 	i = -1;
 	while (++i < rows)
-		free(dest[i]);
-	free(dest);
+		safe_free((void **)&dest[i]);
+	safe_free((void **)&dest);
 }

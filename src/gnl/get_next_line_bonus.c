@@ -6,7 +6,7 @@
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:12:19 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/23 01:30:33 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 18:53:53 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static char	*handle_rest(char **rest)
 	{
 		line = ft_substr(*rest, 0, i_bksp + 1);
 		if (!line)
-			return (safe_free((void **)rest));
+			return (safe_free((void **)&rest), NULL);
 		temp = ft_strdup(*rest);
 		if (!temp)
 			return (safe_free((void **)&line)
-				, safe_free((void **)rest), NULL);
+				, safe_free((void **)&rest), NULL);
 		free(*rest);
 		*rest = ft_substr(temp, i_bksp + 1, ft_strlen(temp) - i_bksp - 1);
 		free(temp);
@@ -85,7 +85,7 @@ char	*get_next_line(int fd)
 		buffer[nbread] = '\0';
 		temp = ft_strjoin(rest[fd], buffer);
 		if (!temp)
-			return (safe_free((void **)&buffer));
+			return (safe_free((void **)&buffer), NULL);
 		free(rest[fd]);
 		rest[fd] = temp;
 	}

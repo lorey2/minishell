@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/23 23:37:06 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 15:09:41 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void		write_env_error(char *var_name, char *message);
 bool		is_valid_var_name(char	*arg);
 //error and free
 void		error(char *message, t_data *data);
-void		free_double_point(char **point);
+void		free_double_point(char ***point);
 void		free_everything(t_data *data);
 void		free_path(t_path_data *path_data);
 void		free_tokens(t_parsing_data *token);
@@ -193,6 +193,6 @@ void		free_tokens(t_parsing_data *token);
 char		*get_next_line(int fd);
 //utils
 void		*safe_malloc(size_t size);
-void		*safe_free(void **ptr);
+void		safe_free(void **ptr);
 
 #endif

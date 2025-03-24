@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/23 12:12:25 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 14:05:49 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,11 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 
 static int	cd_with_arg(int *i, t_parsing_data *p_data, t_env_data *e_data)
 {
-	*i = check_dash(p_data, e_data, get_env(e_data, "HOME", NULL), *i);
+	char	*home;
+
+	home = get_env(e_data, "HOME", NULL);
+	*i = check_dash(p_data, e_data, home, *i);
+	safe_free((void **)&home);
 	if (*i == -1)
 		return (p_data->status = 1, 1);
 	if (*i == -3)

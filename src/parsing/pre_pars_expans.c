@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:37:24 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/17 22:42:12 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 18:51:11 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void
 		quoted_content
 			= ft_substr(data->input, pp_data->i + 2, j - (pp_data->i + 2));
 		pp_data->modified = ft_strjoin(pp_data->modified, quoted_content);
-		free(quoted_content);
+		safe_free((void **)&quoted_content);
 		pp_data->bkp2 = j + 1;
 		pp_data->i = j;
 	}
@@ -75,7 +75,7 @@ static void	expansion_variable(t_data *data, t_pre_pars_data *pp_data)
 	else
 		expanded_var = get_env(data->env, var, data->var);
 	pp_data->modified = ft_strjoin(pp_data->modified, expanded_var);
-	free(var);
+	safe_free((void **)&var);
 	pp_data->bkp2 = pp_data->i;
 	(pp_data->i)--;
 }
