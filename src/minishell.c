@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/01/13 20:46:13 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/24 15:10:35 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 15:48:11 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static void	big_loop_execution(t_data *data)
 	{
 		add_history(data->input);
 		pre_parsing(data, 0, data->pp_data);
-		parsing(data->input, data);
+		if (!parsing(data->input, data))
+			return ;
 		if (data->token)
 		{
 			if (data->token->value)

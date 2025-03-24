@@ -7,7 +7,7 @@
 ---- [✅] builtin | [whatever]<br /><br />
 ---- [✅] echo -n {arg} / echo -n<br /><br />
 ---- [🙄] les guillemets deuxieme arg est split<br /><br />
----- [⏩] heredoc ctrlc... sigals<br /><br />
+---- [✅] heredoc ctrlc... sigals<br /><br />
 ---- [✅] cat << EOF1 << EOF2<br /><br />
 ---- [✅] file redir do not create all files <br /><br />
 ---- [✅] export salutand all export... salut=123<br /><br />
@@ -23,7 +23,7 @@
 ---- [❌] <<''      the delimiter should be an empty line<br /><br />
 ---- [❌] <<000>00 | cat -ne             should raise error but aaa>0 works<br /><br />
 ---- [❌] << | ls    should raise error<br /><br />
----- [❌] ls || ls   shouldn't work<br /><br />
+---- [✅] ls || ls   shouldn't work<br /><br />
 ---- [❌] ctrl cd\ after an infinite command   <br /><br />
 ## GENERAL TODO LIST :
 ---- [✅]variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
