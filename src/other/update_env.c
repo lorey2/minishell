@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/18 00:00:46 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/23 13:45:47 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ char	*get_env(t_env_data *e_data, char *var_name, t_var *var)
 	{
 		if (var->var_name && ft_isequal(var_name, var->var_name))
 			if (var->var_value)
-				return (var->var_value);
+				return (ft_strdup(var->var_value));
 		while (var->next)
 		{
 			var = var->next;
 			if (var->var_name && ft_isequal(var_name, var->var_name))
 				if (var->var_value)
-					return (var->var_value);
+					return (ft_strdup(var->var_value));
 		}
 	}
 	i = find_index(e_data, var_name, false);
@@ -78,19 +78,24 @@ char	*get_env(t_env_data *e_data, char *var_name, t_var *var)
 		return (ft_strdup(""));
 	if (value_start[1] != 0)
 		return (ft_strdup(value_start + 1));
-	return ("");
+	return (ft_strdup(""));
 }
 
 char	*create_env_entry(char *var_name, char *value, bool is_equal)
 {
 	char	*entry;
+	char	*temp;
 
 	if (is_equal)
 		entry = ft_strjoin(var_name, "=");
 	else
 		entry = ft_strdup(var_name);
 	if (value != NULL)
-		entry = ft_strjoin(entry, value);
+	{
+		temp = ft_strjoin(entry, value);
+		safe_free((void **)&entry);
+		entry = temp;
+	}
 	return (entry);
 }
 
@@ -99,10 +104,15 @@ void	set_env(t_env_data *e_data, char *var_name, char *value, bool is_equal)
 	int		i;
 	int		count;
 	char	**new_env;
+	char	*temp;
 
 	i = find_index(e_data, var_name, true);
 	if (i >= 0)
-		e_data->env[i] = ft_strjoin(ft_strjoin(var_name, "="), value);
+	{
+		temp = ft_strjoin(var_name, "=");
+		e_data->env[i] = ft_strjoin(temp, value);
+		safe_free((void **)&temp);
+	}
 	else
 	{
 		count = 0;

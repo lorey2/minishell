@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/03/21 17:59:29 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/22 02:00:49 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 01:42:17 by lorey            ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -378,6 +378,7 @@ void	process(t_data *data)
 	int				saved_stdin;
 	bool			is_piped;
 
+	is_piped = false;
 	saved_stdin = dup(STDIN_FILENO);
 	if (saved_stdin == -1)
 		error("dup error", data);

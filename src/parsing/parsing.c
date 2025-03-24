@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:23:26 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/21 18:25:47 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 03:21:55 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -469,15 +469,15 @@ void	parsing(char *input, t_data *data)
 		remove_offset = check_vars_count(&input);
 		input += (remove_offset * -1);
 		pars = malloc(sizeof(t_parsing_data));
-		pars->previous = prev;
 		if (!pars)
 			error("malloc error", data);
+		pars->previous = prev;
+		init_new_token(pars);
 		if (!prev)
 			data->token = pars;
 		if (prev)
 			prev->next = pars;
 		prev = pars;
-		init_new_token(pars);
 		while (check_for_file(&input, pars))
 			;
 		handle_cmd(&input, pars);
