@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
+/*																			*/
+/*														:::	  ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/21 17:59:29 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/21 17:59:42 by lorey            ###   LAUSANNE.ch       */
-/*                                                                            */
+/*													+:+ +:+		 +:+	 */
+/*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/03/21 17:59:29 by lorey			 #+#	#+#			 */
+/*   Updated: 2025/03/24 01:42:17 by lorey            ###   LAUSANNE.ch       */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -134,34 +134,40 @@ int	check_out_file(t_parsing_data *token)
 	return (0);
 }
 
-char	*gnl(void)
+char *gnl(void)
 {
 	char	*buff;
 	char	c;
 	int		r;
 	int		i;
-
+	
 	buff = malloc(sizeof(char) * MAX_HERE_LINE_SIZE);
 	if (!buff)
 		error("gnl malloc error", NULL);
 	i = 0;
 	r = 1;
-	while (r)
+	while (r > 0)
 	{
 		r = read(STDIN_FILENO, &c, 1);
-		if (r == -1)
-			error("cannot read here_doc", NULL);
+		if (r <= 0)
+		{
+			free(buff);
+			return (NULL);
+		}
 		buff[i] = c;
 		buff[i + 1] = 0;
 		if (c == '\n')
 			return (buff);
-		if (c == -1)
-		{
-			ft_putstr_fd("Receive end of file", 1);
-			return (NULL);
-		}
 		i++;
+		if (i >= MAX_HERE_LINE_SIZE - 1)
+			break ;
 	}
+	if (i > 0)
+	{
+		buff[i] = '\0';
+		return (buff);
+	}
+	free(buff);
 	return (NULL);
 }
 
@@ -316,6 +322,15 @@ void	get_here_docs(t_parsing_data *token)
 	while (1)
 	{
 		line = gnl();
+		if (!line)
+		{
+			free(token->here);
+			token->here = NULL;
+			token->here = malloc(sizeof(char));
+			if (token->here)
+				token->here[0] = '\0';
+			return ;
+		}
 		if (ft_check_line(line, token->delimiter))
 		{
 			free(token->here_docs->delimiter);
@@ -358,11 +373,12 @@ int	load_here(t_parsing_data *token)
 
 void	process(t_data *data)
 {
-	int			 nb_pipe;
-	t_parsing_data  *token;
-	int			 saved_stdin;
+	int				nb_pipe;
+	t_parsing_data	*token;
+	int				saved_stdin;
 	bool			is_piped;
 
+	is_piped = false;
 	saved_stdin = dup(STDIN_FILENO);
 	if (saved_stdin == -1)
 		error("dup error", data);

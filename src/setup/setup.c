@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:21:16 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/17 23:59:31 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 01:26:58 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 void	free_path(t_path_data *path_data)
 {
 	if (path_data->env_path != NULL)
-		free(path_data->env_path);
+		safe_free((void **)&path_data->env_path);
 	path_data->env_path = NULL;
 	if (path_data->path_split != NULL)
 		free_double_point(path_data->path_split);
 	if (path_data->path_split_slash != NULL)
 		free_double_point(path_data->path_split_slash);
 	if (path_data->path_with_com != NULL)
-		free(path_data->path_with_com);
+		safe_free((void **)&path_data->path_with_com);
 	path_data->path_with_com = NULL;
 }
 

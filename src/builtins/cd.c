@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/21 14:37:48 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/23 12:12:25 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,10 @@ static int	cd_with_arg(int *i, t_parsing_data *p_data, t_env_data *e_data)
 
 int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
 {
-	int	i;
+	int		i;
+	char	*home;
 
+	home = NULL;
 	p_data->status = 0;
 	if (p_data->pipe)
 		exit(0);
@@ -138,10 +140,13 @@ int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
 			return (1);
 		return (0);
 	}
-	if (!get_env(e_data, "HOME", NULL))
+	home = get_env(e_data, "HOME", NULL);
+	if (!home)
 		return (p_data->status = 1
 			, write_err("cd : HOME environment variable not set\n"), 1);
-	i = do_cd_update_env(get_env(e_data, "HOME", NULL), e_data);
+	i = do_cd_update_env(home, e_data);
+	if (home)
+		safe_free((void **)&home);
 	if (i == -1)
 		return (p_data->status = 1, 1);
 	return (0);

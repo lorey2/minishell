@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/21 16:53:09 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 01:15:30 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,28 @@ volatile sig_atomic_t	g_signal;
 
 void	init_new_token(t_parsing_data *token)
 {
-	token->status = -1;
-	token->outfile_list = NULL;
-	token->delimiter = NULL;
-	token->fd_out = STDOUT_FILENO;
 	token->fd_in = STDIN_FILENO;
+	token->fd_out = STDOUT_FILENO;
 	token->value = NULL;
-	token->pos = -1;
+	token->delimiter = NULL;
+	token->arg = NULL;
+	token->here = NULL;
 	token->infile = NULL;
 	token->outfile = NULL;
-	token->here_docs = NULL;
-	token->here = NULL;
+	token->pos = -1;
+	token->saved_stdin = -1;
+	token->status = -1;
 	token->in_file = false;
 	token->out_file = false;
+	token->outfile_list = NULL;
+	token->append_file = false;
 	token->is_cmd = false;
-	token->arg = NULL;
 	token->is_after_pipe = false;
 	token->pipe = false;
-	token->append_file = false;
+	token->outfile_list = NULL;
+	token->here_docs = NULL;
+	token->next = NULL;
+	token->previous = NULL;
 }
 
 void	init_new_var(t_var *var)

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 17:58:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/17 23:52:24 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 01:04:25 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*safe_malloc(size_t size)
 	return (ptr);
 }
 
-char	*safe_free(char **ptr)
+void	*safe_free(void **ptr)
 {
 	if (ptr && *ptr)
 	{
@@ -41,7 +41,7 @@ void	free_double_point(char **point)
 
 	j = -1;
 	while (point[++j])
-		free(point[j]);
-	free(point);
+		safe_free((void **)&point[j]);
+	safe_free((void **)&point);
 	point = NULL;
 }

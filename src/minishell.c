@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
+/*																			*/
+/*														:::	  ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 20:46:13 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/21 16:51:19 by lorey            ###   LAUSANNE.ch       */
-/*                                                                            */
+/*													+:+ +:+		 +:+	 */
+/*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/01/13 20:46:13 by lorey			 #+#	#+#			 */
+/*   Updated: 2025/03/24 01:53:27 by lorey            ###   LAUSANNE.ch       */
+/*																			*/
 /* ************************************************************************** */
 
 //
@@ -15,11 +15,13 @@
 #include "minishell.h"
 
 /* ************************************************************************** */
-/* setup the path split in the double pointer data->path_split                */
-/* does an error if the malloc (ft_split) fails                               */
-/* list of malloc at this point : nothing                                     */
-/* added malloc : path_data->path_split                                       */
+/* setup the path split in the double pointer data->path_split				*/
+/* does an error if the malloc (ft_split) fails							   */
+/* list of malloc at this point : nothing									 */
+/* added malloc : path_data->path_split									   */
 /* ************************************************************************** */
+
+int	g_in_execution = 0;
 
 static void	setup_arg_if_empty(t_parsing_data *p_data)
 {
@@ -54,26 +56,37 @@ static void	big_loop(t_data *data)
 	while (1)
 	{
 		g_signal = 0;
+		g_in_execution = 0;
 		setup_path(data, data->path);
 		shell_prompt = setup_prompt(data);
-//		printf("\r\033[K");
 		data->input = readline(shell_prompt);
 		if (!data->input || data->exit_nbr != -1)
-			break ;
-		if (!g_signal)
 		{
+			free_everything(data);
+			free(shell_prompt);
+			break ;
+		}
+		if (data->input[0] != '\0')
+		{
+			add_history(data->input);
+			g_signal = 1;
 			big_loop_execution(data);
 			wait_for_all(data);
 			final_wait(data);
 			printf("LAST EXIT = %d\n", data->last_exit);
 		}
+		g_signal = 0;
 		if (data->exit_nbr != -1)
+		{
+			free_tokens(data->token);
+			free_everything(data);
+			safe_free((void **)&shell_prompt);
 			break ;
-		free(data->input);
-		free(shell_prompt);
+		}
+		safe_free((void **)&data->input);
+		safe_free((void **)&shell_prompt);
+		free_tokens(data->token);
 	}
-	free(data->input);
-	free(shell_prompt);
 }
 
 int	main(int argc __attribute__((unused)),

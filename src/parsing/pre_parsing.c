@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:14:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/17 22:42:05 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 01:35:00 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ void	expand_tilde(t_data *data, t_pre_pars_data *pp_data)
 
 int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 {
+	char	*tmp;
+
 	pp_data->i = -1;
 	pp_data->bkp2 = 0;
 	pp_data->in_dquotes = false;
-	pp_data->modified = ft_strdup("");
+	pp_data->modified = NULL;
 	while (++(pp_data->i) >= 0)
 	{
 		if ((data->input)[pp_data->i]
@@ -57,16 +59,16 @@ int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 		expansion(data, pp_data);
 		if (!((data->input)[pp_data->i]))
 		{
-			pp_data->modified
-				= ft_strjoin(pp_data->modified, ft_substr(data->input,
-						pp_data->bkp2, pp_data->i - pp_data->bkp2));
+			tmp = ft_substr(data->input, pp_data->bkp2, pp_data->i - pp_data->bkp2);
+			pp_data->modified = ft_strjoin(pp_data->modified, tmp);
+			safe_free((void **)&tmp);
 			break ;
 		}
 	}
 	if (pp_data->modified[0] != '\0')
 	{
-		free(data->input);
-		data->input = strdup(pp_data->modified);
+		safe_free((void **)&data->input);
+		data->input = ft_strdup(pp_data->modified);
 	}
-	return (free(pp_data->modified), 0);
+	return (safe_free((void **)&pp_data->modified), 0);
 }

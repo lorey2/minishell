@@ -6,7 +6,7 @@
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:12:19 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/12 18:06:22 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/23 01:30:33 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ static char	*handle_rest(char **rest)
 	{
 		line = ft_substr(*rest, 0, i_bksp + 1);
 		if (!line)
-			return (safe_free(rest));
+			return (safe_free((void **)rest));
 		temp = ft_strdup(*rest);
 		if (!temp)
-			return (safe_free(&line), safe_free(rest), NULL);
+			return (safe_free((void **)&line)
+				, safe_free((void **)rest), NULL);
 		free(*rest);
 		*rest = ft_substr(temp, i_bksp + 1, ft_strlen(temp) - i_bksp - 1);
 		free(temp);
@@ -56,7 +57,7 @@ static int	tests_and_setup(char **temp, char **buffer, char **rest, int fd)
 		*rest = ft_strdup("");
 		if (!(*rest))
 		{
-			free(*buffer);
+			safe_free((void **)buffer);
 			return (1);
 		}
 	}
@@ -78,17 +79,17 @@ char	*get_next_line(int fd)
 			break ;
 		nbread = read(fd, buffer, BUFFER_SIZE);
 		if (nbread < 0 || (nbread == 0 && *rest[fd] == '\0'))
-			return (safe_free(&rest[fd]), safe_free(&buffer), NULL);
+			return (safe_free((void **)&rest[fd]), safe_free((void **)&buffer), NULL);
 		if (nbread == 0)
 			break ;
 		buffer[nbread] = '\0';
 		temp = ft_strjoin(rest[fd], buffer);
 		if (!temp)
-			return (safe_free(&buffer));
+			return (safe_free((void **)&buffer));
 		free(rest[fd]);
 		rest[fd] = temp;
 	}
-	free(buffer);
+	safe_free((void **)&buffer);
 	return (handle_rest(&rest[fd]));
 }
 /*
