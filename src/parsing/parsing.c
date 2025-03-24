@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:23:26 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 15:51:54 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 17:00:37 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -371,10 +371,7 @@ int	handle_cmd(char **input, t_parsing_data *pars)
 		(*input)++;
 		skip_space(input);
 		if (**input == '|')
-		{
-			ft_putstr_fd("syntax error near unexpected token `|'\n", STDERR_FILENO);
-			return (0);
-		}
+			return (ft_putstr_fd("syntax error near unexpected token `|'\n", STDERR_FILENO), 0);
 		pars->pipe = true;
 	}
 	return (1);
