@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/01/13 20:46:13 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/24 01:53:27 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 15:10:35 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -74,6 +74,11 @@ static void	big_loop(t_data *data)
 			wait_for_all(data);
 			final_wait(data);
 			printf("LAST EXIT = %d\n", data->last_exit);
+		}
+		else
+		{
+			data->token = safe_malloc(sizeof(t_parsing_data));
+			init_new_token(data->token);
 		}
 		g_signal = 0;
 		if (data->exit_nbr != -1)

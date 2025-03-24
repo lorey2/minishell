@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/03/21 17:59:29 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/24 01:42:17 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 14:57:15 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ char	*conca_here_doc(char *line, t_parsing_data *token)
 	while (line[j])
 		conca[i++] = line[j++];
 	conca[i] = '\0';
-	free(token->here);
+	safe_free((void **)&token->here);
 	return (conca);
 }
 
@@ -333,8 +333,6 @@ void	get_here_docs(t_parsing_data *token)
 		}
 		if (ft_check_line(line, token->delimiter))
 		{
-			free(token->here_docs->delimiter);
-			token->here_docs->delimiter = NULL;
 			free(line);
 			return ;
 		}
@@ -356,7 +354,7 @@ int	load_here(t_parsing_data *token)
 			}
 			while (token->here_docs)
 			{
-				free(token->here);
+				safe_free((void**)&token->here);
 				token->here = NULL;
 				token->here = malloc(sizeof(char));
 				if (!token->here)
