@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:37:24 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 18:51:11 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/25 17:26:13 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static void	expansion_variable(t_data *data, t_pre_pars_data *pp_data)
 	int		backup;
 	char	*var;
 	char	*expanded_var;
+	char	*temp;
 
 	pp_data->modified = ft_strjoin(pp_data->modified, ft_substr(data->input,
 				pp_data->bkp2, pp_data->i - pp_data->bkp2));

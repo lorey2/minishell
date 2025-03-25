@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/03/21 17:59:29 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/24 16:35:44 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/25 14:40:13 by lorey            ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	execute(t_data *data, t_parsing_data *token)
 		data->path->path_with_com = NULL;
 	}
 	ft_putstr_fd("Command not found\n", STDERR_FILENO);
+	free_everything(data);
 	exit(127);
 }
 
