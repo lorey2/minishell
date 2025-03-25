@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 18:21:16 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 01:26:58 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2025/03/24 14:38:34 by lorey             #+#    #+#             */
+/*   Updated: 2025/03/25 13:55:48 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,10 @@
 
 void	free_path(t_path_data *path_data)
 {
-	if (path_data->env_path != NULL)
-		safe_free((void **)&path_data->env_path);
-	path_data->env_path = NULL;
-	if (path_data->path_split != NULL)
-		free_double_point(path_data->path_split);
-	if (path_data->path_split_slash != NULL)
-		free_double_point(path_data->path_split_slash);
-	if (path_data->path_with_com != NULL)
-		safe_free((void **)&path_data->path_with_com);
-	path_data->path_with_com = NULL;
+	safe_free((void **)&path_data->env_path);
+	free_double_point(&path_data->path_split);
+	free_double_point(&path_data->path_split_slash);
+	safe_free((void **)&path_data->path_with_com);
 }
 
 void	setup_path(t_data *data, t_path_data *path_data)
@@ -38,6 +32,7 @@ void	setup_path(t_data *data, t_path_data *path_data)
 	path_data->path_split = ft_split(path_data->env_path, ':');
 	if (!path_data->path_split)
 		error("Malloc error for path_split", NULL);
+	safe_free((void **)&path_data->env_path);
 	i = 0;
 	while (path_data->path_split[i])
 		i++;
@@ -53,6 +48,7 @@ void	setup_path(t_data *data, t_path_data *path_data)
 			error("Malloc error for path with slash", NULL);
 	}
 	path_data->path_split_slash[i] = NULL;
+	free_double_point(&path_data->path_split);
 }
 
 char	*setup_prompt(t_data *data)
@@ -76,5 +72,25 @@ char	*setup_prompt(t_data *data)
 
 void	setup_env(t_data *data, char **env)
 {
-	data->env->env = env;
+	int	i;
+	int	count;
+
+	count = 0;
+	while (env[count] != NULL)
+		count++;
+	data->env->env = malloc(sizeof(char *) * (count + 1));
+	if (!data->env->env)
+		return ;
+	for (i = 0; i < count; i++)
+	{
+		data->env->env[i] = ft_strdup(env[i]);
+		if (!data->env->env[i])
+		{
+			for (int j = 0; j < i; j++)
+				safe_free((void **)&data->env->env[j]);
+			safe_free((void **)&data->env->env);
+			return ;
+		}
+	}
+	data->env->env[count] = NULL;
 }

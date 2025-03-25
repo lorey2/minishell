@@ -97,7 +97,7 @@ void	rebuild_arg(t_parsing_data *pars)
 	while (pars->arg[i])
 		arg_with_cmd[j++] = ft_strdup(pars->arg[i++]);
 	arg_with_cmd[j] = NULL;
-	free_double_point(pars->arg);
+	free_double_point(&pars->arg);
 	pars->arg = arg_with_cmd;
 }
 
@@ -169,7 +169,7 @@ void	get_arg(char **input, t_parsing_data *pars)
 	*input += len;
 	rebuild_arg(pars);
 	if (arg)
-		free(arg);
+		safe_free((void **)&arg);
 }
 
 char	*check_here_doc_del(char **input)

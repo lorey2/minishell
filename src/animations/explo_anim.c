@@ -6,7 +6,7 @@
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:34:56 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/06 19:04:40 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 14:47:46 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	explosion_animation(void)
 			explo[i][strlen(explo[i]) - 1] = '\0';
 	}
 	print_algo(explo);
-	free_double_point(explo);
+	free_double_point(&explo);
 	close(fd);
 	printf(RESET"\033[H\033[J\033[?25h");
 }

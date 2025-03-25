@@ -61,7 +61,7 @@ void	execute(t_data *data, t_parsing_data *token)
 	if (token->value[0] == '.' || token->value[0] == '/')
 		if (!(execve(token->value, token->arg, data->env->env) == -1))
 			return ;
-	while (data->path->path_split[++i])
+	while (data->path->path_split_slash[++i])
 	{
 		data->path->path_with_com
 			= ft_strjoin(data->path->path_split_slash[i], token->value);
@@ -70,7 +70,7 @@ void	execute(t_data *data, t_parsing_data *token)
 		if (!(execve(data->path->path_with_com, \
 			token->arg, data->env->env) == -1))
 			break ;
-		free(data->path->path_with_com);
+		safe_free((void **)&data->path->path_with_com);
 		data->path->path_with_com = NULL;
 	}
 	ft_putstr_fd("Command not found\n", STDERR_FILENO);
@@ -151,7 +151,7 @@ char *gnl(void)
 		r = read(STDIN_FILENO, &c, 1);
 		if (r <= 0)
 		{
-			free(buff);
+			safe_free((void **)&buff);
 			return (NULL);
 		}
 		buff[i] = c;
@@ -167,7 +167,7 @@ char *gnl(void)
 		buff[i] = '\0';
 		return (buff);
 	}
-	free(buff);
+	safe_free((void **)&buff);
 	return (NULL);
 }
 
@@ -326,7 +326,7 @@ void	get_here_docs(t_parsing_data *token)
 		line = gnl();
 		if (!line)
 		{
-			free(token->here);
+			safe_free((void **)&token->here);
 			token->here = NULL;
 			token->here = malloc(sizeof(char));
 			if (token->here)
@@ -335,11 +335,11 @@ void	get_here_docs(t_parsing_data *token)
 		}
 		if (ft_check_line(line, token->delimiter))
 		{
-			free(line);
+			safe_free((void **)&line);
 			return ;
 		}
 		token->here = conca_here_doc(line, token);
-		free(line);
+		safe_free((void **)&line);
 	}
 }
 
@@ -356,7 +356,7 @@ int	load_here(t_parsing_data *token)
 			}
 			while (token->here_docs)
 			{
-				safe_free((void**)&token->here);
+				safe_free((void **)&token->here);
 				token->here = NULL;
 				token->here = malloc(sizeof(char));
 				if (!token->here)

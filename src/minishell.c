@@ -10,7 +10,6 @@
 /*																			*/
 /* ************************************************************************** */
 
-//
 
 #include "minishell.h"
 
@@ -63,8 +62,7 @@ static void	big_loop(t_data *data)
 		data->input = readline(shell_prompt);
 		if (!data->input || data->exit_nbr != -1)
 		{
-			free_everything(data);
-			free(shell_prompt);
+			safe_free((void **)&shell_prompt);
 			break ;
 		}
 		if (data->input[0] != '\0')
@@ -83,8 +81,6 @@ static void	big_loop(t_data *data)
 		g_signal = 0;
 		if (data->exit_nbr != -1)
 		{
-			free_tokens(data->token);
-			free_everything(data);
 			safe_free((void **)&shell_prompt);
 			break ;
 		}

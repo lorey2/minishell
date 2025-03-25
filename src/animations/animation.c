@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 14:04:45 by lorey             #+#    #+#             */
-/*   Updated: 2025/02/06 19:05:46 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 14:47:26 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	text_animation(void)
 	}
 	print_algo(logo);
 	usleep(1000000);
-	free_double_point(logo);
+	free_double_point(&logo);
 	close(fd);
 	printf(RESET"\033[H\033[J\033[?25h");
 }
