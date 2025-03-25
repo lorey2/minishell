@@ -4,6 +4,7 @@
 
 ## ?!?!crash list?!?! :
 
+---- [❌]unset is dead (again)<br /><br />
 ---- [✅] builtin | [whatever]<br /><br />
 ---- [✅] echo -n {arg} / echo -n<br /><br />
 ---- [🙄] les guillemets deuxieme arg est split<br /><br />
@@ -34,6 +35,20 @@
 ---- [✅]between each command reparse bash <br /><br /> 
 ---- [✅] exit valgrind should initialize varaibel in wait4 <br /><br />
 ---- [✅] exit | ls command not found ??<br /><br />
+## GENERAL FREE CRASH LIST :
+---- [❌]echo $EXPANSTION --> ALL EXPANSION<br /><br />
+---- [❌]cd<br /><br />
+---- [❌]export with arg<br /><br />
+---- [❌]everything set-env get-env related<br /><br />
+## GENERAL FREE WORKING LIST :
+---- [✅]nothing<br /><br />
+---- [✅]echo -n<br /><br />
+---- [✅]echo<br /><br />
+---- [✅]simple command<br /><br />
+---- [✅]non-existing command<br /><br />
+---- [✅]pwd<br /><br />
+---- [✅]exit<br /><br />
+
 
 ## MALLOC LIST :
 
