@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/01/13 20:46:13 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/24 16:41:31 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/25 15:31:04 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	big_loop(t_data *data)
 		}
 		safe_free((void **)&data->input);
 		safe_free((void **)&shell_prompt);
-		free_tokens(data->token);
+		// free_tokens(data->token);
 	}
 }
 

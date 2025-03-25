@@ -19,13 +19,13 @@
 ---- [✅] echo $ echo $ echo "$"<br /><br />
 ---- [✅] env -i and launch. TELLS THERE IS NO PATH AND EXIT<br /><br />
 ---- [❌] export salut="|"  ls $salut the pipe is a ls arg, not a pipe (we shurely wont do that----<br /><br />
----- [❌] <<0 | cat -ne                   shouldn't output anything<br /><br />
+---- [✅] <<0 | cat -ne                   shouldn't output anything<br /><br />
 ---- [✅] <<''      the delimiter should be an empty line<br /><br />
----- [❌] JE LE FERAI JAMAIS <<000>00 | cat -ne             should raise error but aaa>0 works<br /><br />
+---- [❌] JE LE FERAI JAMAIS <<000>00 | cat -ne             should raise error but <<aaa>0 works. Enfaite y a pas besoin de le faire parce que <<0>something semble etre considere comme une redirection de fd  -->  <<0 >someting fonctionne<br /><br />
 ---- [✅] << | ls    should raise error<br /><br />
 ---- [✅] ls || ls   shouldn't work<br /><br />
 ---- [✅] ctrl cd\ after an infinite command   <br /><br />
----- [❌] just | <br /><br />
+---- [✅] just | <br /><br />
 ## GENERAL TODO LIST :
 ---- [✅]variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
 ---- [❌]Simple/Double quote DONE (WE WILL SEE) <br /><br />
