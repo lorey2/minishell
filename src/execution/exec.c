@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/03/21 17:59:29 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/24 18:53:49 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 16:35:44 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -259,11 +259,13 @@ t_parsing_data	*get_last_token(t_parsing_data *token)
 void	final_wait(t_data *data)
 {
 	t_parsing_data	*token;
+	int				status;
 	
+	status = 0;
 	token = data->token;
 	while (token)
 	{
-		waitpid(token->pid, NULL, 0);
+		waitpid(token->pid, &status, 0);
 		token = token->next;
 	}
 }
@@ -333,8 +335,6 @@ void	get_here_docs(t_parsing_data *token)
 		}
 		if (ft_check_line(line, token->delimiter))
 		{
-			safe_free((void **)&token->here_docs->delimiter);
-			token->here_docs->delimiter = NULL;
 			safe_free((void **)&line);
 			return ;
 		}

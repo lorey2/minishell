@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 15:09:41 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/24 15:47:31 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ int			pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data);
 void		expansion(t_data *data, t_pre_pars_data *pp_data);
 void		expand_tilde(t_data *data, t_pre_pars_data *pp_data);
 //parsing
-void		parsing(char *input, t_data *data);
+int			parsing(char *input, t_data *data);
 void		init_new_here(t_here_docs *here);
 void		init_new_token(t_parsing_data *token);
 void		init_new_var(t_var *var);
