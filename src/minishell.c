@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/01/13 20:46:13 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/25 15:31:04 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 15:29:28 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static void	big_loop(t_data *data)
 
 	while (1)
 	{
-		g_signal = 0;
+		g_signal[0] = 0;
+		g_signal[1] = 0;
 		g_in_execution = 0;
 		setup_path(data, data->path);
 		shell_prompt = setup_prompt(data);
@@ -69,7 +70,7 @@ static void	big_loop(t_data *data)
 		if (data->input[0] != '\0')
 		{
 			add_history(data->input);
-			g_signal = 1;
+			g_signal[0] = 1;
 			big_loop_execution(data);
 			wait_for_all(data);
 			printf("LAST EXIT = %d\n", data->last_exit);
@@ -79,7 +80,7 @@ static void	big_loop(t_data *data)
 			data->token = safe_malloc(sizeof(t_parsing_data));
 			init_new_token(data->token);
 		}
-		g_signal = 0;
+		g_signal[0] = 0;
 		if (data->exit_nbr != -1)
 		{
 			safe_free((void **)&shell_prompt);
