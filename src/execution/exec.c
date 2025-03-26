@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/03/21 17:59:29 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/26 16:09:58 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 17:58:20 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -198,10 +198,9 @@ void	here_doc_write(t_parsing_data *token, int *pipefd)
 	if (token->value)
 		ft_putstr_fd(token->here, pipefd[1]);
 	close(pipefd[1]);
-	exit(0);
 }
 
-void	here_doc(t_parsing_data *token)
+void	here_doc(t_parsing_data *token, t_data *data)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -212,7 +211,11 @@ void	here_doc(t_parsing_data *token)
 	if (pid == -1)
 		exit(0);
 	if (!pid)
+	{
 		here_doc_write(token, pipefd);
+		free_everything(data);
+		exit(0);
+	}
 	else
 	{
 		close(pipefd[1]);
@@ -222,7 +225,7 @@ void	here_doc(t_parsing_data *token)
 	}
 }
 
-int	check_in_file(t_parsing_data *token)
+int	check_in_file(t_parsing_data *token, t_data *data)
 {
 	if (token->infile)
 	{
@@ -233,7 +236,7 @@ int	check_in_file(t_parsing_data *token)
 	}
 	else if (token->here)
 	{
-		here_doc(token);
+		here_doc(token, data);
 		return (1);
 	}
 	return (0);
@@ -333,7 +336,7 @@ int	get_here_docs(t_parsing_data *token)
 				return (0);
 			return (1);
 		}
-		if (ft_check_line(line, token->delimiter))
+		if (ft_check_line(line, token->here_docs->delimiter))
 		{
 			safe_free((void **)&line);
 			return (1);
@@ -345,27 +348,24 @@ int	get_here_docs(t_parsing_data *token)
 
 int	load_here(t_parsing_data *token)
 {
+	t_here_docs	*tmp;
+
 	while (token)
 	{
-		if (token->delimiter)
+		while (token->here_docs)
 		{
-			if (*token->delimiter == '|' || !token->delimiter)
-			{
-				ft_putstr_fd("Invalid delimiter in here doc\n", 2);
+			if (!token->here_docs->delimiter)
+				return (ft_putstr_fd("Invalid delimiter in here doc\n", 2), 0);
+			safe_free((void **)&token->here);
+			token->here = malloc(sizeof(char));
+			if (!token->here)
+				error("Malloc error", NULL);
+			token->here[0] = '\0';
+			if (!get_here_docs(token))
 				return (0);
-			}
-			while (token->here_docs)
-			{
-				safe_free((void **)&token->here);
-				token->here = NULL;
-				token->here = malloc(sizeof(char));
-				if (!token->here)
-					error("Malloc error", NULL);
-				token->here[0] = '\0';
-				if (!get_here_docs(token))
-					return (0);
-				token->here_docs = token->here_docs->next;
-			}
+			tmp = token->here_docs;
+			token->here_docs = token->here_docs->next;
+			safe_free((void **)&tmp);
 		}
 		token = token->next;
 	}
@@ -400,7 +400,7 @@ void	process(t_data *data)
 		token->pipe = true;
 		token->saved_stdin = saved_stdin;
 		check_out_file(token);
-		check_in_file(token);
+		check_in_file(token, data);
 		if (token->value)
 			pipex(data, token);
 		token = token->next;
@@ -409,7 +409,7 @@ void	process(t_data *data)
 	if (is_piped)
 		token->pipe = true;
 	check_out_file(token);
-	check_in_file(token);
+	check_in_file(token, data);
 	if (token->value)
 		last_exec(data, token);
 	

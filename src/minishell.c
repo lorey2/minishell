@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/01/13 20:46:13 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/26 15:29:28 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 16:17:28 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 /* list of malloc at this point : nothing									 */
 /* added malloc : path_data->path_split									   */
 /* ************************************************************************** */
-
-int	g_in_execution = 0;
 
 static void	setup_arg_if_empty(t_parsing_data *p_data)
 {
@@ -57,7 +55,6 @@ static void	big_loop(t_data *data)
 	{
 		g_signal[0] = 0;
 		g_signal[1] = 0;
-		g_in_execution = 0;
 		setup_path(data, data->path);
 		shell_prompt = setup_prompt(data);
 		data->input = readline(shell_prompt);
