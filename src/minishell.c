@@ -1,23 +1,22 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2025/01/13 20:46:13 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/26 16:17:28 by maambuhl         ###   LAUSANNE.ch       */
-/*																			*/
+/*                                                    +:+ +:+         +:+     */
+/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/26 20:00:55 by lorey             #+#    #+#             */
+/*   Updated: 2025/03/26 20:40:58 by lorey            ###   LAUSANNE.ch       */
+/*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
 /* ************************************************************************** */
-/* setup the path split in the double pointer data->path_split				*/
-/* does an error if the malloc (ft_split) fails							   */
-/* list of malloc at this point : nothing									 */
-/* added malloc : path_data->path_split									   */
+/* setup the path split in the double pointer data->path_split				  */
+/* does an error if the malloc (ft_split) fails							      */
+/* list of malloc at this point : nothing									  */
+/* added malloc : path_data->path_split									      */
 /* ************************************************************************** */
 
 static void	setup_arg_if_empty(t_parsing_data *p_data)
@@ -47,6 +46,24 @@ static void	big_loop_execution(t_data *data)
 	}
 }
 
+static void	big_loop_core(t_data *data)
+{
+	if (data->input[0] != '\0')
+	{
+		add_history(data->input);
+		g_signal[0] = 1;
+		big_loop_execution(data);
+		wait_for_all(data);
+		printf("LAST EXIT = %d\n", data->last_exit);
+	}
+	else
+	{
+		data->token = safe_malloc(sizeof(t_parsing_data));
+		init_new_token(data->token);
+	}
+	g_signal[0] = 0;
+}
+
 static void	big_loop(t_data *data)
 {
 	char	*shell_prompt;
@@ -64,20 +81,7 @@ static void	big_loop(t_data *data)
 			safe_free((void **)&shell_prompt);
 			break ;
 		}
-		if (data->input[0] != '\0')
-		{
-			add_history(data->input);
-			g_signal[0] = 1;
-			big_loop_execution(data);
-			wait_for_all(data);
-			printf("LAST EXIT = %d\n", data->last_exit);
-		}
-		else
-		{
-			data->token = safe_malloc(sizeof(t_parsing_data));
-			init_new_token(data->token);
-		}
-		g_signal[0] = 0;
+		big_loop_core(data);
 		if (data->exit_nbr != -1)
 		{
 			safe_free((void **)&shell_prompt);
@@ -85,18 +89,21 @@ static void	big_loop(t_data *data)
 		}
 		safe_free((void **)&data->input);
 		safe_free((void **)&shell_prompt);
-		free_tokens(data->token);
-		safe_free((void **)&data->token);
+		free_tokens(data->token, data);
 	}
 }
+
+/* ************************************************************************** */
+/*	PUT THAT BEFORE INIT STRUCT												  */
+//explosion_animation();
+//text_animation();
+/* ************************************************************************** */
 
 int	main(int argc __attribute__((unused)),
 		char **argv __attribute__((unused)), char **env)
 {
 	t_data	data;
 
-//	explosion_animation();
-//	text_animation();
 	init_struct(&data);
 	setup_env(&data, env);
 	setup_signal();

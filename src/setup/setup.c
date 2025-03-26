@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 14:38:34 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/25 13:55:48 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 20:42:50 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char	*setup_prompt(t_data *data)
 void	setup_env(t_data *data, char **env)
 {
 	int	i;
+	int	j;
 	int	count;
 
 	count = 0;
@@ -81,12 +82,14 @@ void	setup_env(t_data *data, char **env)
 	data->env->env = malloc(sizeof(char *) * (count + 1));
 	if (!data->env->env)
 		return ;
-	for (i = 0; i < count; i++)
+	i = -1;
+	while (++i < count)
 	{
 		data->env->env[i] = ft_strdup(env[i]);
 		if (!data->env->env[i])
 		{
-			for (int j = 0; j < i; j++)
+			j = -1;
+			while (++j < i)
 				safe_free((void **)&data->env->env[j]);
 			safe_free((void **)&data->env->env);
 			return ;

@@ -6,12 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 15:28:50 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 20:46:09 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdbool.h>
 
 volatile sig_atomic_t	g_signal[2];
 

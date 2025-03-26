@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 14:04:45 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 14:47:26 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 20:23:33 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,18 @@ void	text_animation(void)
 		perror("Error opening file");
 		exit(1);
 	}
-	logo = malloc(sizeof(char *) * 11);
+	logo = malloc(sizeof(char *) * 12);
 	logo[10] = NULL;
 	i = -1;
-	while (++i < 10)
+	while (++i < 11)
 	{
 		logo[i] = get_next_line(fd);
-		if (logo[i] && logo[i][strlen(logo[i]) - 1] == '\n')
-			logo[i][strlen(logo[i]) - 1] = '\0';
+		if (logo[i] && logo[i][ft_strlen(logo[i]) - 1] == '\n')
+			logo[i][ft_strlen(logo[i]) - 1] = '\0';
 	}
 	print_algo(logo);
-	usleep(1000000);
 	free_double_point(&logo);
 	close(fd);
+	usleep(1000000);
 	printf(RESET"\033[H\033[J\033[?25h");
 }

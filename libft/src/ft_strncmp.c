@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 12:50:39 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/03/19 17:36:38 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 20:25:13 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,4 @@ int	ft_check_line(char *s1, char *s2)
 	if (s1[i] == '\n' && !s2[i])
 		return (1);
 	return (0);
-
 }

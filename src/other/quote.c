@@ -6,12 +6,13 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 16:23:45 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 18:49:30 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 20:47:15 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
 //to_do FREE EVERYTHING IF MALLOC FAILS
 //here we expand variables
 char	*simple_quote(char *arg)
@@ -80,4 +81,4 @@ char	*check_for_quote(char *arg)
 	else if (arg[0] == '\"')
 		return (double_quote(arg));
 	return (arg);
-}
+}*/

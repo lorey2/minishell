@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 16:53:51 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 19:57:01 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,25 @@ void	free_var(t_var *var)
 	}
 }
 
-void	free_tokens(t_parsing_data *token)
+void	free_tokens(t_parsing_data *token, t_data *data)
 {
 	t_parsing_data	*token_cpy;
 
-	token_cpy = token;
-	while (token)
+	if (token)
 	{
-		token_cpy = token->next;
-		safe_free((void **)&token->value);
-		safe_free((void **)&token->here);
-		safe_free((void **)&token->delimiter);
-		// safe_free((void **)&token->here_docs);
-		free_double_point(&token->arg);
-		token = token_cpy;
+		token_cpy = token;
+		while (token)
+		{
+			token_cpy = token->next;
+			safe_free((void **)&token->value);
+			safe_free((void **)&token->here);
+			safe_free((void **)&token->delimiter);
+			free_double_point(&token->arg);
+			safe_free((void **)&token);
+			token = token_cpy;
+		}
 	}
+	data->token = NULL;
 }
 
 void	free_everything(t_data *data)
@@ -59,7 +63,7 @@ void	free_everything(t_data *data)
 	safe_free((void **)&data->env);
 	safe_free((void **)&data->path);
 	safe_free((void **)&data->pp_data);
-	free_tokens(data->token);
+	free_tokens(data->token, data);
 	safe_free((void **)&data->var);
 	safe_free((void **)&data->token);
 	clear_history();

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 15:26:17 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 19:56:32 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ void		error(char *message, t_data *data);
 void		free_double_point(char ***point);
 void		free_everything(t_data *data);
 void		free_path(t_path_data *path_data);
-void		free_tokens(t_parsing_data *token);
+void		free_tokens(t_parsing_data *token, t_data *data);
 //gnl
 char		*get_next_line(int fd);
 //utils

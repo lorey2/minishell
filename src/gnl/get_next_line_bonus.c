@@ -6,7 +6,7 @@
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:12:19 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/25 14:56:59 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 20:51:55 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,7 @@ static char	*handle_rest(char **rest)
 	if (i_bksp != -1)
 	{
 		line = ft_substr(*rest, 0, i_bksp + 1);
-		if (!line)
-			return (safe_free((void **)&rest), NULL);
 		temp = ft_strdup(*rest);
-		if (!temp)
-			return (safe_free((void **)&line)
-				, safe_free((void **)&rest), NULL);
 		safe_free((void **)&*rest);
 		*rest = ft_substr(temp, i_bksp + 1, ft_strlen(temp) - i_bksp - 1);
 		safe_free((void **)&temp);
@@ -79,13 +74,12 @@ char	*get_next_line(int fd)
 			break ;
 		nbread = read(fd, buffer, BUFFER_SIZE);
 		if (nbread < 0 || (nbread == 0 && *rest[fd] == '\0'))
-			return (safe_free((void **)&rest[fd]), safe_free((void **)&buffer), NULL);
+			return (safe_free((void **)&rest[fd]),
+				safe_free((void **)&buffer), NULL);
 		if (nbread == 0)
 			break ;
 		buffer[nbread] = '\0';
 		temp = ft_strjoin(rest[fd], buffer);
-		if (!temp)
-			return (safe_free((void **)&buffer), NULL);
 		safe_free((void **)&rest[fd]);
 		rest[fd] = temp;
 	}
