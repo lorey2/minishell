@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:55:52 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/19 15:23:10 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 17:52:53 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	do_echo(t_parsing_data *p_data, t_path_data *path_data, int i)
 		write(p_data->fd_out, "\n", 1);
 }
 
-void	echo(t_parsing_data *p_data, t_path_data *path_data)
+void	echo(t_parsing_data *p_data, t_path_data *path_data, t_data *data)
 {
 	int	i;
 
@@ -82,17 +82,17 @@ void	echo(t_parsing_data *p_data, t_path_data *path_data)
 		if (path_data->is_n == false)
 			write(p_data->fd_out, "\n", 1);
 		if (p_data->pipe)
-			exit(0);
+			frexit(data, 0);
 		return ;
 	}
 	if (i == -1)
 	{
 		p_data->status = 2;
 		if (p_data->pipe)
-			exit(2);
+			frexit(data, 2);
 		return ;
 	}
 	do_echo(p_data, path_data, i);
 	if (p_data->pipe)
-		exit(0);
+		frexit(data, 0);
 }

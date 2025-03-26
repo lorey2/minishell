@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:38:14 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 18:53:29 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 18:05:12 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static int	put_var_with_equal_in_env(char *arg, t_env_data *e_data)
 }
 
 int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
-			t_var *v_data, t_env_data *e_data)
+			t_var *v_data, t_data *data)
 {
 	int	i;
 
@@ -106,7 +106,7 @@ int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
 	if (p_data->arg && p_data->arg[i])
 	{
 		if (p_data->pipe)
-			exit(0);
+			frexit(data, 0);
 		i--;
 		while (p_data->arg[++i])
 		{
@@ -114,7 +114,7 @@ int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
 			{
 				if (isalpha(p_data->arg[i][0]) || (p_data->arg[i][0] == '_'))
 				{
-					if (put_var_with_equal_in_env(p_data->arg[i], e_data))
+					if (put_var_with_equal_in_env(p_data->arg[i], data->env))
 						return (p_data->status = 1, 1);
 				}
 				else
@@ -122,13 +122,13 @@ int	mini_export(t_parsing_data *p_data, t_path_data *path_data,
 						, write(1, "invalid var name \n", 18), 1);
 			}
 			else if (isalpha(p_data->arg[i][0]) || (p_data->arg[i][0] == '_'))
-				put_var_without_equal_in_env(v_data, p_data->arg[i], e_data);
+				put_var_without_equal_in_env(v_data, p_data->arg[i], data->env);
 			else
 				return (p_data->status = 1
 					, write(1, "invalid var name \n", 18), 1);
 		}
 	}
 	else
-		copy_and_sort_array(e_data->env, p_data);
+		copy_and_sort_array(data->env->env, p_data);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 03:05:22 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 15:00:39 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	set_env(t_env_data *e_data, char *var_name, char *value, bool is_equal)
 	if (i >= 0)
 	{
 		temp = ft_strjoin(var_name, "=");
+		safe_free((void **)&e_data->env[i]);
 		e_data->env[i] = ft_strjoin(temp, value);
 		safe_free((void **)&temp);
 	}

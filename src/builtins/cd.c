@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 14:05:49 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 17:44:11 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,15 @@ static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
 	{
 		oldpwd = get_env(e_data, "OLDPWD", NULL);
 		if (oldpwd == NULL)
-			return (write_err("cd : OLDPWD not set\n"), -1);
+			return (safe_free((void **)&oldpwd),
+				write_err("cd : OLDPWD not set\n"), -1);
 		else if (p_data->arg[i + 1])
-			return (write_err("cd : too many arguments\n"), -1);
+			return (safe_free((void **)&oldpwd),
+				write_err("cd : too many arguments\n"), -1);
 		write(p_data->fd_out, oldpwd, ft_strlen(oldpwd));
 		write(p_data->fd_out, "\n", 1);
-		return (do_cd_update_env(oldpwd, e_data), 1);
+		return (do_cd_update_env(oldpwd, e_data),
+			safe_free((void **)&oldpwd), 1);
 	}
 	return (0);
 }
