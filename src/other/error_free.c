@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 18:39:28 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 16:53:51 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	free_tokens(t_parsing_data *token)
 		safe_free((void **)&token->value);
 		safe_free((void **)&token->here);
 		safe_free((void **)&token->delimiter);
+		// safe_free((void **)&token->here_docs);
 		free_double_point(&token->arg);
 		token = token_cpy;
 	}

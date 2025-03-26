@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:23:26 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/25 15:37:59 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 18:05:28 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ char	*check_here_doc_del(char **input)
 	else
 	{
 		len = 0;
-		if ((*input[len] == '>' || *input[len] == '<'))
+		if ((*input[len] == '>' || *input[len] == '<' || **input == '\0' || **input == '|'))
 			return (NULL);
 		while ((*input)[len] && (*input)[len] != ' ' && (*input)[len] != '>' && (*input)[len] != '<')
 			len++;
@@ -370,7 +370,7 @@ int	handle_cmd(char **input, t_parsing_data *pars)
 	{
 		(*input)++;
 		skip_space(input);
-		if (**input == '|' || **input == '\0')
+		if ((**input == '|' || **input == '\0') && !pars->here_docs)
 			return (ft_putstr_fd("syntax error near unexpected token `|'\n", STDERR_FILENO), 0);
 		pars->pipe = true;
 	}

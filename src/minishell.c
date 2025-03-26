@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/01/13 20:46:13 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/25 15:31:04 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 16:17:28 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 /* list of malloc at this point : nothing									 */
 /* added malloc : path_data->path_split									   */
 /* ************************************************************************** */
-
-int	g_in_execution = 0;
 
 static void	setup_arg_if_empty(t_parsing_data *p_data)
 {
@@ -55,8 +53,8 @@ static void	big_loop(t_data *data)
 
 	while (1)
 	{
-		g_signal = 0;
-		g_in_execution = 0;
+		g_signal[0] = 0;
+		g_signal[1] = 0;
 		setup_path(data, data->path);
 		shell_prompt = setup_prompt(data);
 		data->input = readline(shell_prompt);
@@ -69,7 +67,7 @@ static void	big_loop(t_data *data)
 		if (data->input[0] != '\0')
 		{
 			add_history(data->input);
-			g_signal = 1;
+			g_signal[0] = 1;
 			big_loop_execution(data);
 			wait_for_all(data);
 			printf("LAST EXIT = %d\n", data->last_exit);
@@ -79,7 +77,7 @@ static void	big_loop(t_data *data)
 			data->token = safe_malloc(sizeof(t_parsing_data));
 			init_new_token(data->token);
 		}
-		g_signal = 0;
+		g_signal[0] = 0;
 		if (data->exit_nbr != -1)
 		{
 			safe_free((void **)&shell_prompt);

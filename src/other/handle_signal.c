@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:21:08 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/22 02:31:23 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 15:28:32 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void	sigint_handler(int sig __attribute__((unused)))
 //	rl_replace_line("", 0);
 //	if (g_signal == 0)
 //		rl_redisplay();
-	if (g_signal == 0)
+	if (g_signal[0] == 0)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line ();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-//	g_signal = 1;
+	g_signal[1] = 1;
 }
 
 /* ************************************************************************** */
