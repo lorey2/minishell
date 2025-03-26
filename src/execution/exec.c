@@ -74,6 +74,7 @@ void	execute(t_data *data, t_parsing_data *token)
 		data->path->path_with_com = NULL;
 	}
 	ft_putstr_fd("Command not found\n", STDERR_FILENO);
+	free_everything(data);
 	exit(127);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:14:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 01:35:00 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 01:40:34 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,30 @@ Undefined (no variable extention)", 66);
 void	expand_tilde(t_data *data, t_pre_pars_data *pp_data)
 {
 	char	*home_dir;
+	char	*tmp;
+	char	*tmp2;
 
-	pp_data->modified = ft_strjoin(pp_data->modified, ft_substr(data->input,
-				pp_data->bkp2, pp_data->i - pp_data->bkp2));
+	tmp2 = ft_substr(data->input,
+			pp_data->bkp2, pp_data->i - pp_data->bkp2);
+	tmp = ft_strjoin(pp_data->modified, tmp2);
+	safe_free((void **)&tmp2);
+	safe_free((void **)&pp_data->modified);
+	pp_data->modified = tmp;
 	home_dir = get_env(data->env, "HOME", data->var);
 	if (home_dir)
-		pp_data->modified = ft_strjoin(pp_data->modified, home_dir);
+		tmp = ft_strjoin(pp_data->modified, home_dir);
 	else
-		pp_data->modified = ft_strjoin(pp_data->modified, "/default/home");
+		tmp = ft_strjoin(pp_data->modified, "/default/home");
+	safe_free((void **)&pp_data->modified);
+	pp_data->modified = tmp;
+	safe_free((void **)&home_dir);
 	pp_data->bkp2 = pp_data->i + 1;
 }
 
 int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 {
 	char	*tmp;
+	char	*tmp2;
 
 	pp_data->i = -1;
 	pp_data->bkp2 = 0;
@@ -60,7 +70,9 @@ int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 		if (!((data->input)[pp_data->i]))
 		{
 			tmp = ft_substr(data->input, pp_data->bkp2, pp_data->i - pp_data->bkp2);
-			pp_data->modified = ft_strjoin(pp_data->modified, tmp);
+			tmp2 = ft_strjoin(pp_data->modified, tmp);
+			safe_free((void **)&pp_data->modified);
+			pp_data->modified = tmp2;
 			safe_free((void **)&tmp);
 			break ;
 		}
@@ -68,7 +80,7 @@ int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 	if (pp_data->modified[0] != '\0')
 	{
 		safe_free((void **)&data->input);
-		data->input = ft_strdup(pp_data->modified);
+		data->input = pp_data->modified;
 	}
-	return (safe_free((void **)&pp_data->modified), 0);
+	return (0);
 }

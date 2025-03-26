@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:37:24 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 18:51:11 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 01:13:14 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,15 @@ static void	expansion_variable(t_data *data, t_pre_pars_data *pp_data)
 	int		backup;
 	char	*var;
 	char	*expanded_var;
+	char	*temp;
+	char	*temp2;
 
-	pp_data->modified = ft_strjoin(pp_data->modified, ft_substr(data->input,
-				pp_data->bkp2, pp_data->i - pp_data->bkp2));
+	temp = ft_substr(data->input,
+			pp_data->bkp2, pp_data->i - pp_data->bkp2);
+	temp2 = ft_strjoin(pp_data->modified, temp);
+	safe_free((void **)&pp_data->modified);
+	pp_data->modified = temp2;
+	safe_free((void **)&temp);
 	(pp_data->i)++;
 	backup = pp_data->i;
 	skip_spe_char(data, pp_data);
@@ -74,7 +80,10 @@ static void	expansion_variable(t_data *data, t_pre_pars_data *pp_data)
 		expanded_var = ft_itoa(data->last_exit);
 	else
 		expanded_var = get_env(data->env, var, data->var);
-	pp_data->modified = ft_strjoin(pp_data->modified, expanded_var);
+	temp = ft_strjoin(pp_data->modified, expanded_var);
+	safe_free((void **)&expanded_var);
+	safe_free((void **)&pp_data->modified);
+	pp_data->modified = temp;
 	safe_free((void **)&var);
 	pp_data->bkp2 = pp_data->i;
 	(pp_data->i)--;

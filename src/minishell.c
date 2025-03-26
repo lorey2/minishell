@@ -60,6 +60,7 @@ static void	big_loop(t_data *data)
 		setup_path(data, data->path);
 		shell_prompt = setup_prompt(data);
 		data->input = readline(shell_prompt);
+		safe_free((void **)&shell_prompt);
 		if (!data->input || data->exit_nbr != -1)
 		{
 			safe_free((void **)&shell_prompt);
@@ -86,7 +87,8 @@ static void	big_loop(t_data *data)
 		}
 		safe_free((void **)&data->input);
 		safe_free((void **)&shell_prompt);
-		// free_tokens(data->token);
+		free_tokens(data->token);
+		safe_free((void **)&data->token);
 	}
 }
 
