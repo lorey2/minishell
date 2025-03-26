@@ -6,7 +6,7 @@
 ---- [❌] exit --> frexit in builtins<br /><br />
 ---- [❌] malloc --> safe_malloc everywhere<br /><br />
 ---- [❌] last leak with pipe<br /><br />
----- [❌] unset is dead (again)<br /><br />
+---- [✅] unset is dead (again)<br /><br />
 ---- [✅] builtin | [whatever]<br /><br />
 ---- [✅] echo -n {arg} / echo -n<br /><br />
 ---- [🙄] les guillemets deuxieme arg est split<br /><br />
@@ -38,11 +38,13 @@
 ---- [✅] exit valgrind should initialize varaibel in wait4 <br /><br />
 ---- [✅] exit | ls command not found ??<br /><br />
 ## GENERAL FREE CRASH LIST :
----- [❌]echo $EXPANSTION --> ALL EXPANSION<br /><br />
----- [❌]cd<br /><br />
----- [❌]export with arg<br /><br />
----- [❌]everything set-env get-env related<br /><br />
+---- [❓]everything set-env get-env related<br /><br />
+---- [❌] last leak with pipe<br /><br />
 ## GENERAL FREE WORKING LIST :
+---- [✅]cd -<br /><br />
+---- [✅]cd <br /><br />
+---- [✅]export with arg<br /><br />
+---- [✅]echo $EXPANSTION --> ALL EXPANSION<br /><br />
 ---- [✅]nothing<br /><br />
 ---- [✅]echo -n<br /><br />
 ---- [✅]echo<br /><br />
