@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/03/21 17:59:29 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/24 16:35:44 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 14:30:19 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -83,12 +83,7 @@ void	pipex(t_data *data, t_parsing_data *token)
 
 	if (pipe(pipefd) == -1)
 		error("Pipe err", data);
-
-	// if (is_builtin(token->value))
-	//	 execute_builtin_pipe(data, token, pipefd);
-	// else
 	execute_command_pipe(data, token, pipefd);
-
 	close(pipefd[1]);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
@@ -199,7 +194,8 @@ char	*conca_here_doc(char *line, t_parsing_data *token)
 void	here_doc_write(t_parsing_data *token, int *pipefd)
 {
 	close(pipefd[0]);
-	ft_putstr_fd(token->here, pipefd[1]);
+	if (token->value)
+		ft_putstr_fd(token->here, pipefd[1]);
 	close(pipefd[1]);
 	exit(0);
 }
@@ -304,7 +300,6 @@ void	last_exec(t_data *data, t_parsing_data *token)
 		exec_builtin(data, token);
 		return ;
 	}
-
 	pid_t child_pid = fork();
 	if (child_pid == -1)
 		error("fork_error", NULL);
@@ -391,7 +386,6 @@ void	process(t_data *data)
 		get_last_token(token)->status = 2;
 		return ;
 	}
-	
 	while (nb_pipe >= 1)
 	{
 		token->pipe = true;
