@@ -3,7 +3,7 @@
 
 
 ## ?!?!crash list?!?! :
----- [❌] exit --> frexit in builtins<br /><br />
+---- [❓ NORMALEMENT C'EST BON FAUT VOIR QUAND Y AURA PLUS LE DERNIER LEAK DES PIPES] exit --> frexit in builtins<br /><br />
 ---- [❌] malloc --> safe_malloc everywhere<br /><br />
 ---- [❌] last leak with pipe<br /><br />
 ---- [✅] unset is dead (again)<br /><br />
