@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 15:47:31 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 18:05:32 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ void		execute(t_data *data, t_parsing_data *token);
 void		wait_for_all(t_data *data);
 void		final_wait(t_data *data);
 //buitins
+void		frexit(t_data *data, int exit_number);
 bool		exec_builtin(t_data *data, t_parsing_data *p_data);
 bool		is_builtin(char *cmd);
 void		fill(char *data, t_path_data *path_data);
@@ -166,16 +167,16 @@ bool		check_builtin(t_data *data, t_parsing_data *p_data);
 int			cd(t_parsing_data *p_data, t_path_data *path_data,
 				t_env_data *e_data);
 int			do_cd_update_env(char *arg, t_env_data *e_data);
-void		pwd(t_parsing_data *p_data, t_path_data *path_data);
-void		echo(t_parsing_data *p_data, t_path_data *path_data);
+void		pwd(t_parsing_data *p_data, t_path_data *path_data, t_data *data);
+void		echo(t_parsing_data *p_data, t_path_data *path_data, t_data *data);
 int			unset(t_env_data *e_data,
 				t_path_data *path_data, t_parsing_data *p_data);
-void		env(t_env_data *e_data, t_parsing_data *p_data);
+void		env(t_env_data *e_data, t_parsing_data *p_data, t_data *data);
 void		init_flags(t_path_data *path_data);
 void		write_err(char *message);
 int			mini_exit(t_data *data, t_parsing_data *p_data);
 int			mini_export(t_parsing_data *p_data, t_path_data *path_data,
-				t_var *v_data, t_env_data *e_data);
+				t_var *v_data, t_data *data);
 void		copy_and_sort_array(char **src, t_parsing_data *data);
 //update env
 void		set_env(t_env_data *e_data, char *var_name,

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:02:25 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/19 17:33:10 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 17:49:36 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,10 @@ void	init_flags(t_path_data *path_data)
 void	write_err(char *message)
 {
 	write(1, message, ft_strlen(message));
+}
+
+void	frexit(t_data *data, int exit_number)
+{
+	free_everything(data);
+	exit(exit_number);
 }
