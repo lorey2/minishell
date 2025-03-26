@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/03/21 17:59:29 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/25 16:50:37 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 14:30:19 by maambuhl         ###   LAUSANNE.ch       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -386,7 +386,6 @@ void	process(t_data *data)
 		get_last_token(token)->status = 2;
 		return ;
 	}
-	
 	while (nb_pipe >= 1)
 	{
 		token->pipe = true;
