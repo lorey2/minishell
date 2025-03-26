@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:57:47 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/19 15:18:12 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 17:55:23 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ DESCRIPTION
 
 #include "minishell.h"
 
-void	env(t_env_data *e_data, t_parsing_data *p_data)
+void	env(t_env_data *e_data, t_parsing_data *p_data, t_data *data)
 {
 	int	i;
 
@@ -81,5 +81,5 @@ void	env(t_env_data *e_data, t_parsing_data *p_data)
 	}
 	p_data->status = 0;
 	if (p_data->pipe)
-		exit(0);
+		frexit(data, 0);
 }

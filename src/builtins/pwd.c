@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:08:54 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/19 15:12:36 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/26 17:50:11 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 	return (i);
 }
 
-void	pwd(t_parsing_data *p_data, t_path_data *path_data)
+void	pwd(t_parsing_data *p_data, t_path_data *path_data, t_data *data)
 {
 	char	shell_prompt[1024];
 
@@ -45,7 +45,7 @@ void	pwd(t_parsing_data *p_data, t_path_data *path_data)
 	{
 		p_data->status = 2;
 		if (p_data->pipe)
-			exit(2);
+			frexit(data, 2);
 		return ;
 	}
 	if (getcwd(shell_prompt, sizeof(shell_prompt)) == NULL)
@@ -57,5 +57,5 @@ void	pwd(t_parsing_data *p_data, t_path_data *path_data)
 	}
 	p_data->status = 0;
 	if (p_data->pipe)
-		exit(0);
+		frexit(data, 0);
 }
