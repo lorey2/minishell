@@ -3,8 +3,10 @@
 
 
 ## ?!?!crash list?!?! :
-
----- [❌]unset is dead (again)<br /><br />
+---- [❌] exit --> frexit in builtins<br /><br />
+---- [❌] malloc --> safe_malloc everywhere<br /><br />
+---- [❌] last leak with pipe<br /><br />
+---- [❌] unset is dead (again)<br /><br />
 ---- [✅] builtin | [whatever]<br /><br />
 ---- [✅] echo -n {arg} / echo -n<br /><br />
 ---- [🙄] les guillemets deuxieme arg est split<br /><br />
