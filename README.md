@@ -3,9 +3,9 @@
 
 
 ## ?!?!crash list?!?! :
----- [❓ NORMALEMENT C'EST BON FAUT VOIR QUAND Y AURA PLUS LE DERNIER LEAK DES PIPES] exit --> frexit in builtins<br /><br />
+---- [✅ NORMALEMENT C'EST BON FAUT VOIR QUAND Y AURA PLUS LE DERNIER LEAK DES PIPES] exit --> frexit in builtins<br /><br />
 ---- [❌] malloc --> safe_malloc everywhere<br /><br />
----- [❌] last leak with pipe<br /><br />
+---- [✅] last leak with pipe<br /><br />
 ---- [✅] unset is dead (again)<br /><br />
 ---- [✅] builtin | [whatever]<br /><br />
 ---- [✅] echo -n {arg} / echo -n<br /><br />
@@ -38,9 +38,9 @@
 ---- [✅] exit valgrind should initialize varaibel in wait4 <br /><br />
 ---- [✅] exit | ls command not found ??<br /><br />
 ## GENERAL FREE CRASH LIST :
----- [❓]everything set-env get-env related<br /><br />
----- [❌] last leak with pipe<br /><br />
+
 ## GENERAL FREE WORKING LIST :
+---- [✅]everything set-env get-env related<br /><br />
 ---- [✅]cd -<br /><br />
 ---- [✅]cd <br /><br />
 ---- [✅]export with arg<br /><br />
@@ -52,6 +52,7 @@
 ---- [✅]non-existing command<br /><br />
 ---- [✅]pwd<br /><br />
 ---- [✅]exit<br /><br />
+---- [✅] last leak with pipe<br /><br />
 
 
 ## MALLOC LIST :
