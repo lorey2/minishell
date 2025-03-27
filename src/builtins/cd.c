@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 17:44:11 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 16:31:47 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,7 @@ int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
 		return (p_data->status = 1
 			, write_err("cd : HOME environment variable not set\n"), 1);
 	i = do_cd_update_env(home, e_data);
-	if (home)
-		safe_free((void **)&home);
+	safe_free((void **)&home);
 	if (i == -1)
 		return (p_data->status = 1, 1);
 	return (0);

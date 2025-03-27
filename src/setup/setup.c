@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 14:38:34 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 20:42:50 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 16:23:43 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,10 @@ void	free_path(t_path_data *path_data)
 	safe_free((void **)&path_data->path_with_com);
 }
 
-void	setup_path(t_data *data, t_path_data *path_data)
+static void	setup_path_2(t_path_data *path_data)
 {
-	int		i;
+	int	i;
 
-	free_path(path_data);
-	path_data->env_path = get_env(data->env, "PATH", NULL);
-	if (!path_data->env_path)
-		error("PATH environment variable not found", NULL);
-	path_data->path_split = ft_split(path_data->env_path, ':');
-	if (!path_data->path_split)
-		error("Malloc error for path_split", NULL);
-	safe_free((void **)&path_data->env_path);
 	i = 0;
 	while (path_data->path_split[i])
 		i++;
@@ -49,6 +41,19 @@ void	setup_path(t_data *data, t_path_data *path_data)
 	}
 	path_data->path_split_slash[i] = NULL;
 	free_double_point(&path_data->path_split);
+}
+
+void	setup_path(t_data *data, t_path_data *path_data)
+{
+	free_path(path_data);
+	path_data->env_path = get_env(data->env, "PATH", NULL);
+	if (!path_data->env_path)
+		error("PATH environment variable not found", NULL);
+	path_data->path_split = ft_split(path_data->env_path, ':');
+	if (!path_data->path_split)
+		error("Malloc error for path_split", NULL);
+	safe_free((void **)&path_data->env_path);
+	setup_path_2(path_data);
 }
 
 char	*setup_prompt(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:21:08 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 15:28:32 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 16:28:59 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,14 @@
 /* list of malloc at this point : path_data->path->split and a lot more later */
 /* added malloc : nothing                                                     */
 /* ************************************************************************** */
-
-void	sigint_handler(int sig __attribute__((unused)))
-{
 //	if (g_signal == 0)
 //		write(1, "\n", 1);
 //	rl_on_new_line ();
 //	rl_replace_line("", 0);
 //	if (g_signal == 0)
 //		rl_redisplay();
+void	sigint_handler(int sig __attribute__((unused)))
+{
 	if (g_signal[0] == 0)
 	{
 		write(1, "\n", 1);

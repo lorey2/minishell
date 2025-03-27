@@ -6,7 +6,7 @@
 #    By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 15:46:35 by lorey             #+#    #+#              #
-#    Updated: 2025/03/21 14:07:33 by lorey            ###   LAUSANNE.ch        #
+#    Updated: 2025/03/27 16:52:59 by lorey            ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ CYAN      = \033[0;96m
 
 SRC_FILES        = minishell
 
-BUILTINS_LIST    = builtins builtins_utils export export_2 cd cd_2 pwd echo env exit unset
+BUILTINS_LIST    = builtins builtins_utils export export_2 export_3 cd cd_2 pwd echo env exit unset
 
 GNL_FILES        = get_next_line_bonus get_next_line_utils_bonus
 
@@ -56,7 +56,7 @@ EXEC_FILES       = exec
 
 PARSING_FILES    = parsing pre_parsing pre_pars_expans
 
-SETUP_FILES      = init setup
+SETUP_FILES      = init init_2 setup
 
 OTHER_FILES      = error_free handle_signal quote update_env utils update_env_error
 
