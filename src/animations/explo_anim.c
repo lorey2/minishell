@@ -6,7 +6,7 @@
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:34:56 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/24 14:47:46 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 23:03:00 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,10 @@ void	explosion_animation(void)
 	printf("\033[2J\033[H\033[?25l");
 	fd = open("src/animations/explo", O_RDONLY);
 	if (fd < 0)
-	{
-		perror("Error opening file");
-		exit(1);
-	}
+		error("cannot open file", NULL);
 	explo = malloc(sizeof(char *) * (LINE + 1));
+	if (!explo)
+		error("malloc error", NULL);
 	explo[LINE] = NULL;
 	i = -1;
 	while (++i < LINE)

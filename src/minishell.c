@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:00:55 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 20:40:58 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 22:58:47 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@
 /* added malloc : path_data->path_split									      */
 /* ************************************************************************** */
 
-static void	setup_arg_if_empty(t_parsing_data *p_data)
+static void	setup_arg_if_empty(t_parsing_data *p_data, t_data *data)
 {
 	if (!p_data->arg && p_data->value[0] != 0)
 	{
-		p_data->arg = malloc(sizeof(char *) * 2);
+		p_data->arg = safe_malloc(sizeof(char *) * 2, data);
 		p_data->arg[0] = ft_strdup(p_data->value);
+		if (!p_data->arg[0])
+			error("malloc error", data);
 		p_data->arg[1] = NULL;
 	}
 }
@@ -40,7 +42,7 @@ static void	big_loop_execution(t_data *data)
 		if (data->token)
 		{
 			if (data->token->value)
-				setup_arg_if_empty(data->token);
+				setup_arg_if_empty(data->token, data);
 			process(data);
 		}
 	}
@@ -58,7 +60,7 @@ static void	big_loop_core(t_data *data)
 	}
 	else
 	{
-		data->token = safe_malloc(sizeof(t_parsing_data));
+		data->token = safe_malloc(sizeof(t_parsing_data), data);
 		init_new_token(data->token);
 	}
 	g_signal[0] = 0;

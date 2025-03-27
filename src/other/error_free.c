@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 19:57:01 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 23:07:17 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	error(char *message, t_data *data)
 {
-	(void)data;
+	if (data)
+		free_everything(data);
 	perror(message);
 	exit(EXIT_FAILURE);
 }

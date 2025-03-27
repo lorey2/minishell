@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:23:26 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 18:05:28 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 23:10:18 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	check_meta_char_arg(char c)
 	return (0);
 }
 
-char *get_value(char **input, t_parsing_data *pars, int make_offset)
+char	*get_value(char **input, t_parsing_data *pars, int make_offset, t_data *data)
 {
 	int		len;
 	char	*value;
@@ -56,9 +56,7 @@ char *get_value(char **input, t_parsing_data *pars, int make_offset)
 		(*input)++;
 		while ((*input)[len] && (*input)[len] != quote_char)
 			len++;
-		value = malloc(sizeof(char) * (len + 1));
-		if (!value)
-			error("malloc error", NULL);
+		value = safe_malloc(sizeof(char) * (len + 1), data);
 		ft_strlcpy(value, *input, len + 1);
 		*input += len;
 		if (**input == quote_char)
@@ -68,9 +66,7 @@ char *get_value(char **input, t_parsing_data *pars, int make_offset)
 	{
 		while ((*input)[len] && !check_meta_char((*input)[len]))
 			len++;
-		value = malloc(sizeof(char) * (len + 1));
-		if (!value)
-			error("malloc error", NULL);
+		value = safe_malloc(sizeof(char) * (len + 1), data);
 		if (!len)
 			return (NULL);
 		ft_strlcpy(value, *input, len + 1);
@@ -79,7 +75,7 @@ char *get_value(char **input, t_parsing_data *pars, int make_offset)
 	return (value);
 }
 
-void	rebuild_arg(t_parsing_data *pars)
+void	rebuild_arg(t_parsing_data *pars, t_data *data)
 {
 	int		i;
 	int		j;
@@ -89,9 +85,7 @@ void	rebuild_arg(t_parsing_data *pars)
 	j = 0;
 	while (pars->arg[i])
 		i++;
-	arg_with_cmd = malloc(sizeof(char *) * (i + 2));
-	if (!arg_with_cmd)
-		error("malloc error", NULL);
+	arg_with_cmd = safe_malloc(sizeof(char *) * (i + 2), data);
 	arg_with_cmd[j++] = ft_strdup(pars->value);
 	i = 0;
 	while (pars->arg[i])
@@ -101,7 +95,7 @@ void	rebuild_arg(t_parsing_data *pars)
 	pars->arg = arg_with_cmd;
 }
 
-void	get_arg(char **input, t_parsing_data *pars)
+void	get_arg(char **input, t_parsing_data *pars, t_data *data)
 {
 	int		len;
 	char	*arg;
@@ -135,9 +129,7 @@ void	get_arg(char **input, t_parsing_data *pars)
 	}
 	if (len == 0)
 		return ;
-	arg = malloc(sizeof(char) * (len + 1));
-	if (!arg)
-		error("malloc error", NULL);
+	arg = safe_malloc(sizeof(char) * (len + 1), data);
 	
 	int i = 0;
 	int j = 0;
@@ -165,14 +157,14 @@ void	get_arg(char **input, t_parsing_data *pars)
 	arg[j] = '\0';
 	pars->arg = ft_split(arg, ' ');
 	if (!pars->arg)
-		error("malloc error", NULL);
+		error("malloc error", data);
 	*input += len;
-	rebuild_arg(pars);
+	rebuild_arg(pars, data);
 	if (arg)
 		safe_free((void **)&arg);
 }
 
-char	*check_here_doc_del(char **input)
+char	*check_here_doc_del(char **input, t_data *data)
 {
 	int		len;
 	char	*del;
@@ -186,9 +178,7 @@ char	*check_here_doc_del(char **input)
 		len = 0;
 		while ((*input)[len] && (*input)[len] != quote_char)
 			len++;
-		del = malloc(sizeof(char) * (len + 1));
-		if (!del)
-			error("malloc error", NULL);
+		del = safe_malloc(sizeof(char) * (len + 1), data);
 		ft_strlcpy(del, *input, len + 1);
 		*input += len;
 		if (**input == quote_char)
@@ -201,9 +191,7 @@ char	*check_here_doc_del(char **input)
 			return (NULL);
 		while ((*input)[len] && (*input)[len] != ' ' && (*input)[len] != '>' && (*input)[len] != '<')
 			len++;
-		del = malloc(sizeof(char) * (len + 1));
-		if (!del)
-			error("malloc error", NULL);
+		del = safe_malloc(sizeof(char) * (len + 1), data);
 		ft_strlcpy(del, *input, len + 1);
 		*input += len;
 	}
@@ -224,17 +212,15 @@ t_here_docs	*get_last_here(t_here_docs *here)
 	return (head);
 }
 
-void	handle_here(char **input, t_parsing_data *pars)
+void	handle_here(char **input, t_parsing_data *pars, t_data *data)
 {
 	t_here_docs	*here;
 	t_here_docs	*last_here;
 	char		*delimiter;
 
-	here = malloc(sizeof(t_here_docs));
-	if (!here)
-		error("malloc err", NULL);
+	here = safe_malloc(sizeof(t_here_docs), data);
 	init_new_here(here);
-	delimiter = check_here_doc_del(input);
+	delimiter = check_here_doc_del(input, data);
 	pars->delimiter = delimiter;
 	here->delimiter = delimiter;
 	if (!pars->here_docs)
@@ -247,19 +233,19 @@ void	handle_here(char **input, t_parsing_data *pars)
 	skip_space(input);
 }
 
-void	handle_in_file(char **input, t_parsing_data *pars)
+void	handle_in_file(char **input, t_parsing_data *pars, t_data *data)
 {
 	++(*input);
 	if (**input == '<')
 	{
 		++(*input);
-		handle_here(input, pars);
+		handle_here(input, pars, data);
 	}
 	else
 	{
 		pars->in_file = true;
 		skip_space(input);
-		pars->infile = get_value(input, pars, 1);
+		pars->infile = get_value(input, pars, 1, data);
 		pars->delimiter = NULL;
 	}
 	skip_space(input);
@@ -279,14 +265,12 @@ t_file	*get_last_file(t_file *file)
 	return (head);
 }
 
-void	handle_out_file(char **input, t_parsing_data *pars)
+void	handle_out_file(char **input, t_parsing_data *pars, t_data *data)
 {
 	t_file	*file;
 	t_file	*last_file;
 
-	file = malloc(sizeof(t_file));
-	if (!file)
-		error("malloc error", NULL);
+	file = safe_malloc(sizeof(t_file), data);
 	init_new_file(file);
 	pars->out_file = true;
 	++(*input);
@@ -297,7 +281,7 @@ void	handle_out_file(char **input, t_parsing_data *pars)
 		++(*input);
 	}
 	skip_space(input);
-	pars->outfile = get_value(input, pars, 1);
+	pars->outfile = get_value(input, pars, 1, data);
 	file->name = pars->outfile;
 	if (!pars->outfile_list)
 		pars->outfile_list = file;
@@ -309,16 +293,16 @@ void	handle_out_file(char **input, t_parsing_data *pars)
 	skip_space(input);
 }
 
-int	check_for_file(char **input, t_parsing_data *pars)
+int	check_for_file(char **input, t_parsing_data *pars, t_data *data)
 {
 	if (**input == '<')
 	{
-		handle_in_file(input, pars);
+		handle_in_file(input, pars, data);
 		return (1);
 	}
 	else if (**input == '>')
 	{
-		handle_out_file(input, pars);
+		handle_out_file(input, pars, data);
 		return (1);
 	}
 	return (0);
@@ -353,17 +337,17 @@ int	check_vars_count(char **input)
 	return (i);
 }
 
-int	handle_cmd(char **input, t_parsing_data *pars)
+int	handle_cmd(char **input, t_parsing_data *pars, t_data *data)
 {
 	(*input) += check_vars_count(input);
 	pars->is_cmd = true;
 	skip_space(input);
-	pars->value = get_value(input, pars, 0);
+	pars->value = get_value(input, pars, 0, data);
 	skip_space(input);
-	while (check_for_file(input, pars))
+	while (check_for_file(input, pars, data))
 		;
-	get_arg(input, pars);
-	while (check_for_file(input, pars))
+	get_arg(input, pars, data);
+	while (check_for_file(input, pars, data))
 		;
 	skip_space(input);
 	if (**input == '|')
@@ -377,22 +361,18 @@ int	handle_cmd(char **input, t_parsing_data *pars)
 	return (1);
 }
 
-t_var	*allocate_var(char **input)
+t_var	*allocate_var(char **input, t_data *data)
 {
 	t_var	*var;
 	int		name_len;
 	int		value_len;
 
-	var = malloc(sizeof(t_var));
+	var = safe_malloc(sizeof(t_var), data);
 	init_new_var(var);
-	if (!var)
-		error("malloc error", NULL);
 	name_len = 0;
 	while ((*input)[name_len] != '=')
 		name_len++;
-	var->var_name = malloc(sizeof(char) * (name_len + 1));
-	if (!var->var_name)
-		error("malloc error", NULL);
+	var->var_name = safe_malloc(sizeof(char) * (name_len + 1), data);
 	++name_len;
 	value_len = 0;
 	while (((*input)[name_len] != ' ' || (*input)[name_len] != '\t') && (*input)[name_len] != '\0')
@@ -400,9 +380,7 @@ t_var	*allocate_var(char **input)
 		name_len++;
 		value_len++;
 	}
-	var->var_value = malloc(sizeof(value_len + 1));
-	if (!var->var_value)
-		error("malloc error", NULL);
+	var->var_value = safe_malloc(sizeof(value_len + 1), data);
 	return (var);
 }
 
@@ -428,7 +406,7 @@ void	add_var(char **input, t_data *data)
 
 	i = 0;
 	skip_space(input);
-	var = allocate_var(input);
+	var = allocate_var(input, data);
 	while (**input != '=')
 	{
 		var->var_name[i++] = **input;
@@ -472,9 +450,7 @@ int	parsing(char *input, t_data *data)
 		}
 		remove_offset = check_vars_count(&input);
 		input += (remove_offset * -1);
-		pars = malloc(sizeof(t_parsing_data));
-		if (!pars)
-			error("malloc error", data);
+		pars = safe_malloc(sizeof(t_parsing_data), data);
 		pars->previous = prev;
 		init_new_token(pars);
 		if (!prev)
@@ -482,9 +458,9 @@ int	parsing(char *input, t_data *data)
 		if (prev)
 			prev->next = pars;
 		prev = pars;
-		while (check_for_file(&input, pars))
+		while (check_for_file(&input, pars, data))
 			;
-		if (!handle_cmd(&input, pars))
+		if (!handle_cmd(&input, pars, data))
 			return (0);
 		pars->pos = pos;
 		pos++;

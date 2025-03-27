@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: lorey <loic.rey.vs@gmail.com>			  +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2025/03/21 17:59:29 by lorey			 #+#	#+#			 */
-/*   Updated: 2025/03/26 17:58:20 by maambuhl         ###   LAUSANNE.ch       */
-/*																			*/
+/*                                                    +:+ +:+         +:+     */
+/*   By: lorey <lo>                                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/27 23:12:59 by lorey             #+#    #+#             */
+/*   Updated: 2025/03/27 23:14:36 by lorey            ###   LAUSANNE.ch       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -66,7 +66,7 @@ void	execute(t_data *data, t_parsing_data *token)
 		data->path->path_with_com
 			= ft_strjoin(data->path->path_split_slash[i], token->value);
 		if (!data->path->path_with_com)
-			error("malloc error", NULL);
+			error("malloc error", data);
 		if (!(execve(data->path->path_with_com, \
 			token->arg, data->env->env) == -1))
 			break ;
@@ -80,7 +80,7 @@ void	execute(t_data *data, t_parsing_data *token)
 
 void	pipex(t_data *data, t_parsing_data *token)
 {
-	int	 pipefd[2];
+	int	pipefd[2];
 
 	if (pipe(pipefd) == -1)
 		error("Pipe err", data);
@@ -90,17 +90,17 @@ void	pipex(t_data *data, t_parsing_data *token)
 	close(pipefd[0]);
 }
 
-int	open_in_file(char *file_name)
+int	open_in_file(char *file_name, t_data *data)
 {
 	int	fd;
 
 	fd = open(file_name, O_RDONLY, 0666);
 	if (!fd)
-		error("Cannot open file", NULL);
+		error("Cannot open file", data);
 	return (fd);
 }
 
-int	open_file(t_file *file)
+int	open_file(t_file *file, t_data *data)
 {
 	int	fd;
 
@@ -109,11 +109,11 @@ int	open_file(t_file *file)
 	else
 		fd = open(file->name, O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (fd == -1)
-		error("Cannot open file", NULL);
+		error("Cannot open file", data);
 	return (fd);
 }
 
-int	check_out_file(t_parsing_data *token)
+int	check_out_file(t_parsing_data *token, t_data *data)
 {
 	t_file	*file;
 
@@ -122,7 +122,7 @@ int	check_out_file(t_parsing_data *token)
 	{
 		while (file)
 		{
-			token->fd_out = open_file(file);
+			token->fd_out = open_file(file, data);
 			file = file->next;
 		}
 		return (1);
@@ -130,16 +130,14 @@ int	check_out_file(t_parsing_data *token)
 	return (0);
 }
 
-char *gnl(void)
+char	*gnl(t_data *data)
 {
 	char	*buff;
 	char	c;
 	int		r;
 	int		i;
-	
-	buff = malloc(sizeof(char) * MAX_HERE_LINE_SIZE);
-	if (!buff)
-		error("gnl malloc error", NULL);
+
+	buff = safe_malloc(sizeof(char) * MAX_HERE_LINE_SIZE, data);
 	i = 0;
 	r = 1;
 	while (r > 0)
@@ -167,7 +165,7 @@ char *gnl(void)
 	return (NULL);
 }
 
-char	*conca_here_doc(char *line, t_parsing_data *token)
+char	*conca_here_doc(char *line, t_parsing_data *token, t_data *data)
 {
 	int		len;
 	char	*conca;
@@ -175,9 +173,7 @@ char	*conca_here_doc(char *line, t_parsing_data *token)
 	int		j;
 
 	len = ft_strlen(line) + ft_strlen(token->here);
-	conca = malloc(sizeof(char) * (len + 1));
-	if (!conca)
-		error("Malloc conca error", NULL);
+	conca = safe_malloc(sizeof(char) * (len + 1), data);
 	i = 0;
 	while (token->here[i])
 	{
@@ -229,7 +225,7 @@ int	check_in_file(t_parsing_data *token, t_data *data)
 {
 	if (token->infile)
 	{
-		token->fd_in = open_in_file(token->infile);
+		token->fd_in = open_in_file(token->infile, data);
 		dup2(token->fd_in, STDIN_FILENO);
 		close(token->fd_in);
 		return (1);
@@ -308,7 +304,7 @@ void	last_exec(t_data *data, t_parsing_data *token)
 	}
 	pid_t child_pid = fork();
 	if (child_pid == -1)
-		error("fork_error", NULL);
+		error("fork_error", data);
 	if (child_pid == 0)
 	{
 		if (token->fd_out != STDOUT_FILENO)
@@ -318,18 +314,18 @@ void	last_exec(t_data *data, t_parsing_data *token)
 	token->pid = child_pid;
 }
 
-int	get_here_docs(t_parsing_data *token)
+int	get_here_docs(t_parsing_data *token, t_data *data)
 {
 	char	*line;
 
 	while (1)
 	{
-		line = gnl();
+		line = gnl(data);
 		if (!line || g_signal[1] == 1)
 		{
 			safe_free((void **)&token->here);
 			token->here = NULL;
-			token->here = malloc(sizeof(char));
+			token->here = safe_malloc(sizeof(char), data);
 			if (token->here)
 				token->here[0] = '\0';
 			if (g_signal[1] == 1)
@@ -341,12 +337,12 @@ int	get_here_docs(t_parsing_data *token)
 			safe_free((void **)&line);
 			return (1);
 		}
-		token->here = conca_here_doc(line, token);
+		token->here = conca_here_doc(line, token, data);
 		safe_free((void **)&line);
 	}
 }
 
-int	load_here(t_parsing_data *token)
+int	load_here(t_parsing_data *token, t_data *data)
 {
 	t_here_docs	*tmp;
 
@@ -357,11 +353,9 @@ int	load_here(t_parsing_data *token)
 			if (!token->here_docs->delimiter)
 				return (ft_putstr_fd("Invalid delimiter in here doc\n", 2), 0);
 			safe_free((void **)&token->here);
-			token->here = malloc(sizeof(char));
-			if (!token->here)
-				error("Malloc error", NULL);
+			token->here = safe_malloc(sizeof(char), data);
 			token->here[0] = '\0';
-			if (!get_here_docs(token))
+			if (!get_here_docs(token, data))
 				return (0);
 			tmp = token->here_docs;
 			token->here_docs = token->here_docs->next;
@@ -387,7 +381,7 @@ void	process(t_data *data)
 	if (nb_pipe >= 1)
 		is_piped = true;
 	token = data->token;
-	if (!load_here(token))
+	if (!load_here(token, data))
 	{
 		if (g_signal[1] == 1)
 			get_last_token(token)->status = 130;
@@ -399,7 +393,7 @@ void	process(t_data *data)
 	{
 		token->pipe = true;
 		token->saved_stdin = saved_stdin;
-		check_out_file(token);
+		check_out_file(token, data);
 		check_in_file(token, data);
 		if (token->value)
 			pipex(data, token);
@@ -408,11 +402,10 @@ void	process(t_data *data)
 	}
 	if (is_piped)
 		token->pipe = true;
-	check_out_file(token);
+	check_out_file(token, data);
 	check_in_file(token, data);
 	if (token->value)
 		last_exec(data, token);
-	
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdin);
 }

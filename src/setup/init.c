@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 16:25:20 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 22:44:22 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,8 @@ void	init_struct(t_data *data)
 	data->exit_nbr = -1;
 	data->return_nbr = 0;
 	data->last_exit = 0;
-	data->path = malloc(sizeof(t_path_data));
-	if (!data->path)
-		error("malloc error", NULL);
+	data->path = safe_malloc(sizeof(t_path_data), data);
 	init_path(data->path);
-	data->pp_data = malloc(sizeof(t_pre_pars_data));
-	if (!data->pp_data)
-		error("malloc error", NULL);
-	data->env = malloc(sizeof(t_env_data));
-	if (!data->env)
-		error("malloc error", NULL);
+	data->pp_data = safe_malloc(sizeof(t_pre_pars_data), data);
+	data->env = safe_malloc(sizeof(t_env_data), data);
 }
