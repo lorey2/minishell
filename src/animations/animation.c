@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 14:04:45 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 20:23:33 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 23:03:36 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,10 @@ void	text_animation(void)
 	printf(BRIGHT_GREEN"\033[2J\033[H\033[?25l");
 	fd = open("src/animations/logo_minishell", O_RDONLY);
 	if (fd < 0)
-	{
-		perror("Error opening file");
-		exit(1);
-	}
+		error("cannot open file", NULL);
 	logo = malloc(sizeof(char *) * 12);
+	if (!logo)
+		error("malloc error", NULL);
 	logo[10] = NULL;
 	i = -1;
 	while (++i < 11)

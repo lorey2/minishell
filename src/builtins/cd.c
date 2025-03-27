@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 19:33:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 16:31:47 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 22:34:27 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@
 // here we only handle cd -
 // it does cd to the last directory in which we had cd
 
-static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
+static int	only_dash(t_parsing_data *p_data, int i, t_data *data)
 {
 	char	*oldpwd;
 
 	if (ft_isequal(p_data->arg[i], "-"))
 	{
-		oldpwd = get_env(e_data, "OLDPWD", NULL);
+		oldpwd = get_env(data->env, "OLDPWD", NULL);
 		if (oldpwd == NULL)
 			return (safe_free((void **)&oldpwd),
 				write_err("cd : OLDPWD not set\n"), -1);
@@ -50,7 +50,7 @@ static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
 				write_err("cd : too many arguments\n"), -1);
 		write(p_data->fd_out, oldpwd, ft_strlen(oldpwd));
 		write(p_data->fd_out, "\n", 1);
-		return (do_cd_update_env(oldpwd, e_data),
+		return (do_cd_update_env(oldpwd, data),
 			safe_free((void **)&oldpwd), 1);
 	}
 	return (0);
@@ -58,12 +58,11 @@ static int	only_dash(t_parsing_data *p_data, t_env_data *e_data, int i)
 
 // here we handle -- and false arguments
 
-static int	check_dash(t_parsing_data *p_data, t_env_data *e_data
-		, char *home, int i)
+static int	check_dash(t_parsing_data *p_data, char *home, int i, t_data *data)
 {
 	if (p_data->arg[i][0] == '-')
 	{
-		if (only_dash(p_data, e_data, i) == 1)
+		if (only_dash(p_data, i, data) == 1)
 			return (-3);
 		else if (ft_isequal(p_data->arg[i], "--"))
 		{
@@ -73,7 +72,7 @@ static int	check_dash(t_parsing_data *p_data, t_env_data *e_data
 					return (write_err(
 							"cd : HOME environment variable not set\n"), -1);
 				else
-					return (do_cd_update_env(home, e_data), -3);
+					return (do_cd_update_env(home, data), -3);
 			}
 			else
 				return (write_err("cd : too many arguments\n"), -1);
@@ -105,12 +104,12 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 	return (i);
 }
 
-static int	cd_with_arg(int *i, t_parsing_data *p_data, t_env_data *e_data)
+static int	cd_with_arg(int *i, t_parsing_data *p_data, t_data *data)
 {
 	char	*home;
 
-	home = get_env(e_data, "HOME", NULL);
-	*i = check_dash(p_data, e_data, home, *i);
+	home = get_env(data->env, "HOME", NULL);
+	*i = check_dash(p_data, home, *i, data);
 	safe_free((void **)&home);
 	if (*i == -1)
 		return (p_data->status = 1, 1);
@@ -121,7 +120,7 @@ static int	cd_with_arg(int *i, t_parsing_data *p_data, t_env_data *e_data)
 	else if (p_data->arg[(*i) + 1])
 		return (p_data->status = 1
 			, write_err("cd : too many arguments\n"), 1);
-	*i = do_cd_update_env(p_data->arg[*i], e_data);
+	*i = do_cd_update_env(p_data->arg[*i], data);
 	if (*i == -1)
 		return (p_data->status = 1, 1);
 	return (0);
@@ -129,7 +128,7 @@ static int	cd_with_arg(int *i, t_parsing_data *p_data, t_env_data *e_data)
 
 //here is the main cd file that handle ~ and no args
 
-int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
+int	cd(t_parsing_data *p_data, t_path_data *path_data, t_data *data)
 {
 	int		i;
 	char	*home;
@@ -143,15 +142,15 @@ int	cd(t_parsing_data *p_data, t_path_data *path_data, t_env_data *e_data)
 		return (p_data->status = 1, 1);
 	if (p_data->arg[i])
 	{
-		if (cd_with_arg(&i, p_data, e_data))
+		if (cd_with_arg(&i, p_data, data))
 			return (1);
 		return (0);
 	}
-	home = get_env(e_data, "HOME", NULL);
+	home = get_env(data->env, "HOME", NULL);
 	if (!home)
 		return (p_data->status = 1
 			, write_err("cd : HOME environment variable not set\n"), 1);
-	i = do_cd_update_env(home, e_data);
+	i = do_cd_update_env(home, data);
 	safe_free((void **)&home);
 	if (i == -1)
 		return (p_data->status = 1, 1);

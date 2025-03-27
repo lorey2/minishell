@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 16:54:30 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 22:42:42 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,8 @@ void		fill(char *data, t_path_data *path_data);
 bool		does_contain_only(char *data, char *list_args);
 bool		check_builtin(t_data *data, t_parsing_data *p_data);
 int			cd(t_parsing_data *p_data, t_path_data *path_data,
-				t_env_data *e_data);
-int			do_cd_update_env(char *arg, t_env_data *e_data);
+				t_data *data);
+int			do_cd_update_env(char *arg, t_data *data);
 void		pwd(t_parsing_data *p_data, t_path_data *path_data, t_data *data);
 void		echo(t_parsing_data *p_data, t_path_data *path_data, t_data *data);
 int			unset(t_env_data *e_data,
@@ -179,10 +179,9 @@ int			mini_exit(t_data *data, t_parsing_data *p_data);
 int			mini_export(t_parsing_data *p_data, t_path_data *path_data,
 				t_var *v_data, t_data *data);
 int			e_setup_flags(t_parsing_data *p_data, t_path_data *path_data);
-void		copy_and_sort_array(char **src, t_parsing_data *data);
+void		copy_and_sort_array(char **src, t_parsing_data *p_data, t_data *data);
 //update env
-void		set_env(t_env_data *e_data, char *var_name,
-				char *value, bool is_equal);
+void		set_env(char *var_name, char *value, bool is_equal, t_data *data);
 char		*get_env(t_env_data *e_data, char *var_name, t_var *var);
 void		write_env_error(char *var_name, char *message);
 bool		is_valid_var_name(char	*arg);
@@ -195,7 +194,7 @@ void		free_tokens(t_parsing_data *token, t_data *data);
 //gnl
 char		*get_next_line(int fd);
 //utils
-void		*safe_malloc(size_t size);
+void		*safe_malloc(size_t size, t_data *data);
 void		safe_free(void **ptr);
 
 #endif

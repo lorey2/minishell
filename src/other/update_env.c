@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 16:42:31 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 22:38:00 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*create_env_entry(char *var_name, char *value, bool is_equal)
 	return (entry);
 }
 
-void	new_entry(t_env_data *e_data,
+void	new_entry(t_data *data,
 			char *var_name, char *value, bool is_equal)
 {
 	int		i;
@@ -91,35 +91,33 @@ void	new_entry(t_env_data *e_data,
 	char	**new_env;
 
 	count = 0;
-	while (e_data->env[count])
+	while (data->env->env[count])
 		count++;
-	new_env = malloc(sizeof(char *) * (count + 2));
-	if (!new_env)
-		return ;
+	new_env = safe_malloc(sizeof(char *) * (count + 2), data);
 	i = -1;
 	while (++i < count)
-		new_env[i] = ft_strdup(e_data->env[i]);
+		new_env[i] = ft_strdup(data->env->env[i]);
 	new_env[count] = create_env_entry(var_name, value, is_equal);
 	new_env[count + 1] = NULL;
-	free_double_point(&e_data->env);
-	e_data->env = new_env;
+	free_double_point(&data->env->env);
+	data->env->env = new_env;
 }
 
-void	set_env(t_env_data *e_data, char *var_name, char *value, bool is_equal)
+void	set_env(char *var_name, char *value, bool is_equal, t_data *data)
 {
 	int		i;
 	char	*temp;
 
-	i = find_index(e_data, var_name, true);
+	i = find_index(data->env, var_name, true);
 	if (i >= 0)
 	{
 		temp = ft_strjoin(var_name, "=");
-		safe_free((void **)&e_data->env[i]);
-		e_data->env[i] = ft_strjoin(temp, value);
+		safe_free((void **)&data->env->env[i]);
+		data->env->env[i] = ft_strjoin(temp, value);
 		safe_free((void **)&temp);
 	}
 	else
 	{
-		new_entry(e_data, var_name, value, is_equal);
+		new_entry(data, var_name, value, is_equal);
 	}
 }
