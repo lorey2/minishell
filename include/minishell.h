@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 19:56:32 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 16:54:30 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ void		explosion_animation(void);
 void		setup_env(t_data *data, char **env);
 void		setup_path(t_data *data, t_path_data *path_data);
 char		*setup_prompt(t_data *data);
+void		init_path(t_path_data *path_data);
 void		init_struct(t_data *data);
 // pre_parsing
 int			pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data);
@@ -177,6 +178,7 @@ void		write_err(char *message);
 int			mini_exit(t_data *data, t_parsing_data *p_data);
 int			mini_export(t_parsing_data *p_data, t_path_data *path_data,
 				t_var *v_data, t_data *data);
+int			e_setup_flags(t_parsing_data *p_data, t_path_data *path_data);
 void		copy_and_sort_array(char **src, t_parsing_data *data);
 //update env
 void		set_env(t_env_data *e_data, char *var_name,

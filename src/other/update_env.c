@@ -6,27 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:03 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 15:00:39 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 16:42:31 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-bool	is_valid_var_name(char	*arg)
-{
-	int	i;
-
-	i = -1;
-	if (arg[0] == '\0')
-		return (false);
-	if (!(arg[0] == '_' || (arg[0] >= 'A' && arg[0] <= 'Z')
-			|| (arg[0] >= 'a' && arg[0] <= 'z')))
-		return (false);
-	while (arg[++i])
-		if (arg[i] == '=')
-			return (false);
-	return (true);
-}
 
 static int	find_index(t_env_data *e_data, char *var_name, bool is_set)
 {
@@ -99,11 +83,31 @@ char	*create_env_entry(char *var_name, char *value, bool is_equal)
 	return (entry);
 }
 
-void	set_env(t_env_data *e_data, char *var_name, char *value, bool is_equal)
+void	new_entry(t_env_data *e_data,
+			char *var_name, char *value, bool is_equal)
 {
 	int		i;
 	int		count;
 	char	**new_env;
+
+	count = 0;
+	while (e_data->env[count])
+		count++;
+	new_env = malloc(sizeof(char *) * (count + 2));
+	if (!new_env)
+		return ;
+	i = -1;
+	while (++i < count)
+		new_env[i] = ft_strdup(e_data->env[i]);
+	new_env[count] = create_env_entry(var_name, value, is_equal);
+	new_env[count + 1] = NULL;
+	free_double_point(&e_data->env);
+	e_data->env = new_env;
+}
+
+void	set_env(t_env_data *e_data, char *var_name, char *value, bool is_equal)
+{
+	int		i;
 	char	*temp;
 
 	i = find_index(e_data, var_name, true);
@@ -116,18 +120,6 @@ void	set_env(t_env_data *e_data, char *var_name, char *value, bool is_equal)
 	}
 	else
 	{
-		count = 0;
-		while (e_data->env[count])
-			count++;
-		new_env = malloc(sizeof(char *) * (count + 2));
-		if (!new_env)
-			return ;
-		i = -1;
-		while (++i < count)
-			new_env[i] = ft_strdup(e_data->env[i]);
-		new_env[count] = create_env_entry(var_name, value, is_equal);
-		new_env[count + 1] = NULL;
-		free_double_point(&e_data->env);
-		e_data->env = new_env;
+		new_entry(e_data, var_name, value, is_equal);
 	}
 }
