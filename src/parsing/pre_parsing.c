@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:14:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 01:40:34 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/28 21:26:16 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 		safe_free((void **)&data->input);
 		data->input = pp_data->modified;
 	}
+//	printf("input after pre_parsing : [%s]\n", data->input);
 	return (0);
 }
