@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:23:26 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 23:10:18 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/28 16:17:56 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,8 @@ void	get_arg(char **input, t_parsing_data *pars, t_data *data)
 			break ;
 		len++;
 	}
-	if (len == 0)
-		return ;
+	// if (len == 0)
+	// 	return ;
 	arg = safe_malloc(sizeof(char) * (len + 1), data);
 	
 	int i = 0;
@@ -233,24 +233,6 @@ void	handle_here(char **input, t_parsing_data *pars, t_data *data)
 	skip_space(input);
 }
 
-void	handle_in_file(char **input, t_parsing_data *pars, t_data *data)
-{
-	++(*input);
-	if (**input == '<')
-	{
-		++(*input);
-		handle_here(input, pars, data);
-	}
-	else
-	{
-		pars->in_file = true;
-		skip_space(input);
-		pars->infile = get_value(input, pars, 1, data);
-		pars->delimiter = NULL;
-	}
-	skip_space(input);
-}
-
 t_file	*get_last_file(t_file *file)
 {
 	t_file	*head;
@@ -264,6 +246,45 @@ t_file	*get_last_file(t_file *file)
 	}
 	return (head);
 }
+
+void	allocate_file(char **input, t_parsing_data *pars, t_data *data)
+{
+	t_file	*file;
+	t_file	*last_file;
+
+	file = safe_malloc(sizeof(t_file), data);
+	init_new_file(file);
+	pars->infile = get_value(input, pars, 1, data);
+	file->name = pars->infile;
+	if (!pars->infile_list)
+		pars->infile_list = file;
+	else
+	{
+		last_file = get_last_file(pars->infile_list);
+		last_file->next = file;
+	}
+	skip_space(input);
+}
+
+void	handle_in_file(char **input, t_parsing_data *pars, t_data *data)
+{
+	++(*input);
+	pars->in_file = true;
+	if (**input == '<')
+	{
+		pars->infile = NULL;
+		++(*input);
+		handle_here(input, pars, data);
+	}
+	else
+	{
+		skip_space(input);
+		allocate_file(input, pars, data);
+		pars->delimiter = NULL;
+	}
+	skip_space(input);
+}
+
 
 void	handle_out_file(char **input, t_parsing_data *pars, t_data *data)
 {

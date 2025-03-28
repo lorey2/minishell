@@ -6,11 +6,12 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 23:12:59 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 23:14:36 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/28 15:49:59 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
 
 void	execute_command_pipe(t_data *data, t_parsing_data *token, int pipefd[2])
 {
@@ -223,6 +224,19 @@ void	here_doc(t_parsing_data *token, t_data *data)
 
 int	check_in_file(t_parsing_data *token, t_data *data)
 {
+	t_file	*file;
+
+	file = token->infile_list;
+	while (file)
+	{
+		if (access(file->name, F_OK) != 0)
+		{
+			ft_putstr_fd(token->infile, STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+			return (-1);
+		}
+		file = file->next;
+	}
 	if (token->infile)
 	{
 		token->fd_in = open_in_file(token->infile, data);
@@ -366,6 +380,18 @@ int	load_here(t_parsing_data *token, t_data *data)
 	return (1);
 }
 
+int	check_file(t_parsing_data *token, t_data *data, int saved_stdin)
+{
+	check_out_file(token, data);
+	if (check_in_file(token, data) == -1)
+	{
+		dup2(saved_stdin, STDIN_FILENO);
+		close(saved_stdin);
+		return (0);
+	}
+	return (1);
+}
+
 void	process(t_data *data)
 {
 	int				nb_pipe;
@@ -393,8 +419,8 @@ void	process(t_data *data)
 	{
 		token->pipe = true;
 		token->saved_stdin = saved_stdin;
-		check_out_file(token, data);
-		check_in_file(token, data);
+		if (!check_file(token, data, saved_stdin))
+			return ;
 		if (token->value)
 			pipex(data, token);
 		token = token->next;
@@ -402,8 +428,8 @@ void	process(t_data *data)
 	}
 	if (is_piped)
 		token->pipe = true;
-	check_out_file(token, data);
-	check_in_file(token, data);
+	if (!check_file(token, data, saved_stdin))
+		return ;
 	if (token->value)
 		last_exec(data, token);
 	dup2(saved_stdin, STDIN_FILENO);
