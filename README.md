@@ -3,13 +3,17 @@
 
 
 ## ?!?!crash list?!?! :
+---- [❌]Check if all malloc from libft are safe ex: split/substr....<br /><br />
+---- [❌]Simple/Double quote DONE (WE WILL SEE) <br /><br />
+---- [❌] export salut="|"  ls $salut the pipe is a ls arg, not a pipe (we shurely wont do that----<br /><br />
+---- [⛔] JE LE FERAI JAMAIS <<000>00 | cat -ne             should raise error but <<aaa>0 works. Enfaite y a pas besoin de le faire parce que <<0>something semble etre considere comme une redirection de fd  -->  <<0 >someting fonctionne<br /><br />
+---- [🙄] les guillemets deuxieme arg est split<br /><br />
 ---- [✅ NORMALEMENT C'EST BON FAUT VOIR QUAND Y AURA PLUS LE DERNIER LEAK DES PIPES] exit --> frexit in builtins<br /><br />
----- [❌] malloc --> safe_malloc everywhere<br /><br />
+---- [✅] malloc --> safe_malloc everywhere<br /><br />
 ---- [✅] last leak with pipe<br /><br />
 ---- [✅] unset is dead (again)<br /><br />
 ---- [✅] builtin | [whatever]<br /><br />
 ---- [✅] echo -n {arg} / echo -n<br /><br />
----- [🙄] les guillemets deuxieme arg est split<br /><br />
 ---- [✅] heredoc ctrlc... sigals<br /><br />
 ---- [✅] cat << EOF1 << EOF2<br /><br />
 ---- [✅] file redir do not create all files <br /><br />
@@ -21,18 +25,16 @@
 ---- [✅] ~ is expanded with getenv HOME<br /><br />
 ---- [✅] echo $ echo $ echo "$"<br /><br />
 ---- [✅] env -i and launch. TELLS THERE IS NO PATH AND EXIT<br /><br />
----- [❌] export salut="|"  ls $salut the pipe is a ls arg, not a pipe (we shurely wont do that----<br /><br />
+
 ---- [✅] <<0 | cat -ne                   shouldn't output anything<br /><br />
 ---- [✅] <<''      the delimiter should be an empty line<br /><br />
----- [⛔] JE LE FERAI JAMAIS <<000>00 | cat -ne             should raise error but <<aaa>0 works. Enfaite y a pas besoin de le faire parce que <<0>something semble etre considere comme une redirection de fd  -->  <<0 >someting fonctionne<br /><br />
 ---- [✅] << | ls    should raise error<br /><br />
 ---- [✅] ls || ls   shouldn't work<br /><br />
 ---- [✅] ctrl cd\ after an infinite command   <br /><br />
 ---- [✅] just | <br /><br />
 ## GENERAL TODO LIST :
 ---- [✅]variable ... variable ... variable ... VARIABLE ... VVVVVVVV <br /><br />
----- [❌]Simple/Double quote DONE (WE WILL SEE) <br /><br />
----- [❌]free everything <br /><br />
+---- [✅]free everything <br /><br />
 ---- [✅]environement variable dollar{..} dollar? <br /><br />
 ---- [✅]between each command reparse bash <br /><br /> 
 ---- [✅] exit valgrind should initialize varaibel in wait4 <br /><br />
