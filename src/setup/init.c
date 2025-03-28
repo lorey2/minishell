@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:13:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 22:44:22 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/28 16:01:27 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	init_new_token(t_parsing_data *token)
 	token->is_after_pipe = false;
 	token->pipe = false;
 	token->outfile_list = NULL;
+	token->infile_list = NULL;
 	token->here_docs = NULL;
 	token->next = NULL;
 	token->previous = NULL;

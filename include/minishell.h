@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 22:42:42 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/28 15:25:54 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct s_parsing_data
 	bool					is_after_pipe;
 	bool					pipe;
 	t_file					*outfile_list;
+	t_file					*infile_list;
 	t_here_docs				*here_docs;
 	struct s_parsing_data	*next;
 	struct s_parsing_data	*previous;
