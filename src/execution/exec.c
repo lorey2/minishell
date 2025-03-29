@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 23:12:59 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/28 15:49:59 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/29 14:43:51 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ int	check_in_file(t_parsing_data *token, t_data *data)
 	{
 		if (access(file->name, F_OK) != 0)
 		{
-			ft_putstr_fd(token->infile, STDERR_FILENO);
+			ft_putstr_fd(file->name, STDERR_FILENO);
 			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 			return (-1);
 		}
