@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 21:15:06 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/28 21:22:43 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/29 13:02:39 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,24 @@ char	*extract_argument(char **input, int len, t_data *data)
 	return (arg);
 }
 
+int	set_reset_quote(int *in_quote, char *quote_char, int i, char **input)
+{
+	if (!(*in_quote))
+	{
+		*quote_char = (*input)[i];
+		*in_quote = 1;
+		return (0);
+	}
+	//si oui et qu'il y a eut un quote avant on reset
+	else if ((*input)[i] == *quote_char)
+	{
+		*quote_char = 0;
+		*in_quote = 0;
+		return (0);
+	}
+	return (1);
+}
+
 void	get_arg(char **input, t_parsing_data *pars, t_data *data)
 {
 	int		len;
@@ -162,21 +180,11 @@ void	get_arg(char **input, t_parsing_data *pars, t_data *data)
 		len = 0;
 		in_quote = 0;
 		quote_char = 0;
+	// ici on calcule la longueur du prochain arg pour le malloc
 		while ((*input)[len])
 		{
 			if (is_quote((*input)[len]))
-			{
-				if (!in_quote)
-				{
-					quote_char = (*input)[len];
-					in_quote = 1;
-				}
-				else if ((*input)[len] == quote_char)
-				{
-					quote_char = 0;
-					in_quote = 0;
-				}
-			}
+				set_reset_quote(&in_quote, &quote_char, len, input);
 			else if (!in_quote
 				&& ((*input)[len] == ' ' || check_meta_char_arg((*input)[len])))
 				break ;
@@ -189,31 +197,25 @@ void	get_arg(char **input, t_parsing_data *pars, t_data *data)
 		j = 0;
 		in_quote = 0;
 		quote_char = 0;
+		//et donc ici on va allouer arg
 		while (i < len)
 		{
+			//pareil on check si le charac est un quote
 			if (is_quote((*input)[i]))
 			{
-				if (!in_quote)
-				{
-					quote_char = (*input)[i];
-					in_quote = 1;
-				}
-				else if ((*input)[i] == quote_char)
-				{
-					quote_char = 0;
-					in_quote = 0;
-				}
+				if (set_reset_quote(&in_quote, &quote_char, i, input))
+					arg[j++] = (*input)[i];
 			}
+			//si c'est pas un quote on reflechit pas et on le met dans arg
 			else
-			{
 				arg[j++] = (*input)[i];
-			}
 			i++;
 		}
 		arg[j] = '\0';
 		pars->arg[arg_index++] = ft_strdup(arg);
 		if (arg)
 			safe_free((void **)&arg);
+		//ici on decale le pointeur
 		*input += len;
 		if (**input == '\0')
 			break ;
