@@ -3,6 +3,12 @@
 
 
 ## ?!?!crash list?!?! :
+---- [❌]echo "'$USER'"<br /><br />
+---- [❌]< pipi ls > POPO > pipi >> coco   dont work if pipi doesnt exists alredazxx<br /><br />
+---- [❌]is $' there is only $ expanded <br /><br />
+---- [❌] delete creating variable and "'" cannot find variable [PATH]<br /><br />
+---- [❌]ctrl \ with cat and ping <br /><br />
+---- [❌]echo error numeric argument required with jfahsdfjkdsahfjkdash <br /><br />
 ---- [❌]Check if all malloc from libft are safe ex: split/substr....<br /><br />
 ---- [❌]Simple/Double quote DONE (WE WILL SEE) <br /><br />
 ---- [❌] export salut="|"  ls $salut the pipe is a ls arg, not a pipe (we shurely wont do that----<br /><br />
