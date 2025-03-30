@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 21:15:06 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/29 13:02:39 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/30 16:04:32 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ char	*check_here_doc_del(char **input, t_data *data)
 				|| **input == '\0' || **input == '|'))
 			return (NULL);
 		while ((*input)[len] && (*input)[len] != ' '
-				&& (*input)[len] != '>' && (*input)[len] != '<')
+				&& (*input)[len] != '>' && (*input)[len] != '<' && (*input)[len] != '|')
 			len++;
 		del = safe_malloc(sizeof(char) * (len + 1), data);
 		ft_strlcpy(del, *input, len + 1);
