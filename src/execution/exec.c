@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 23:12:59 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/30 18:38:01 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/30 20:44:46 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,10 @@ void	process(t_data *data)
 	if (!load_here(token, data))
 	{
 		if (g_signal[1] == 1)
-		{
 			get_last_token(token)->status = 130;
-			free_heres(token);
-		}
 		else
 			get_last_token(token)->status = 2;
+		free_heres(token);
 		return ;
 	}
 	token = launch_pipes(data, saved_stdin);
