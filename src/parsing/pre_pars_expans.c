@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:37:24 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 01:13:14 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/30 15:55:37 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,10 @@ static void	expansion_variable(t_data *data, t_pre_pars_data *pp_data)
 		expanded_var = ft_itoa(data->last_exit);
 	else
 		expanded_var = get_env(data->env, var, data->var);
+	temp = ft_strjoin("\"", expanded_var);
+	safe_free((void **)&expanded_var);
+	expanded_var = ft_strjoin(temp, "\"");
+	safe_free((void **)&temp);
 	temp = ft_strjoin(pp_data->modified, expanded_var);
 	safe_free((void **)&expanded_var);
 	safe_free((void **)&pp_data->modified);
