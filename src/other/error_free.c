@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/28 15:58:54 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/30 16:23:10 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ void	free_tokens(t_parsing_data *token, t_data *data)
 			free_in_files(token);
 			safe_free((void **)&token->value);
 			safe_free((void **)&token->here);
-			safe_free((void **)&token->delimiter);
-			// safe_free((void **)&token->infile);
 			free_double_point(&token->arg);
 			safe_free((void **)&token);
 			token = token_cpy;

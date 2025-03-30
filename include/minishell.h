@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/28 15:25:54 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/30 17:45:21 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,68 +134,87 @@ typedef struct s_data
 }					t_data;
 
 //animation
-void		text_animation(void);
-void		explosion_animation(void);
+void			text_animation(void);
+void			explosion_animation(void);
 //setup
-void		setup_env(t_data *data, char **env);
-void		setup_path(t_data *data, t_path_data *path_data);
-char		*setup_prompt(t_data *data);
-void		init_path(t_path_data *path_data);
-void		init_struct(t_data *data);
+void			setup_env(t_data *data, char **env);
+void			setup_path(t_data *data, t_path_data *path_data);
+char			*setup_prompt(t_data *data);
+void			init_path(t_path_data *path_data);
+void			init_struct(t_data *data);
 // pre_parsing
-int			pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data);
-void		expansion(t_data *data, t_pre_pars_data *pp_data);
-void		expand_tilde(t_data *data, t_pre_pars_data *pp_data);
+int				pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data);
+void			expansion(t_data *data, t_pre_pars_data *pp_data);
+void			expand_tilde(t_data *data, t_pre_pars_data *pp_data);
 //parsing
-int			parsing(char *input, t_data *data);
-void		init_new_here(t_here_docs *here);
-void		init_new_token(t_parsing_data *token);
-void		init_new_var(t_var *var);
-void		init_new_file(t_file *file);
-void		process(t_data *data);
+int				parsing(char *input, t_data *data);
+void			init_new_here(t_here_docs *here);
+void			init_new_token(t_parsing_data *token);
+void			init_new_var(t_var *var);
+void			init_new_file(t_file *file);
+void			process(t_data *data);
 //signal
-void		setup_signal(void);
+void			setup_signal(void);
 //execution
-void		execute(t_data *data, t_parsing_data *token);
-void		wait_for_all(t_data *data);
-void		final_wait(t_data *data);
+void			execute(t_data *data, t_parsing_data *token);
+void			wait_for_all(t_data *data);
+void			final_wait(t_data *data);
 //buitins
-void		frexit(t_data *data, int exit_number);
-bool		exec_builtin(t_data *data, t_parsing_data *p_data);
-bool		is_builtin(char *cmd);
-void		fill(char *data, t_path_data *path_data);
-bool		does_contain_only(char *data, char *list_args);
-bool		check_builtin(t_data *data, t_parsing_data *p_data);
-int			cd(t_parsing_data *p_data, t_path_data *path_data,
+void			frexit(t_data *data, int exit_number);
+bool			exec_builtin(t_data *data, t_parsing_data *p_data);
+bool			is_builtin(char *cmd);
+void			fill(char *data, t_path_data *path_data);
+bool			does_contain_only(char *data, char *list_args);
+bool			check_builtin(t_data *data, t_parsing_data *p_data);
+int				cd(t_parsing_data *p_data, t_path_data *path_data,
 				t_data *data);
-int			do_cd_update_env(char *arg, t_data *data);
-void		pwd(t_parsing_data *p_data, t_path_data *path_data, t_data *data);
-void		echo(t_parsing_data *p_data, t_path_data *path_data, t_data *data);
-int			unset(t_env_data *e_data,
+int				do_cd_update_env(char *arg, t_data *data);
+void			pwd(t_parsing_data *p_data, t_path_data *path_data, t_data *data);
+void			echo(t_parsing_data *p_data, t_path_data *path_data, t_data *data);
+int				unset(t_env_data *e_data,
 				t_path_data *path_data, t_parsing_data *p_data);
-void		env(t_env_data *e_data, t_parsing_data *p_data, t_data *data);
-void		init_flags(t_path_data *path_data);
-void		write_err(char *message);
-int			mini_exit(t_data *data, t_parsing_data *p_data);
-int			mini_export(t_parsing_data *p_data, t_path_data *path_data,
+void			env(t_env_data *e_data, t_parsing_data *p_data, t_data *data);
+void			init_flags(t_path_data *path_data);
+void			write_err(char *message);
+int				mini_exit(t_data *data, t_parsing_data *p_data);
+int				mini_export(t_parsing_data *p_data, t_path_data *path_data,
 				t_var *v_data, t_data *data);
-int			e_setup_flags(t_parsing_data *p_data, t_path_data *path_data);
-void		copy_and_sort_array(char **src, t_parsing_data *p_data, t_data *data);
+int				e_setup_flags(t_parsing_data *p_data, t_path_data *path_data);
+void			copy_and_sort_array(char **src, t_parsing_data *p_data, t_data *data);
 //update env
-void		set_env(char *var_name, char *value, bool is_equal, t_data *data);
-char		*get_env(t_env_data *e_data, char *var_name, t_var *var);
-void		write_env_error(char *var_name, char *message);
-bool		is_valid_var_name(char	*arg);
+void			set_env(char *var_name, char *value, bool is_equal, t_data *data);
+char			*get_env(t_env_data *e_data, char *var_name, t_var *var);
+void			write_env_error(char *var_name, char *message);
+bool			is_valid_var_name(char	*arg);
 //error and free
-void		error(char *message, t_data *data);
-void		free_double_point(char ***point);
-void		free_everything(t_data *data);
-void		free_path(t_path_data *path_data);
-void		free_tokens(t_parsing_data *token, t_data *data);
+void			error(char *message, t_data *data);
+void			free_double_point(char ***point);
+void			free_everything(t_data *data);
+void			free_path(t_path_data *path_data);
+void			free_tokens(t_parsing_data *token, t_data *data);
 //gnl
-char		*get_next_line(int fd);
+char			*get_next_line(int fd);
 //utils
-void		*safe_malloc(size_t size, t_data *data);
-void		safe_free(void **ptr);
+void			*safe_malloc(size_t size, t_data *data);
+void			safe_free(void **ptr);
+//here_doc
+char			*gnl(t_data *data);
+char			*conca_here_doc(char *line, t_parsing_data *token, t_data *data);
+int				get_here_docs(t_parsing_data *token, t_data *data);
+int				load_here(t_parsing_data *token, t_data *data);
+// exec
+int				count_pipe(t_data *data);
+int				open_in_file(char *file_name, t_data *data);
+int				open_file(t_file *file, t_data *data);
+t_parsing_data	*get_last_token(t_parsing_data *token);
+void			free_heres(t_parsing_data *token);
+void			execute_command_pipe(t_data *data, t_parsing_data *token, int pipefd[2]);
+void			execute(t_data *data, t_parsing_data *token);
+void			pipex(t_data *data, t_parsing_data *token);
+int				check_out_file(t_parsing_data *token, t_data *data);
+int				check_in_file(t_parsing_data *token, t_data *data);
+int				check_file(t_parsing_data *token, t_data *data, int saved_stdin);
+void			here_doc_write(t_parsing_data *token, int *pipefd);
+void			here_doc(t_parsing_data *token, t_data *data);
 
 #endif

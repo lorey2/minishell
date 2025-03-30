@@ -4,9 +4,9 @@
 
 ## ?!?!crash list?!?! :
 ---- [✅]echo "'$USER'"<br /><br />
----- [❌]<<0| cat -ne use '0|' as delimiter<br /><br />
----- [❌]<<0 <<1 | cat -ne leaks <br /><br />
----- [❌]< pipi ls > POPO > pipi >> coco   dont work if pipi doesnt exists alredazxx<br /><br />
+---- [✅]<<0| cat -ne use '0|' as delimiter<br /><br />
+---- [✅]<<0 <<1 | cat -ne leaks <br /><br />
+---- [✅]< pipi ls > POPO > pipi >> coco   dont work if pipi doesnt exists alredazxx<br /><br />
 ---- [✅]is $' there is only $ expanded <br /><br />
 ---- [❌] delete creating variable and "'" cannot find variable [PATH]<br /><br />
 ---- [❌]ctrl \ with cat and ping <br /><br />

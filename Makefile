@@ -6,7 +6,7 @@
 #    By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 15:46:35 by lorey             #+#    #+#              #
-#    Updated: 2025/03/27 16:52:59 by lorey            ###   LAUSANNE.ch        #
+#    Updated: 2025/03/30 17:46:01 by maambuhl         ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ GNL_FILES        = get_next_line_bonus get_next_line_utils_bonus
 
 ANIM_FILES       = animation explo_anim
 
-EXEC_FILES       = exec
+EXEC_FILES       = exec here exec_utils process files here_utils
 
 PARSING_FILES    = parsing pre_parsing pre_pars_expans
 
