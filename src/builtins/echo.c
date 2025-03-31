@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:55:52 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/29 15:08:24 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/31 13:30:54 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,6 @@ void	echo(t_parsing_data *p_data, t_path_data *path_data, t_data *data)
 {
 	int	i;
 
-//	printf("p_data[0] : %s\n", p_data->arg[0]);
-//	printf("p_data[1] : %s\n", p_data->arg[1]);
-//	printf("p_data[2] : %s\n", p_data->arg[2]);
 	p_data->status = 0;
 	i = setup_flags(p_data, path_data);
 	if (p_data->arg[i] == NULL)
