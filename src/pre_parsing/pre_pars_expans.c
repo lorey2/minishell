@@ -6,46 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 18:06:05 by lorey             #+#    #+#             */
-/*   Updated: 2025/04/01 18:07:34 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/02 01:33:17 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	expansion_quoted(
-	t_data *data, t_pre_pars_data *pp_data, char quote_type)
-{
-	int		j;
-	char	*quoted_content;
-	char	*temp;
-	char	*new_modified;
-
-	j = pp_data->i + 2;
-	temp = ft_substr(data->input, pp_data->bkp2, pp_data->i - pp_data->bkp2);
-	new_modified = ft_strjoin(pp_data->modified, temp);
-	safe_free((void **)&pp_data->modified);
-	safe_free((void **)&temp);
-	pp_data->modified = new_modified;
-	while ((data->input)[j] && (data->input)[j] != quote_type)
-		j++;
-	if ((data->input)[j] == quote_type)
-	{
-		quoted_content
-			= ft_substr(data->input, pp_data->i + 2, j - (pp_data->i + 2));
-		temp = ft_strjoin(pp_data->modified, quoted_content);
-		safe_free((void **)&quoted_content);
-		safe_free((void **)&pp_data->modified);
-		pp_data->modified = temp;
-	}
-	else
-	{
-		temp = ft_strjoin(pp_data->modified, "$");
-		safe_free((void **)&pp_data->modified);
-		pp_data->modified = temp;
-	}
-	pp_data->bkp2 = j + 1;
-	pp_data->i = j;
-}
 
 static void	expansion_dollar_only(t_data *data, t_pre_pars_data *pp_data)
 {
@@ -56,10 +21,18 @@ static void	expansion_dollar_only(t_data *data, t_pre_pars_data *pp_data)
 	temp = ft_strjoin(pp_data->modified, substr);
 	safe_free((void **)&substr);
 	safe_free((void **)&pp_data->modified);
-	pp_data->modified = ft_strjoin(temp, "$");
+	if (data->input[pp_data->i + 1] == '\"'
+		|| data->input[pp_data->i + 1] == '\'')
+	{
+		pp_data->modified = ft_strdup(temp);
+		pp_data->bkp2 = pp_data->i + 1;
+	}
+	else
+	{
+		pp_data->modified = ft_strjoin(temp, "$");
+		pp_data->bkp2 = pp_data->i + 1;
+	}
 	safe_free((void **)&temp);
-	pp_data->bkp2 = pp_data->i + 1;
-	(pp_data->i)++;
 }
 
 static void	process_expanded_variable(t_data *data,
@@ -109,21 +82,19 @@ void	expansion(t_data *data, t_pre_pars_data *pp_data)
 {
 	if ((data->input)[pp_data->i] && (data->input)[pp_data->i] == '$')
 	{
-		if ((data->input)[pp_data->i + 1] == '\''
-			|| (data->input)[pp_data->i + 1] == '\"')
-		{
-			expansion_quoted(data, pp_data, (data->input)[pp_data->i + 1]);
-			return ;
-		}
-		else if ((data->input)[pp_data->i + 1] == '\0' ||
+		if ((data->input)[pp_data->i + 1] == '\0' ||
 				(data->input)[pp_data->i + 1] == ' ' ||
-				(data->input)[pp_data->i + 1] == '\t')
+				(data->input)[pp_data->i + 1] == '\t' ||
+				(data->input)[pp_data->i + 1] == '\'' ||
+				(data->input)[pp_data->i + 1] == '\"')
 		{
 			expansion_dollar_only(data, pp_data);
 			return ;
 		}
 		expansion_variable(data, pp_data);
 	}
-	else if ((data->input)[pp_data->i] == '~' && !pp_data->in_dquotes)
+	else if ((data->input)[pp_data->i] == '~' && !pp_data->in_dquotes &&
+				data->input[pp_data->i + 1] != '\'' &&
+				data->input[pp_data->i + 1] != '\"')
 		expand_tilde(data, pp_data);
 }
