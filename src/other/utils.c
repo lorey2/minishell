@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 17:58:57 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 21:37:18 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/31 13:48:29 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,12 @@ void	free_double_point(char ***point)
 			safe_free((void **)&(*point)[j]);
 		safe_free((void **)point);
 	}
+}
+
+void	error(char *message, t_data *data)
+{
+	if (data)
+		free_everything(data);
+	perror(message);
+	exit(EXIT_FAILURE);
 }

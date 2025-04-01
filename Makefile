@@ -6,7 +6,7 @@
 #    By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 15:46:35 by lorey             #+#    #+#              #
-#    Updated: 2025/03/30 17:46:01 by maambuhl         ###   LAUSANNE.ch        #
+#    Updated: 2025/03/31 14:09:24 by lorey            ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,21 +14,22 @@
 # Variables
 # --------------------------------------------
 
-NAME          = minishell
-INCLUDE       = include/
-SRC_DIR       = src/
-BUILTINS_DIR  = src/builtins/
-GNL_DIR       = src/gnl/
-ANIM_DIR      = src/animations/
-EXEC_DIR      = src/execution/
-PARSING_DIR   = src/parsing/
-SETUP_DIR     = src/setup/
-OTHER_DIR     = src/other/
-OBJ_DIR       = obj/
-CC            = gcc
-CFLAGS        = -g -Wall -Werror -Wextra -I$(INCLUDE)
-RM            = rm -f
-AR            = ar rcs
+NAME            = minishell
+INCLUDE         = include/
+SRC_DIR         = src/
+BUILTINS_DIR    = src/builtins/
+GNL_DIR         = src/gnl/
+ANIM_DIR        = src/animations/
+EXEC_DIR        = src/execution/
+PRE_PARSING_DIR = src/pre_parsing/
+PARSING_DIR     = src/parsing/
+SETUP_DIR       = src/setup/
+OTHER_DIR       = src/other/
+OBJ_DIR         = obj/
+CC              = gcc
+CFLAGS          = -g -Wall -Werror -Wextra -I$(INCLUDE)
+RM              = rm -f
+AR              = ar rcs
 
 # --------------------------------------------
 # Colors (For colored output in terminal)
@@ -44,19 +45,21 @@ CYAN      = \033[0;96m
 # Source and Object Files
 # --------------------------------------------
 
-SRC_FILES        = minishell
+SRC_FILES          = minishell
 
-BUILTINS_LIST    = builtins builtins_utils export export_2 export_3 cd cd_2 pwd echo env exit unset
+BUILTINS_LIST      = builtins builtins_utils export export_2 export_3 cd cd_2 pwd echo env exit unset
 
-GNL_FILES        = get_next_line_bonus get_next_line_utils_bonus
+GNL_FILES          = get_next_line_bonus get_next_line_utils_bonus
 
-ANIM_FILES       = animation explo_anim
+ANIM_FILES         = animation explo_anim
 
-EXEC_FILES       = exec here exec_utils process files here_utils
+EXEC_FILES         = exec here exec_utils process files here_utils
 
-PARSING_FILES    = parsing pre_parsing pre_pars_expans
+PRE_PARSING_FILES  = pre_parsing pre_pars_expans pre_pars_skip
 
-SETUP_FILES      = init init_2 setup
+PARSING_FILES      = parsing arg files helpers here_doc var arg_2 value
+
+SETUP_FILES        = init init_2 setup
 
 OTHER_FILES      = error_free handle_signal quote update_env utils update_env_error
 
@@ -75,6 +78,9 @@ OBJ_ANIM         = $(addprefix $(OBJ_DIR)/animations/, $(addsuffix .o, $(ANIM_FI
 # Object files for exec source files
 OBJ_EXEC         = $(addprefix $(OBJ_DIR)/execution/, $(addsuffix .o, $(EXEC_FILES)))
 
+# Object files for pre_parsing source files
+OBJ_PRE_PARSING  = $(addprefix $(OBJ_DIR)/pre_parsing/, $(addsuffix .o, $(PRE_PARSING_FILES)))
+
 # Object files for parsing source files
 OBJ_PARSING      = $(addprefix $(OBJ_DIR)/parsing/, $(addsuffix .o, $(PARSING_FILES)))
 
@@ -86,7 +92,7 @@ OBJ_OTHER        = $(addprefix $(OBJ_DIR)/other/, $(addsuffix .o, $(OTHER_FILES)
 
 
 # Combine both into one list
-OBJ              = $(OBJ_MAIN) $(OBJ_BUILTINS) $(OBJ_GNL) $(OBJ_ANIM) $(OBJ_EXEC) $(OBJ_PARSING) $(OBJ_SETUP) $(OBJ_OTHER)
+OBJ              = $(OBJ_MAIN) $(OBJ_BUILTINS) $(OBJ_GNL) $(OBJ_ANIM) $(OBJ_EXEC) $(OBJ_PRE_PARSING) $(OBJ_PARSING) $(OBJ_SETUP) $(OBJ_OTHER)
 
 # --------------------------------------------
 # Libc (custom library)
@@ -139,6 +145,12 @@ $(OBJ_DIR)/animations/%.o: $(ANIM_DIR)%.c
 $(OBJ_DIR)/execution/%.o: $(EXEC_DIR)%.c
 	@mkdir -p $(OBJ_DIR)/execution
 	@echo "$(YELLOW)Compiling execution: $<$(DEF_COLOR)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+# Object files compilation (pre_parsing source files)
+$(OBJ_DIR)/pre_parsing/%.o: $(PRE_PARSING_DIR)%.c
+	@mkdir -p $(OBJ_DIR)/pre_parsing
+	@echo "$(YELLOW)Compiling pre_parsing: $<$(DEF_COLOR)"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Object files compilation (parsing source files)

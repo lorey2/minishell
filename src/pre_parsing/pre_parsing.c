@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:14:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/29 18:26:56 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/31 13:53:05 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,20 @@ void	expand_tilde(t_data *data, t_pre_pars_data *pp_data)
 	pp_data->bkp2 = pp_data->i + 1;
 }
 
-int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
+void	initialize_pre_parsing(t_pre_pars_data *pp_data)
 {
-	char	*tmp;
-	char	*tmp2;
-
 	pp_data->i = -1;
 	pp_data->bkp2 = 0;
 	pp_data->in_dquotes = false;
 	pp_data->modified = NULL;
+}
+
+void	process_input_characters(t_data *data,
+			bool here_doc, t_pre_pars_data *pp_data)
+{
+	char	*tmp;
+	char	*tmp2;
+
 	while (++(pp_data->i) >= 0)
 	{
 		if ((data->input)[pp_data->i]
@@ -70,7 +75,8 @@ int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 		expansion(data, pp_data);
 		if (!((data->input)[pp_data->i]))
 		{
-			tmp = ft_substr(data->input, pp_data->bkp2, pp_data->i - pp_data->bkp2);
+			tmp = ft_substr(data->input,
+					pp_data->bkp2, pp_data->i - pp_data->bkp2);
 			tmp2 = ft_strjoin(pp_data->modified, tmp);
 			safe_free((void **)&pp_data->modified);
 			pp_data->modified = tmp2;
@@ -78,6 +84,12 @@ int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 			break ;
 		}
 	}
+}
+
+int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
+{
+	initialize_pre_parsing(pp_data);
+	process_input_characters(data, here_doc, pp_data);
 	if (pp_data->modified[0] != '\0')
 	{
 		safe_free((void **)&data->input);

@@ -6,19 +6,11 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:50:53 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/30 16:23:10 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/31 13:48:36 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	error(char *message, t_data *data)
-{
-	if (data)
-		free_everything(data);
-	perror(message);
-	exit(EXIT_FAILURE);
-}
 
 void	free_var(t_var *var)
 {

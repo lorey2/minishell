@@ -6,20 +6,11 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:37:24 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/30 15:55:37 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/31 13:57:51 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	skip_spe_char(t_data *data, t_pre_pars_data *pp_data)
-{
-	while ((data->input)[pp_data->i] && (data->input)[pp_data->i] != ' '
-		&& (data->input)[pp_data->i] != '$'
-		&& (data->input)[pp_data->i] != '\''
-		&& (data->input)[pp_data->i] != '\"')
-		(pp_data->i)++;
-}
 
 static void
 	expansion_quoted(t_data *data, t_pre_pars_data *pp_data, char quote_type)
@@ -58,24 +49,12 @@ static void	expansion_dollar_only(t_data *data, t_pre_pars_data *pp_data)
 	(pp_data->i)++;
 }
 
-static void	expansion_variable(t_data *data, t_pre_pars_data *pp_data)
+static void	process_expanded_variable(t_data *data,
+			t_pre_pars_data *pp_data, char *var)
 {
-	int		backup;
-	char	*var;
 	char	*expanded_var;
 	char	*temp;
-	char	*temp2;
 
-	temp = ft_substr(data->input,
-			pp_data->bkp2, pp_data->i - pp_data->bkp2);
-	temp2 = ft_strjoin(pp_data->modified, temp);
-	safe_free((void **)&pp_data->modified);
-	pp_data->modified = temp2;
-	safe_free((void **)&temp);
-	(pp_data->i)++;
-	backup = pp_data->i;
-	skip_spe_char(data, pp_data);
-	var = ft_substr(data->input, backup, pp_data->i - backup);
 	if (var[0] == '?' && var[1] == '\0')
 		expanded_var = ft_itoa(data->last_exit);
 	else
@@ -89,6 +68,26 @@ static void	expansion_variable(t_data *data, t_pre_pars_data *pp_data)
 	safe_free((void **)&pp_data->modified);
 	pp_data->modified = temp;
 	safe_free((void **)&var);
+}
+
+static void	expansion_variable(t_data *data, t_pre_pars_data *pp_data)
+{
+	char	*temp;
+	char	*temp2;
+	char	*var;
+	int		backup;
+
+	temp = ft_substr(data->input,
+			pp_data->bkp2, pp_data->i - pp_data->bkp2);
+	temp2 = ft_strjoin(pp_data->modified, temp);
+	safe_free((void **)&pp_data->modified);
+	pp_data->modified = temp2;
+	safe_free((void **)&temp);
+	(pp_data->i)++;
+	backup = pp_data->i;
+	skip_spe_char(data, pp_data);
+	var = ft_substr(data->input, backup, pp_data->i - backup);
+	process_expanded_variable(data, pp_data, var);
 	pp_data->bkp2 = pp_data->i;
 	(pp_data->i)--;
 }

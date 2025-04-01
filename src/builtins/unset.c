@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:08:54 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/26 14:43:49 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/31 13:47:17 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 		does_contain_only(p_data->arg[i], "vf"))
 		fill(p_data->arg[i], path_data);
 	if (path_data->is_f || path_data->is_v)
-		return (write_err("unset : -f and -v is not implemented yet :'(\n"), -1);
+		return (write_err(
+				"unset : -f and -v is not implemented yet :'(\n"), -1);
 	return (i);
 }
 

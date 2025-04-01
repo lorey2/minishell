@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:21:08 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 16:28:59 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/01 15:11:30 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,11 @@ void	sigint_handler(int sig __attribute__((unused)))
 
 void	sigquit_handler(int sig __attribute__((unused)))
 {
-	rl_on_new_line();
-	rl_redisplay();
+	if (g_signal[0] == 0)
+	{
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
 /* ************************************************************************** */
@@ -69,6 +72,7 @@ void	setup_signal(void)
 	sigaction(SIGINT, &sa_int, NULL);
 	sa_quit.sa_handler = sigquit_handler;
 	sa_quit.sa_flags = 0;
+	sa_quit.sa_flags = SA_RESTART;
 	sigemptyset(&sa_quit.sa_mask);
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }
