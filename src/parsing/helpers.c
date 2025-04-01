@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 02:14:39 by lorey             #+#    #+#             */
-/*   Updated: 2025/04/01 17:12:02 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/31 13:35:28 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ void	skip_space(char **input)
 
 int	check_meta_char(char c)
 {
-	return (c == '|' || c == '<' || c == '>' || c == ' ');
+	return (c == '|' || c == '&' || c == ';' || c == '(' || c == ')'
+		|| c == '<' || c == '>' || c == ' ');
 }
 
 int	check_meta_char_arg(char c)
 {
-	return (c == '|' || c == '<' || c == '>');
+	return (c == '|' || c == '&' || c == ';' || c == '(' || c == ')'
+		|| c == '<' || c == '>');
 }

@@ -3,48 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   pre_pars_expans.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorey <lo>                                 +#+  +:+       +#+        */
+/*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 22:37:24 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/31 13:57:51 by lorey            ###   LAUSANNE.ch       */
+/*   Created: 2025/04/01 18:06:05 by lorey             #+#    #+#             */
+/*   Updated: 2025/04/01 18:07:34 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void
-	expansion_quoted(t_data *data, t_pre_pars_data *pp_data, char quote_type)
+static void	expansion_quoted(
+	t_data *data, t_pre_pars_data *pp_data, char quote_type)
 {
 	int		j;
 	char	*quoted_content;
+	char	*temp;
+	char	*new_modified;
 
 	j = pp_data->i + 2;
-	pp_data->modified = ft_strjoin(pp_data->modified, ft_substr(data->input,
-				pp_data->bkp2, pp_data->i - pp_data->bkp2));
+	temp = ft_substr(data->input, pp_data->bkp2, pp_data->i - pp_data->bkp2);
+	new_modified = ft_strjoin(pp_data->modified, temp);
+	safe_free((void **)&pp_data->modified);
+	safe_free((void **)&temp);
+	pp_data->modified = new_modified;
 	while ((data->input)[j] && (data->input)[j] != quote_type)
 		j++;
 	if ((data->input)[j] == quote_type)
 	{
 		quoted_content
 			= ft_substr(data->input, pp_data->i + 2, j - (pp_data->i + 2));
-		pp_data->modified = ft_strjoin(pp_data->modified, quoted_content);
+		temp = ft_strjoin(pp_data->modified, quoted_content);
 		safe_free((void **)&quoted_content);
-		pp_data->bkp2 = j + 1;
-		pp_data->i = j;
+		safe_free((void **)&pp_data->modified);
+		pp_data->modified = temp;
 	}
 	else
 	{
-		pp_data->modified = ft_strjoin(pp_data->modified, "$");
-		pp_data->bkp2 = pp_data->i + 1;
-		pp_data->i++;
+		temp = ft_strjoin(pp_data->modified, "$");
+		safe_free((void **)&pp_data->modified);
+		pp_data->modified = temp;
 	}
+	pp_data->bkp2 = j + 1;
+	pp_data->i = j;
 }
 
 static void	expansion_dollar_only(t_data *data, t_pre_pars_data *pp_data)
 {
-	pp_data->modified = ft_strjoin(pp_data->modified, ft_substr(data->input,
-				pp_data->bkp2, pp_data->i - pp_data->bkp2));
-	pp_data->modified = ft_strjoin(pp_data->modified, "$");
+	char	*temp;
+	char	*substr;
+
+	substr = ft_substr(data->input, pp_data->bkp2, pp_data->i - pp_data->bkp2);
+	temp = ft_strjoin(pp_data->modified, substr);
+	safe_free((void **)&substr);
+	safe_free((void **)&pp_data->modified);
+	pp_data->modified = ft_strjoin(temp, "$");
+	safe_free((void **)&temp);
 	pp_data->bkp2 = pp_data->i + 1;
 	(pp_data->i)++;
 }

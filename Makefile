@@ -6,7 +6,7 @@
 #    By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 15:46:35 by lorey             #+#    #+#              #
-#    Updated: 2025/04/01 16:58:17 by maambuhl         ###   LAUSANNE.ch        #
+#    Updated: 2025/04/01 16:14:20 by lorey            ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ PARSING_FILES      = parsing arg files helpers here_doc var arg_2 value
 
 SETUP_FILES        = init init_2 setup setup_terminal
 
-OTHER_FILES      = error_free handle_signal update_env utils update_env_error
+OTHER_FILES      = error_free handle_signal quote update_env utils update_env_error
 
 # Object files for main sources
 OBJ_MAIN         = $(addprefix $(OBJ_DIR)/main/, $(addsuffix .o, $(SRC_FILES)))

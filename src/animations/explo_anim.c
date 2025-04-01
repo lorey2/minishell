@@ -6,7 +6,7 @@
 /*   By: lorey <lorey@student.42lausanne.ch>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:34:56 by lorey             #+#    #+#             */
-/*   Updated: 2025/04/01 16:59:32 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/27 23:03:00 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	explosion_animation(void)
 	while (++i < LINE)
 	{
 		explo[i] = get_next_line(fd);
-		if (explo[i] && explo[i][ft_strlen(explo[i]) - 1] == '\n')
-			explo[i][ft_strlen(explo[i]) - 1] = '\0';
+		if (explo[i] && explo[i][strlen(explo[i]) - 1] == '\n')
+			explo[i][strlen(explo[i]) - 1] = '\0';
 	}
 	print_algo(explo);
 	free_double_point(&explo);
