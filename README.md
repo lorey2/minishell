@@ -3,6 +3,8 @@
 
 
 ## ?!?!crash list?!?! :
+---- [] only $
+---- [] echo $truc qui existe pas
 ---- [✅]echo "'$USER'"<br /><br />
 ---- [✅]<<0| cat -ne use '0|' as delimiter<br /><br />
 ---- [✅]<<0 <<1 | cat -ne leaks <br /><br />

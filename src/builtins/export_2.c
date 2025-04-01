@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 17:59:35 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 22:50:37 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/01 16:57:05 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static char	**copy_array(char **src, int rows, t_data *data)
 	i = -1;
 	while (++i < rows)
 	{
-		dest[i] = strdup(src[i]);
+		dest[i] = ft_strdup(src[i]);
 		if (!dest[i])
 		{
 			while (--i >= 0)
