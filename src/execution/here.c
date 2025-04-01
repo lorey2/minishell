@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 20:30:19 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/03/30 20:30:21 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/01 15:50:43 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*gnl(t_data *data)
 	buff = safe_malloc(sizeof(char) * MAX_HERE_LINE_SIZE, data);
 	i = 0;
 	r = 1;
+	write(1, "> ", 2);
 	while (r > 0)
 	{
 		r = read(STDIN_FILENO, &c, 1);
