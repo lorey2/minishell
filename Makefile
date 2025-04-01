@@ -6,7 +6,7 @@
 #    By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 15:46:35 by lorey             #+#    #+#              #
-#    Updated: 2025/03/31 14:09:24 by lorey            ###   LAUSANNE.ch        #
+#    Updated: 2025/04/01 16:14:20 by lorey            ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ PRE_PARSING_FILES  = pre_parsing pre_pars_expans pre_pars_skip
 
 PARSING_FILES      = parsing arg files helpers here_doc var arg_2 value
 
-SETUP_FILES        = init init_2 setup
+SETUP_FILES        = init init_2 setup setup_terminal
 
 OTHER_FILES      = error_free handle_signal quote update_env utils update_env_error
 

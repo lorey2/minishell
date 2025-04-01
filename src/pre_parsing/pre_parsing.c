@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:14:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/31 13:53:05 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/01 16:16:22 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	process_input_characters(t_data *data,
 	}
 }
 
+//	printf("input after pre_parsing : [%s]\n", data->input);
+
 int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 {
 	initialize_pre_parsing(pp_data);
@@ -97,6 +99,5 @@ int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 	}
 	if (pp_data->in_dquotes)
 		printf("double quote not close -> undefined behavious\n");
-	printf("input after pre_parsing : [%s]\n", data->input);
 	return (0);
 }

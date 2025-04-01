@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:00:55 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/29 15:18:30 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/01 16:16:00 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static void	big_loop_execution(t_data *data)
 	}
 }
 
+//		printf("LAST EXIT = %d\n", data->last_exit);
+
 static void	big_loop_core(t_data *data)
 {
 	if (data->input[0] != '\0')
@@ -56,7 +58,6 @@ static void	big_loop_core(t_data *data)
 		g_signal[0] = 1;
 		big_loop_execution(data);
 		wait_for_all(data);
-		printf("LAST EXIT = %d\n", data->last_exit);
 	}
 	else
 	{
@@ -105,11 +106,14 @@ int	main(int argc __attribute__((unused)),
 		char **argv __attribute__((unused)), char **env)
 {
 	t_data	data;
+	t_term	term;
 
+	setup_terminal(&term);
 	init_struct(&data);
 	setup_env(&data, env);
 	setup_signal();
 	big_loop(&data);
+	restore_terminal(&term);
 	free_everything(&data);
 	write(1, "exit\n", 5);
 	if (data.exit_nbr == -1)

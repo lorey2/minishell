@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/31 13:57:31 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/01 16:12:32 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <stdbool.h>
 # include <sys/types.h>
 # include <unistd.h>
+# include <termios.h>
 
 # define MAX_HERE_LINE_SIZE 1000
 
@@ -59,6 +60,12 @@ typedef struct s_path_data
 	bool	is_f;
 	bool	is_p;
 }				t_path_data;
+
+typedef struct s_term
+{
+	struct termios	original;
+	struct termios	modified;
+}					t_term;
 
 typedef struct s_file
 {
@@ -133,6 +140,9 @@ typedef struct s_data
 	int				return_nbr;
 }					t_data;
 
+//setup_shell
+void			setup_terminal(t_term *term);
+void			restore_terminal(t_term *term);
 //animation
 void			text_animation(void);
 void			explosion_animation(void);
