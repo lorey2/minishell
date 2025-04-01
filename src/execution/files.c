@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 20:30:27 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/03/30 20:30:48 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/01 18:33:03 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ int	check_out_file(t_parsing_data *token, t_data *data)
 	{
 		while (file)
 		{
+			if (!*file->name)
+			{
+				ft_putstr_fd("Synthax error\n", STDERR_FILENO);
+				return (-1);
+			}
 			token->fd_out = open_file(file, data);
 			file = file->next;
 		}
@@ -64,6 +69,11 @@ int	check_file(t_parsing_data *token, t_data *data, int saved_stdin)
 		close(saved_stdin);
 		return (0);
 	}
-	check_out_file(token, data);
+	if (check_out_file(token, data) == -1)
+	{
+		dup2(saved_stdin, STDIN_FILENO);
+		close(saved_stdin);
+		return (0);
+	}
 	return (1);
 }
