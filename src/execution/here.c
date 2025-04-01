@@ -6,7 +6,7 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 20:30:19 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/04/01 15:50:43 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/01 16:30:23 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	get_here_docs(t_parsing_data *token, t_data *data)
 				token->here[0] = '\0';
 			if (g_signal[1] == 1)
 				return (0);
+			ft_putstr_fd("\nwarning: here-document delimited by end-of-file\n", STDOUT_FILENO);
 			return (1);
 		}
 		if (ft_check_line(line, token->here_docs->delimiter))
