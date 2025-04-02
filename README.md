@@ -164,6 +164,11 @@ update_env.c
 
 ### export
   ----NOT DONE YET
+
+  nown issue
+  export | grep a
+  $$
+  <
   
 ### unset DONE
   works with <br />
