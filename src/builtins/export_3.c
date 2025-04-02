@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 16:52:05 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/27 16:53:19 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/02 01:56:27 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	e_setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 	init_flags(path_data);
 	if (!p_data->arg)
 		return (i);
-	while (p_data->arg[++i] && p_data->arg[i][1] && p_data->arg[i][0] == '-')
+	while (p_data->arg[++i] && p_data->arg[i][0] == '-' && p_data->arg[i][1])
 	{
 		if (does_contain_only(p_data->arg[i], "fnp"))
 			fill(p_data->arg[i], path_data);

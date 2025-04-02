@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 02:22:10 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/31 14:15:56 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/02 03:16:32 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	handle_cmd(char **input, t_parsing_data *pars, t_data *data)
 	(*input) += check_vars_count(input);
 	pars->is_cmd = true;
 	skip_space(input);
-	pars->value = get_value(input, data);
+	get_value(input, &pars->value, data);
 	skip_space(input);
 	while (check_for_file(input, pars, data))
 		;

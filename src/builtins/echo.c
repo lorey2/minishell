@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:55:52 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/31 13:30:54 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/02 01:56:05 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	setup_flags(t_parsing_data *p_data, t_path_data *path_data)
 
 	i = 0;
 	init_flags(path_data);
-	while (p_data->arg[++i] && p_data->arg[i][1] && p_data->arg[i][0] == '-' && \
+	while (p_data->arg[++i] && p_data->arg[i][0] == '-' && p_data->arg[i][1] && \
 		does_contain_only(p_data->arg[i], "eEn"))
 		fill(p_data->arg[i], path_data);
 	if (path_data->is_e || path_data->is_big_e)

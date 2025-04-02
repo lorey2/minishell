@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:14:27 by lorey             #+#    #+#             */
-/*   Updated: 2025/04/01 16:16:22 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/02 01:39:27 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,13 @@ void	process_input_characters(t_data *data,
 					pp_data->bkp2, pp_data->i - pp_data->bkp2);
 			tmp2 = ft_strjoin(pp_data->modified, tmp);
 			safe_free((void **)&pp_data->modified);
-			pp_data->modified = tmp2;
+			pp_data->modified = ft_strdup(tmp2);
+			safe_free((void **)&tmp2);
 			safe_free((void **)&tmp);
 			break ;
 		}
 	}
 }
-
-//	printf("input after pre_parsing : [%s]\n", data->input);
 
 int	pre_parsing(t_data *data, bool here_doc, t_pre_pars_data *pp_data)
 {
