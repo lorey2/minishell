@@ -6,21 +6,27 @@
 /*   By: maambuhl <marcambuehl4@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 20:30:27 by maambuhl          #+#    #+#             */
-/*   Updated: 2025/03/30 20:30:48 by maambuhl         ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/02 15:28:05 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
 int	check_out_file(t_parsing_data *token, t_data *data)
 {
 	t_file	*file;
-
+ 
 	file = token->outfile_list;
 	if (token->outfile)
 	{
 		while (file)
 		{
+			if (!*file->name)
+			{
+				ft_putstr_fd("Synthax error\n", STDERR_FILENO);
+				return (-1);
+			}
 			token->fd_out = open_file(file, data);
 			file = file->next;
 		}
@@ -36,6 +42,11 @@ int	check_in_file(t_parsing_data *token, t_data *data)
 	file = token->infile_list;
 	while (file)
 	{
+		if (!file->name)
+		{
+			ft_putstr_fd("Synthax error\n", STDERR_FILENO);
+			return (-1);
+		}
 		if (access(file->name, F_OK) != 0)
 		{
 			ft_putstr_fd(file->name, STDERR_FILENO);
@@ -64,6 +75,11 @@ int	check_file(t_parsing_data *token, t_data *data, int saved_stdin)
 		close(saved_stdin);
 		return (0);
 	}
-	check_out_file(token, data);
+	if (check_out_file(token, data) == -1)
+	{
+		dup2(saved_stdin, STDIN_FILENO);
+		close(saved_stdin);
+		return (0);
+	}
 	return (1);
 }

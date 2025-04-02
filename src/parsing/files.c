@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 02:15:52 by lorey             #+#    #+#             */
-/*   Updated: 2025/04/02 03:17:36 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/02 15:55:10 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	allocate_file(char **input, t_parsing_data *pars, t_data *data)
 
 	file = safe_malloc(sizeof(t_file), data);
 	init_new_file(file);
-	get_value(input, &pars->infile, data);
+	if (!get_value(input, &pars->infile, data))
+		pars->infile = NULL;
 	file->name = pars->infile;
 	if (!pars->infile_list)
 		pars->infile_list = file;
@@ -80,7 +81,8 @@ void	handle_out_file(char **input, t_parsing_data *pars, t_data *data)
 		++(*input);
 	}
 	skip_space(input);
-	get_value(input, &pars->outfile, data);
+	if (!get_value(input, &pars->outfile, data))
+		pars->outfile = NULL;
 	file->name = pars->outfile;
 	if (!pars->outfile_list)
 		pars->outfile_list = file;

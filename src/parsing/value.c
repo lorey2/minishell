@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:07:08 by lorey             #+#    #+#             */
-/*   Updated: 2025/04/02 03:22:15 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/02 15:46:11 by maambuhl         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	process_value(char **input, char **to_set, t_data *data)
 	return (1);
 }
 
-void	get_value(char **input, char **to_set, t_data *data)
+int	get_value(char **input, char **to_set, t_data *data)
 {
 	skip_space(input);
-	process_value(input, to_set, data);
+	return (process_value(input, to_set, data));
 }
