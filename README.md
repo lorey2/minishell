@@ -3,15 +3,19 @@
 
 
 ## ?!?!crash list?!?! :
+
+---- [✅] only $<br /><br />
+---- [✅] echo $truc qui existe pas<br /><br />
+---- [✅] "l""s"<br /><br />
 ---- [✅]echo "'$USER'"<br /><br />
 ---- [✅]<<0| cat -ne use '0|' as delimiter<br /><br />
 ---- [✅]<<0 <<1 | cat -ne leaks <br /><br />
 ---- [✅]< pipi ls > POPO > pipi >> coco   dont work if pipi doesnt exists alredazxx<br /><br />
 ---- [✅]is $' there is only $ expanded <br /><br />
 ---- [⛔] delete creating variable / cannot find variable [PATH]. That a feature not a bug and if we want to delete it its very easy<br /><br />
----- [❌]ctrl \ with cat and ping <br /><br />
+---- [✅]ctrl \ with cat and ping <br /><br />
 ---- [✅]echo error numeric argument required with jfahsdfjkdsahfjkdash <br /><br />
----- [❌]Check if all malloc from libft are safe ex: split/substr....<br /><br />
+---- [✅]Check if all malloc from libft are safe ex: split/substr....<br /><br />
 ---- [✅]Simple/Double quote DONE (WE WILL SEE) <br /><br />
 ---- [✅] export salut="|"  ls $salut the pipe is a ls arg, not a pipe (we shurely wont do that)----<br /><br />
 ---- [⛔] JE LE FERAI JAMAIS <<000>00 | cat -ne             should raise error but <<aaa>0 works. Enfaite y a pas besoin de le faire parce que <<0>something semble etre considere comme une redirection de fd  -->  <<0 >someting fonctionne<br /><br />
