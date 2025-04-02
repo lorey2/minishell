@@ -6,7 +6,7 @@
 /*   By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 21:16:46 by lorey             #+#    #+#             */
-/*   Updated: 2025/04/01 16:12:32 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/02 03:19:46 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,8 @@ t_var			*get_last(t_var *var);
 int				handle_cmd(char **input, t_parsing_data *pars, t_data *data);
 char			*extract_unquoted_value(char **input, t_data *data);
 char			*extract_quoted_value(char **input, t_data *data);
-char			*get_value(char **input, t_data *data);
+void			get_value(char **input, char **to_set,
+					t_data *data);
 void			init_new_here(t_here_docs *here);
 void			init_new_token(t_parsing_data *token);
 void			init_new_var(t_var *var);
@@ -197,9 +198,11 @@ int				check_for_file(char **input, t_parsing_data *pars,
 					t_data *data);
 	//arg
 void			rebuild_arg(t_parsing_data *pars, t_data *data);
+int				get_length(char **input);
 int				set_reset_quote(int *in_quote, char *quote_char,
 					int i, char **input);
 void			get_arg(char **input, t_parsing_data *pars, t_data *data);
+char			*extract_content(char **input, int len, t_data *data);
 
 //signal
 void			setup_signal(void);

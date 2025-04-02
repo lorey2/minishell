@@ -6,7 +6,7 @@
 #    By: lorey <loic.rey.vs@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/12 15:46:35 by lorey             #+#    #+#              #
-#    Updated: 2025/04/01 16:14:20 by lorey            ###   LAUSANNE.ch        #
+#    Updated: 2025/04/02 02:49:39 by lorey            ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SETUP_DIR       = src/setup/
 OTHER_DIR       = src/other/
 OBJ_DIR         = obj/
 CC              = gcc
-CFLAGS          = -g -Wall -Werror -Wextra -I$(INCLUDE)
+CFLAGS          = -g -I$(INCLUDE)
 RM              = rm -f
 AR              = ar rcs
 

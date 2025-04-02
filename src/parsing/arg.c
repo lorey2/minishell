@@ -6,7 +6,7 @@
 /*   By: lorey <lo>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:05:20 by lorey             #+#    #+#             */
-/*   Updated: 2025/03/31 14:05:30 by lorey            ###   LAUSANNE.ch       */
+/*   Updated: 2025/04/02 03:20:42 by lorey            ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	set_reset_quote(int *in_quote, char *quote_char, int i, char **input)
 	return (1);
 }
 
-char	*extract_arg_content(char **input, int len, t_data *data)
+char	*extract_content(char **input, int len, t_data *data)
 {
 	char	*arg;
 	int		i;
@@ -57,7 +57,7 @@ char	*extract_arg_content(char **input, int len, t_data *data)
 	return (arg);
 }
 
-int	get_arg_length(char **input)
+int	get_length(char **input)
 {
 	int		len;
 	int		in_quote;
@@ -84,10 +84,10 @@ int	process_next_arg(char **input, t_parsing_data *pars,
 	int		len;
 	char	*arg;
 
-	len = get_arg_length(input);
+	len = get_length(input);
 	if (len == 0)
 		return (0);
-	arg = extract_arg_content(input, len, data);
+	arg = extract_content(input, len, data);
 	pars->arg[(*arg_index)++] = ft_strdup(arg);
 	if (arg)
 		safe_free((void **)&arg);
